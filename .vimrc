@@ -1,0 +1,1 @@
+echo "syntax on" >> ~/.vimrc
