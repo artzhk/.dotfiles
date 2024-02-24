@@ -28,3 +28,4 @@ alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
 
 . "$HOME/.cargo/env"
+
