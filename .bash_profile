@@ -1,3 +1,4 @@
+source ~/.bashrc
 source ~/.profile
 
 # Homebrew path
@@ -26,6 +27,7 @@ alias tmnw='tmux-window'
 alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
+alias brc='source ~/.bashrc'
 
 . "$HOME/.cargo/env"
 

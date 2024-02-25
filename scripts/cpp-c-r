@@ -1,35 +1,15 @@
 #!/usr/bin/env bash
 
-compile_version=$1
-if [[ $compile_version == "" ]]; then
-    compile_version="${compile_version:-20}"
-    echo "Didn't specify compilator version, as argument 1, using default: $compile_version;"
+
+name=$1
+
+if [[ $name == "" ]]; then
+    g++ $(cat compile_flags.txt) -o a.out
+    ./a.out
+    exit 1
 fi
 
-target_file=$2
-if [[ $target_file == "" ]]; then
-    target_file="main.cpp"
-    echo "Didn't specify target file, as argument 2, using default: $target_file;"
-fi
+g++ $(cat compile_flags.txt) -o $name 
 
-build_dir=$3
-name=$4
-build_dir="${build_dir:-.}"
-if [[ $build_dir == "" ]]; then
-    echo "Didn't specify build directory, as argument 3, using default: ./;"
-    echo "Compiling $target_file with $compile_version, name: $name, build dir: $build_dir"
-    g++ -std=c++$compile_version -o $build_dir/a $target_file
-    ./a
-else 
-    if [[ $name == "" ]]; then
-        echo "Didn't specify output name, as argument 4, using default: a;"
-        echo "Compiling with $compile_version, name: $name, build_drir: $build_dir"
-        g++ -std=c++$compile_version -o $build_dir/a $target_file
-        ./build_dira
-    else 
-        echo "Compiling with $compile_version, name: $name, build_drir: $build_dir"
-        g++ -std=c++$compile_version -o $build_dir/$name $target_file
-        ./$build_dir$name
-    fi
-fi
+./$name
 
