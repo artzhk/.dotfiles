@@ -1,5 +1,5 @@
-source ~/.bashrc
 source ~/.profile
+source ~/.bashrc
 
 # Homebrew path
 export PATH=$PATH:/opt/homebrew/bin
@@ -28,6 +28,9 @@ alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
 alias brc='source ~/.bashrc'
+alias g='git'
+alias dr='docker'
 
 . "$HOME/.cargo/env"
+
 
