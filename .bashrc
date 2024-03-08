@@ -4,5 +4,3 @@ export PATH=~artem/anaconda3/bin:$PATH
 
 . "$HOME/.cargo/env"
 
-set -o vi
-
