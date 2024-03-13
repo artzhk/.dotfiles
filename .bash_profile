@@ -23,6 +23,11 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# Vim motions
+set -o vi
+
+# Aliases
+
 alias tmnw='tmux-window'
 alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
