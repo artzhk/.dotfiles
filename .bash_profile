@@ -30,7 +30,6 @@ set -o vi
 
 alias tmnw='tmux-window'
 alias tmKISS='tmux kill-server'
-alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
 alias brc='source ~/.bashrc'
 alias g='git'
