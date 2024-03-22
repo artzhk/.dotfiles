@@ -105,10 +105,8 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+alias zshconfig="mate ~/.zshrc"
+alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
