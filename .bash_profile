@@ -28,7 +28,6 @@ set -o vi
 
 # Aliases
 
-alias tmnw='tmux-window'
 alias tmKISS='tmux kill-server'
 alias cpcr='cpp-c-r' 
 alias brc='source ~/.bashrc'
