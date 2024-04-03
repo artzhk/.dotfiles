@@ -29,10 +29,11 @@ set -o vi
 # Aliases
 
 alias tmKISS='tmux kill-server'
+alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
-alias brc='source ~/.bashrc'
+alias brc='source ~/.bash_profile'
 alias g='git'
-alias dr='docker'
+alias t='tree'
 
 . "$HOME/.cargo/env"
 
