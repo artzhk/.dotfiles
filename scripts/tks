@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IFS=$'\n' read -rd '' -a sessions <<< $(tmux ls)
+IFS=$'\n' read -d '' -r -a sessions <<< "$(tmux ls)"
 
 copy=("${sessions[@]}")
 
