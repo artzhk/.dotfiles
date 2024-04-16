@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+IFS=$'\n' read -rd '' -a sessions <<< $(tmux ls)
+
+copy=("${sessions[@]}")
+
+for i in "${!copy[@]}"; do
+    sessions[$i]=${copy[$i]%%:*}
+done
+
+echo "Active Sessions:"
+printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+
+for index in "${!sessions[@]}"
+do
+    echo "$index: ${sessions[$index]}"
+done 
+
+printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+
+printf "Press Enter to kill current session\n"
+printf "%s" "Session name or index to delete: "
+read name
+
+re='^[0-9]+$'
+
+if [[ $name =~ $re ]] ; then
+    session_name=${sessions[$name]}
+else 
+    session_name=$name
+fi
+
+if ! [ -n "$session_name" ]; then 
+    echo "Current session is about to be killed"
+    echo "Press any key to continue"
+    read -n 1 -s
+    tmux kill-session 
+    tmux a 
+    exit 2
+fi 
+
+echo "$session_name will be killed"
+echo "Press any key to continue"
+read -n 1 -s
+tmux kill-session -t $session_name
+tmux a
+
