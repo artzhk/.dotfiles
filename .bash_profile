@@ -23,6 +23,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# User configuration
+git config --global core.editor nvim
+
 # Vim motions
 set -o vi
 
@@ -34,6 +37,8 @@ alias cpcr='cpp-c-r'
 alias brc='source ~/.bash_profile'
 alias g='git'
 alias t='tree'
+alias vim="nvim"
+alias lg="lazygit"
 
 . "$HOME/.cargo/env"
 
