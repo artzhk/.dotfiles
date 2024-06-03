@@ -1,0 +1,16 @@
+import = [
+    "./nightfox.toml"
+]
+
+[font]
+normal = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
+bold = { family = "UbuntuSansMono Nerd Font", style = "Medium" }
+italic = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
+
+
+[window]
+decorations = "Buttonless"
+# Mac
+startup_mode = "SimpleFullscreen"
+# startup_mode = "Fullscreen"
+
