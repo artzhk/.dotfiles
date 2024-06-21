@@ -1,5 +1,6 @@
 import = [
     "./nightfox.toml"
+    # "./dayfox.toml"
 ]
 
 [font]
