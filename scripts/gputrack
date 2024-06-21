@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Function to handle Ctrl+C interruption
+trap ctrl_c INT
+
+function ctrl_c() {
+    tput cnorm # Restore cursor visibility
+    echo "Interrupted by user. Exiting..."
+    exit
+}
+
+# Hide cursor
+tput civis
+
+# Initial run to get the number of lines nvidia-smi outputs
+nvidia_smi_output=$(nvidia-smi)
+output_lines=$(echo "$nvidia_smi_output" | wc -l)
+
+# Clear the screen and set the cursor position to the top
+clear
+tput cup 0 0
+
+while true; do
+    # Save cursor position
+    tput sc
+    
+    # Run nvidia-smi and capture the output
+    nvidia_smi_output=$(nvidia-smi)
+    
+    # Split the output into lines and print each line
+    IFS=$'\n' read -d '' -r -a lines <<< "$nvidia_smi_output"
+    for ((i = 0; i < ${#lines[@]}; i++)); do
+        # Move cursor to the line number
+        tput cup $i 0
+        # Print the line
+        echo "${lines[$i]}"
+    done
+    
+    # Restore cursor position and clear to the end of the screen
+    tput rc
+    tput ed
+    
+    sleep 1
+done
