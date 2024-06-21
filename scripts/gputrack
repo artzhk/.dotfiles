@@ -12,13 +12,12 @@ function ctrl_c() {
 # Hide cursor
 tput civis
 
-# Initial run to get the number of lines nvidia-smi outputs
+# Get the initial output of nvidia-smi to determine the number of lines
 nvidia_smi_output=$(nvidia-smi)
 output_lines=$(echo "$nvidia_smi_output" | wc -l)
 
-# Clear the screen and set the cursor position to the top
-clear
-tput cup 0 0
+# Print the initial nvidia-smi output to set up the screen
+echo "$nvidia_smi_output"
 
 while true; do
     # Save cursor position
@@ -27,18 +26,17 @@ while true; do
     # Run nvidia-smi and capture the output
     nvidia_smi_output=$(nvidia-smi)
     
-    # Split the output into lines and print each line
+    # Move cursor to the top of the output and print each line
     IFS=$'\n' read -d '' -r -a lines <<< "$nvidia_smi_output"
-    for ((i = 0; i < ${#lines[@]}; i++)); do
+    for ((i = 0; i < output_lines; i++)); do
         # Move cursor to the line number
         tput cup $i 0
-        # Print the line
-        echo "${lines[$i]}"
+        # Clear the line and print the new line content
+        printf "%-80s" "${lines[$i]}"
     done
     
-    # Restore cursor position and clear to the end of the screen
+    # Restore cursor position
     tput rc
-    tput ed
     
     sleep 1
 done
