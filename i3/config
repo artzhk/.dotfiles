@@ -9,12 +9,11 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
-
+set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Ubuntu Regular 10
+font pango:UbuntuSansMono Nerd Font 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -24,8 +23,12 @@ font pango:Ubuntu Regular 10
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
+
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
+exec --no-startup-id xrandr --output HDMI-1-0 --auto --right-of eDP-2
+# exec --no-startup-id setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru
+# exec --no-startup-id setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -45,18 +48,23 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+# tiling_drag modifier titlebar
+
 # start a terminal
-# bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec wezterm
-# bindsym $mod+Return exec tmux-session
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
+bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh --window
+
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
@@ -86,8 +94,6 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-# bindsym $mod+h split h
-# bindsym $mod+h split h
 bindsym $mod+semicolon split h
 
 # split in vertical orientation
@@ -95,6 +101,9 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
+
+# Open files
+bindsym $mod+Shift+f exec "xdg-open ."
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -104,21 +113,14 @@ bindsym $mod+e layout toggle split
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
-# Open files
-bindsym $mod+Shift+f exec "xdg-open ."
-
-
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
-
-# Lockscreen
-bindsym $mod+x exec ~/.config/scripts/lock
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -192,11 +194,16 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Background image
-exec_always feh --bg-fill ~/Pictures/wallpapers/6.png
+exec_always feh --bg-fill ~/Pictures/wallpapers/1.jpg
 
+# status bar
+exec_always --no-startup-id ~/.config/polybar/launch.sh --shades
 
+# exec "setxkbmap -layout us,ru"
+# exec "setxkbmap -option 'grp:alt_shift_toggle'"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-}
+# bar {
+#         status_command polybar
+# }
+
