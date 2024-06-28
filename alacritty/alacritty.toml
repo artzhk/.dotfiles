@@ -10,6 +10,8 @@ italic = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
 
 
 [window]
+# opacity = 0.4
+# blur = true
 decorations = "Buttonless"
 # Mac
 startup_mode = "SimpleFullscreen"
