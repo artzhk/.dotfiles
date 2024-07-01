@@ -1,0 +1,8 @@
+[manager]
+show_hidden = true
+ratio = [1, 3, 4]
+
+[opener] 
+open = [
+   { run = 'alacritty --working-directory "$0"', desc = "Alacritty"} 
+]
