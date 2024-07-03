@@ -1,6 +1,7 @@
 import = [
-    "./nightfox.toml"
-    # "./dayfox.toml"
+    "~/.config/alacritty/themes/nightfox.toml",
+    # "~/.config/alacritty/themes/nordfox.toml",
+    # "~/.config/alacritty/themes/dayfox.toml",
 ]
 
 [font]
@@ -10,10 +11,9 @@ italic = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
 
 
 [window]
-# opacity = 0.4
-# blur = true
+opacity = 0.9
 decorations = "Buttonless"
-# Mac
 startup_mode = "SimpleFullscreen"
+# Mac
 # startup_mode = "Fullscreen"
 

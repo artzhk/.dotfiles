@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:UbuntuSansMono Nerd Font 8
+font pango:UbuntuSansMono Nerd Font 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -22,11 +22,13 @@ font pango:UbuntuSansMono Nerd Font 8
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-
+exec --no-startup-id picom -b
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
-exec --no-startup-id xrandr --output HDMI-1-0 --auto --right-of eDP-2
+# exec --no-startup-id xrandr --auto
+# exec --no-startup-id xrandr --output HDMI-0 --auto --right-of eDP-1-2
+# exec_always --no-startup-id xrandr --output eDP-1-2 --auto --left-of HDMI-0
 # exec --no-startup-id setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru
 # exec --no-startup-id setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru
 
@@ -62,8 +64,13 @@ bindsym $mod+Shift+q kill
 # bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
 
+# My keybindings
+
 bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh --window
+bindsym $mod+x exec --no-startup-id networkmanager_dmenu
+bindsym $mod+c exec --no-startup-id flameshot gui
+bindsym $mod+p move workspace to output right
 
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
@@ -103,7 +110,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # Open files
-bindsym $mod+Shift+f exec "xdg-open ."
+bindsym $mod+Shift+f exec "alacritty --hold -e yazi"
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -194,16 +201,31 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Background image
-exec_always feh --bg-fill ~/Pictures/wallpapers/1.jpg
+exec feh --bg-fill ~/Pictures/wallpapers/1.jpg
 
 # status bar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --shades
+exec_always --no-startup-id ~/.config/polybar/launch.sh --panels
+default_border pixel 1
+hide_edge_borders smart
 
-# exec "setxkbmap -layout us,ru"
-# exec "setxkbmap -option 'grp:alt_shift_toggle'"
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-# bar {
-#         status_command polybar
-# }
+gaps inner 2
+
+title_align center
+
+# Color shemes for windows 
+set $bgcolor    #192330
+set $active     #dbc074
+set $in-bgcolor #192330
+set $text       #dfdfe0
+set $u-bgcolor  #ff0000
+set $indicator  #a8a3c1
+set $in-text    #192330
+set $focused-ws #523d6400
+set $bar-color  #523d640D
+
+#                       border          background      text            indicator (a line which shows where the next window will be placed)
+client.focused          $bgcolor        $active         $bgcolor        $active
+client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor 
 
