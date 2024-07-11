@@ -1,13 +1,22 @@
 import = [
-    "~/.config/alacritty/themes/nightfox.toml",
+    # "~/.config/alacritty/themes/nightfox.toml",
+    "~/.config/alacritty/themes/github.toml",
     # "~/.config/alacritty/themes/nordfox.toml",
     # "~/.config/alacritty/themes/dayfox.toml",
 ]
 
+[env]
+TERM = "xterm-256color"
+
 [font]
-normal = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
-bold = { family = "UbuntuSansMono Nerd Font", style = "Medium" }
-italic = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
+# normal = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
+# bold = { family = "UbuntuSansMono Nerd Font", style = "Medium" }
+# italic = { family = "UbuntuSansMono Nerd Font", style = "Regular" }
+normal = { family = "DMMono", style = "Regular" }
+bold = { family = "DMMono", style = "Medium" }
+italic = { family = "DMMono", style = "Regular" }
+
+size = 10
 
 
 [window]
@@ -16,4 +25,7 @@ decorations = "Buttonless"
 startup_mode = "SimpleFullscreen"
 # Mac
 # startup_mode = "Fullscreen"
+
+[selection]
+save_to_clipboard = true
 
