@@ -21,31 +21,31 @@ echo "You selected $os"
 
 echo "${GREEN}Uploading dotfiles from $os... ${NC}"
 
-cp -vf ~/.tmux.conf ~/.dotfiles/
-cp -vf ~/.vimrc ~/.dotfiles/
-cp -vfr ~/.config/alacritty ~/.dotfiles/
-mkdir -p ~/.dotfiles/.oh-my-zsh/ && cp -vfr ~/.oh-my-zsh/themes ~/.dotfiles/.oh-my-zsh/
-mkdir -p ~/.dotfiles/scripts/ && cp -vf ~/.local/scripts/* ~/.dotfiles/scripts/
+cp -v ~/.tmux.conf ~/.dotfiles/
+cp -v ~/.vimrc ~/.dotfiles/
+cp -vr ~/.config/alacritty ~/.dotfiles/
+mkdir -p ~/.dotfiles/.oh-my-zsh/ && cp -vr ~/.oh-my-zsh/themes ~/.dotfiles/.oh-my-zsh/
+mkdir -p ~/.dotfiles/scripts/ && cp -v ~/.local/scripts/* ~/.dotfiles/scripts/
 
 if [[ $os == "macos" ]]; then 
-    cp -vf ~/.bashrc ~/.dotfiles/macos/
-    cp -vf ~/.bash_profile ~/.dotfiles/macos/
-    cp -vf ~/.zshrc ~/.dotfiles/macos/
+    cp -v ~/.bashrc ~/.dotfiles/macos/
+    cp -v ~/.bash_profile ~/.dotfiles/macos/
+    cp -v ~/.zshrc ~/.dotfiles/macos/
 fi 
 
 if [[ $os == "archlinux" ]] ; then
-    cp -vf ~/.bashrc ~/.dotfiles/linux/
-    cp -vf ~/.bash_profile ~/.dotfiles/linux/
-    cp -vf ~/.zshrc ~/.dotfiles/linux/
-    cp -vfr ~/.config/polybar ~/.dotfiles/linux/
-    cp -vf ~/.xinitrc ~/.dotfiles/linux/
-    cp -vf ~/.Xresources ~/.dotfiles/linux/
-    cp -vfr ~/.config/bat ~/.dotfiles/linux/
-    cp -vfr ~/.config/kitty ~/.dotfiles/linux/
-    cp -vfr ~/.config/rofi ~/.dotfiles/linux/
-    mkdir ~/.dotfiles/linux/spicetify/Themes/text/ -p && cp -vfr ~/.config/spicetify/Themes/text/color.ini ~/.dotfiles/linux/spicetify/Themes/text/
-    cp -vfr ~/.config/yazi ~/.dotfiles/linux/
-    cp -vfr ~/.config/i3 ~/.dotfiles/linux/
+    cp -v ~/.bashrc ~/.dotfiles/linux/
+    cp -v ~/.bash_profile ~/.dotfiles/linux/
+    cp -v ~/.zshrc ~/.dotfiles/linux/
+    cp -vr ~/.config/polybar ~/.dotfiles/linux/
+    cp -v ~/.xinitrc ~/.dotfiles/linux/
+    cp -v ~/.Xresources ~/.dotfiles/linux/
+    cp -vr ~/.config/bat ~/.dotfiles/linux/
+    cp -vr ~/.config/kitty ~/.dotfiles/linux/
+    cp -vr ~/.config/rofi ~/.dotfiles/linux/
+    mkdir ~/.dotfiles/linux/spicetify/Themes/text/ -p && cp -vr ~/.config/spicetify/Themes/text/color.ini ~/.dotfiles/linux/spicetify/Themes/text/
+    cp -vr ~/.config/yazi ~/.dotfiles/linux/
+    cp -vr ~/.config/i3 ~/.dotfiles/linux/
 fi
 
 
