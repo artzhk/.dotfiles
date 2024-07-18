@@ -1,0 +1,4 @@
+#!/bin/bash
+
+setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru,de
+setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru,de

@@ -20,7 +20,7 @@ size = 10
 
 
 [window]
-opacity = 0.9
+# opacity = 0.9
 decorations = "Buttonless"
 startup_mode = "SimpleFullscreen"
 # Mac
