@@ -13,6 +13,7 @@ select os in "archlinux" "macos"; do
     case $os in
         archlinux ) os="archlinux"; break;;
         macos ) os="macos"; break;;
+        android ) os="android"; break;;
     esac
 done
 
@@ -22,8 +23,10 @@ echo "${GREEN}Updating dotfiles for $os... ${NC}"
 
 cp -v ~/.dotfiles/.tmux.conf ~/
 cp -v ~/.dotfiles/.vimrc ~/
-cp -vr ~/.dotfiles/alacritty ~/.config/
-mkdir -p ~/.oh-my-zsh/ && 
+if [[ $os != "android" ]]; then
+    cp -vr ~/.dotfiles/alacritty ~/.config/
+fi
+mkdir -p ~/.oh-my-zsh/themes && 
     cp -vr ~/.dotfiles/.oh-my-zsh/themes ~/.oh-my-zsh/
 mkdir -p ~/.local/scripts/ && 
     cp -v ~/.dotfiles/scripts/* ~/.local/scripts/
