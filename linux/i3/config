@@ -205,8 +205,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Background image
-exec pacwall
-# exec feh --bg-fill ~/Pictures/wallpapers/1.jpg
+# exec pacwall
+exec feh --bg-fill /home/art/.local/share/wallpapers/Nordic-mountain-wallpaper.jpg
 
 # status bar:w
 

@@ -128,3 +128,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 export BAT_THEME=nightfox
+
+eval "$(zoxide init zsh)"

@@ -4,6 +4,7 @@
 
 export PATH=/home/art/.local/bin:$PATH
 export PATH=/home/art/.local/scripts:$PATH
+export PATH=/home/art/.dotnet/tools:$PATH
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -23,6 +24,7 @@ alias s1="i3-resurrect save -w 1"
 alias s2="i3-resurrect save -w 2"
 alias w1="i3-resurrect restore -w 1"
 alias w2="i3-resurrect restore -w 2"
+alias cd="z"
 
 PS1='[\u@\h \W]\$ '
 
