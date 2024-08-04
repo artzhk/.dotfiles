@@ -34,6 +34,7 @@ if [[ $os == "macos" ]]; then
 fi 
 
 if [[ $os == "archlinux" ]] ; then
+    cp -v ~/.config/clipton ~/.dotfiles/linux/
     cp -v /usr/local/share/fonts/ttf/* ~/.dotfiles/fonts/
     cp -v ~/.bashrc ~/.dotfiles/linux/
     cp -v ~/.bash_profile ~/.dotfiles/linux/

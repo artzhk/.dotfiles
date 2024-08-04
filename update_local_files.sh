@@ -38,6 +38,7 @@ if [[ $os == "macos" ]]; then
 fi 
 
 if [[ $os == "archlinux" ]] ; then
+    cp -v ~/.dotfiles/linux/clipton ~/.config/
     cp -v ~/.dotfiles/linux/.bashrc ~/
     cp -v ~/.dotfiles/linux/.bash_profile ~/
     cp -v ~/.dotfiles/linux/.zshrc ~/
