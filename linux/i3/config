@@ -30,6 +30,8 @@ exec_always --no-startup-id clipton watcher
 set $launcher-clipboard-insert clipton
 
 bindsym $alt+c exec $launcher-clipboard-insert
+bindsym $mod+Shift+d exec --no-startup-id dvorakset
+bindsym $mod+Shift+n exec keyboardlayoutsetup
 
 # bindsym $mod+p exec $launcher-clipboard-insert
 # bindsym $mod+o exec $launcher-clipboard-remove
@@ -122,7 +124,7 @@ bindsym $mod+b split v
 bindsym $mod+f fullscreen toggle
 
 # Open files
-bindsym $mod+Shift+f exec "alacritty --hold -e yazi"
+bindsym $mod+Shift+f exec "kitty --hold -e yazi"
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -224,7 +226,6 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Background image
-# exec pacwall
 exec feh --bg-fill /home/art/.local/share/wallpapers/Nordic-mountain-wallpaper.jpg
 
 # status bar:w
@@ -234,6 +235,7 @@ default_border pixel 1
 hide_edge_borders smart_no_gaps
 
 gaps inner 2
+gaps outer 1
 
 title_align center
 

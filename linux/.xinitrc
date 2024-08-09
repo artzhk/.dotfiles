@@ -4,6 +4,7 @@ setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru
 
 xfce4-power-manager &
 flameshot &
+eval $(ssh-agent -s) &
 
 xrandr --auto 
 xrandr --output HDMI-0 --auto --primary --right-of eDP-1-2
@@ -14,4 +15,4 @@ xrdb -merge ~/.Xresources
 
 
 exec i3 
-# exec startplasma-x11
+#exec startplasma-x11
