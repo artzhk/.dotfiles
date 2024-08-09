@@ -48,6 +48,7 @@ if [[ $os == "archlinux" ]] ; then
     mkdir ~/.dotfiles/linux/spicetify/Themes/text/ -p && cp -vr ~/.config/spicetify/Themes/text/color.ini ~/.dotfiles/linux/spicetify/Themes/text/
     cp -vr ~/.config/yazi ~/.dotfiles/linux/
     cp -vr ~/.config/i3 ~/.dotfiles/linux/
+    cp -vr /etc/X11/xorg.conf ~/.dotfiles/linux/
 fi
 
 
