@@ -43,6 +43,7 @@ alias g='sudo git'
 alias t='tree'
 alias vim="nvim"
 alias lg="sudo lazygit"
+alias cd="z"
 
 . "$HOME/.cargo/env"
 
