@@ -35,6 +35,7 @@ if [[ $os == "macos" ]]; then
     cp -v ~/.dotfiles/macos/.bashrc ~/
     cp -v ~/.dotfiles/macos/.bash_profile ~/
     cp -v ~/.dotfiles/macos/.zshrc ~/
+    cp -vr ~/.dotfiles/macos/aerospace ~/.config/
 fi 
 
 if [[ $os == "archlinux" ]] ; then

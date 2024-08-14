@@ -143,3 +143,4 @@ export PATH="/usr/local/:$PATH"
 
 export PATH="$HOME/bin:$PATH"
 
+eval "$(zoxide init zsh)"
