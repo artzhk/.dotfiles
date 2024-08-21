@@ -116,7 +116,7 @@ bindsym $mod+semicolon split h
 # bindsym $mod+s split h
 
 # split in vertical orientation
-bindsym $mod+b split v
+bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -158,7 +158,7 @@ set $ws10 "10"
 bindsym $mod+z workspace number $ws1
 bindsym $mod+x workspace number $ws2
 bindsym $mod+c workspace number $ws3
-bindsym $mod+v workspace number $ws4
+bindsym $mod+b workspace number $ws4
 bindsym $mod+u workspace number $ws5
 bindsym $mod+i workspace number $ws6
 bindsym $mod+o workspace number $ws7
@@ -194,7 +194,7 @@ bindsym $mod+0 workspace number $ws10
 bindsym $mod+Shift+z move container to workspace number $ws1
 bindsym $mod+Shift+x move container to workspace number $ws2
 bindsym $mod+Shift+c move container to workspace number $ws3
-bindsym $mod+Shift+v move container to workspace number $ws4
+bindsym $mod+Shift+b move container to workspace number $ws4
 bindsym $mod+Shift+u move container to workspace number $ws5
 bindsym $mod+Shift+i move container to workspace number $ws6
 bindsym $mod+Shift+o move container to workspace number $ws7
