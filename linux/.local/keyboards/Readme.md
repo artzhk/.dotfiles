@@ -29,7 +29,7 @@ following somewhere inbetween other dvoraks
 // based on Michael Paulson's poor ideas.
 
 partial alphanumeric_keys
-xkb_symbols "real-prog-dvorak" {
+xkb_symbols "real-programmer-dvorak" {
 
     name[Group1]= "English (Real Programmers Dvorak)";
 
