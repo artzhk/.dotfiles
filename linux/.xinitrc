@@ -1,7 +1,5 @@
-setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru
-setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru
-
-xmodmap /home/art/.local/keyboard_layouts/dvorakmod
+setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru -variant real-programmer-dvorak,
+setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru -variant real-programmer-dvorak,
 
 xfce4-power-manager &
 flameshot &
