@@ -4,7 +4,7 @@
 
 ```bash
     cp -v path/to/archive /usr/share/kbd/keymaps/i386/dvorak/ &&
-    localectl set-keymap --no-convert real-programmer-dvorak.map.gz
+    localectl set-keymap --no-convert real-programmer-dvorak
 ```
 
 2. Run `setxkbmap -query` remember the rules from the output.  
@@ -26,10 +26,10 @@ Paste the following to in US section close to other dvoraks
 following somewhere inbetween other dvoraks
 
 ```
-    // based on Michael Paulson's poor ideas.
+// based on Michael Paulson's poor ideas.
 
 partial alphanumeric_keys
-xkb_symbols "real-prog-dvorak" {
+xkb_symbols "real-programmer-dvorak" {
 
     name[Group1]= "English (Real Programmers Dvorak)";
 
