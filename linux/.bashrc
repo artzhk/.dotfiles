@@ -26,6 +26,9 @@ alias w1="i3-resurrect restore -w 1"
 alias w2="i3-resurrect restore -w 2"
 alias cd="z"
 
+alias v="NVIM_APPNAME=nvim nvim"
+alias v_dev="NVIM_APPNAME=nvim_wt/dev nvim"
+
 PS1='[\u@\h \W]\$ '
 
 # >>> conda initialize >>>
