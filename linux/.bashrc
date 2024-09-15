@@ -25,9 +25,10 @@ alias s2="i3-resurrect save -w 2"
 alias w1="i3-resurrect restore -w 1"
 alias w2="i3-resurrect restore -w 2"
 alias cd="z"
+alias vv="select_vim"
 
 alias v="NVIM_APPNAME=nvim nvim"
-alias v_dev="NVIM_APPNAME=nvim_wt/dev nvim"
+alias v_dev="NVIM_APPNAME=nvim_dev nvim"
 
 PS1='[\u@\h \W]\$ '
 
