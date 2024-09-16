@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+show_help() {
+    echo "Usage:\n"
+    echo "get_diff_and_copy path/to/src path/to/dest"
+}
+
+src=$1
+dest=$2
+
+if [[ -z "$src" || -z "$dest" ]] then
+    show_help
+fi
+
+get_diff_and_copy() {
+    src=$1
+    dest=$2
+
+    if [[ -n "$src" && -n "$dest" ]] then
+        nvim -d $src $dest
+        cp -vi $src $dest
+    else
+        show_help
+    fi
+}
+
+get_diff_and_copy $1 $2
+
