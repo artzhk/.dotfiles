@@ -22,7 +22,6 @@ echo "You selected $os"
 echo "${GREEN}Updating dotfiles for $os... ${NC}"
 
 get_diff_and_copy ~/.dotfiles/.tmux.conf ~/
-get_diff_and_copy ~/.dotfiles/.vimrc ~/
 
 if [[ $os != "android" ]]; then
     get_diff_and_copy ~/.dotfiles/alacritty ~/.config/
