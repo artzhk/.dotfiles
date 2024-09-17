@@ -44,6 +44,9 @@ alias t='tree'
 alias vim="nvim"
 alias lg="sudo lazygit"
 alias cd="z"
+alias vv="select_vim"
+alias v="NVIM_APPNAME=nvim nvim"
+alias v_dev="NVIM_APPNAME=nvim_dev nvim"
 
 . "$HOME/.cargo/env"
 
