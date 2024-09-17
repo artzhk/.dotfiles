@@ -1,8 +1,14 @@
+#!/bin/bash
 
 # Define colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+
+echo "${GREEN}Updating local files... ${NC}"
+echo "${GREEN}Copying get_diff_and_copy function... ${NC}"
+
+cp -v ~/.dotfiles/scripts/* ~/.local/scripts/
 
 os=$1
 
@@ -28,9 +34,8 @@ if [[ $os != "android" ]]; then
 fi
 
 mkdir -p ~/.oh-my-zsh/themes
-get_diff_and_copy ~/.dotfiles/.oh-my-zsh/themes ~/.oh-my-zsh/
+cp -vr ~/.dotfiles/.oh-my-zsh/themes ~/.oh-my-zsh/
 mkdir -p ~/.local/scripts/
-get_diff_and_copy ~/.dotfiles/scripts/* ~/.local/scripts/
 
 if [[ $os == "macos" ]]; then
     get_diff_and_copy ~/.dotfiles/macos/.bashrc ~/
@@ -40,19 +45,19 @@ if [[ $os == "macos" ]]; then
 fi
 
 if [[ $os == "archlinux" ]] ; then
-    get_diff_and_copy ~/.dotfiles/linux/clipton ~/.config/
+    cp -vr ~/.dotfiles/linux/clipton ~/.config/
     get_diff_and_copy ~/.dotfiles/linux/.bashrc ~/
     get_diff_and_copy ~/.dotfiles/linux/.bash_profile ~/
     get_diff_and_copy ~/.dotfiles/linux/.zshrc ~/
-    get_diff_and_copy ~/.dotfiles/linux/polybar ~/.config/
+    cp -vr ~/.dotfiles/linux/polybar ~/.config/
     get_diff_and_copy ~/.dotfiles/linux/.xinitrc ~/
     get_diff_and_copy ~/.dotfiles/linux/.Xresources ~/
-    get_diff_and_copy ~/.dotfiles/linux/bat ~/.config/
-    get_diff_and_copy ~/.dotfiles/linux/kitty ~/.config/
-    get_diff_and_copy ~/.dotfiles/linux/rofi ~/.config/
+    cp -vr ~/.dotfiles/linux/bat ~/.config/
+    cp -vr ~/.dotfiles/linux/kitty ~/.config/
+    cp -vr ~/.dotfiles/linux/rofi ~/.config/
     get_diff_and_copy ~/.dotfiles/linux/spicetify/Themes/text/color.ini ~/.config/spicetify/Themes/text/
-    get_diff_and_copy ~/.dotfiles/linux/yazi ~/.config/
-    get_diff_and_copy ~/.dotfiles/linux/i3 ~/.config/
+    cp -vr ~/.dotfiles/linux/yazi ~/.config/
+    cp -vr ~/.dotfiles/linux/i3 ~/.config/
 fi
 
 
