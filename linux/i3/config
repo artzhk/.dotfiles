@@ -26,7 +26,7 @@ font pango:UbuntuSansMono Nerd Font 10
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom -b
 # Clipcat integration
-exec_always --no-startup-id clipton watcher    
+exec_always --no-startup-id clipton watcher
 set $launcher-clipboard-insert clipton
 
 bindsym $alt+c exec $launcher-clipboard-insert
@@ -261,12 +261,12 @@ gaps outer 1
 
 title_align center
 
-# Color shemes for windows 
-set $bgcolor    #0d1117
-set $active     #dbc074
+# Color shemes for windows
+set $bgcolor    #e0e2ea
+set $active     #2876cf
 # set $active     #d29922
-set $in-bgcolor #0d1117
-set $text       #b1bac4
+set $in-bgcolor #ffbcb5
+set $text       #0a0b10
 set $u-bgcolor  #ff0000
 set $indicator  #a8a3c1
 set $in-text    #b1bac4
@@ -274,8 +274,8 @@ set $focused-ws #523d6400
 set $bar-color  #523d640D
 
 #                       border          background      text            indicator (a line which shows where the next window will be placed)
-client.focused          $bgcolor        $active         $bgcolor        $active
-client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
-client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
-client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor 
+client.focused          $active        $active         $bgcolor        $in-bgcolor
+client.unfocused        $bgcolor     $bgcolor     $text        $in-bgcolor
+client.focused_inactive $bgcolor     $bgcolor     $text        $in-bgcolor
+client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
 

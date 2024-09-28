@@ -1,0 +1,17 @@
+/**
+ *
+ * Author : Artem Zhukovskyi (Artem3124)
+ * Github : @Artem3124
+ * 
+ * Colors
+ **/
+
+* {
+    background:     #e0e2eaff;
+    background-alt: #484F58FF;
+    foreground:     #0a0b10ff;
+    //selected:       #DBC074FF;
+    selected:       #7FA1BDFF;
+    active:         #BC8CFFFF;
+    urgent:         #FF7B72FF;
+}
