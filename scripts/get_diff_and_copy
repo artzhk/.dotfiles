@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 show_help() {
     echo "Usage:\n"
@@ -18,7 +18,7 @@ get_diff_and_copy() {
 
     if [[ -n "$src" && -n "$dest" ]]; then
         nvim -d $src $dest
-        cp -vi $src $dest
+        cp -vRi $src $dest
     else
         show_help
     fi
