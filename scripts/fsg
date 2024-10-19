@@ -1,0 +1,17 @@
+#!/bin/bash
+
+show_help() {
+    echo "Usage:"
+    echo "fsg query"
+    echo "query - a string to find in the current folder"
+}
+
+query=$1 
+
+if [[ -z "$query" ]]; then 
+    show_help
+fi 
+
+ls -a | grep --color=always "$query"
+
+
