@@ -1,9 +1,5 @@
 import = [
-    # "~/.config/alacritty/themes/nightfox.toml",
-    # "~/.config/alacritty/themes/art.toml",
-    # "~/.config/alacritty/themes/artlight.toml",
-    # "~/.config/alacritty/themes/nordfox.toml",
-    "~/.config/alacritty/themes/nvimlight.toml",
+    "~/.config/alacritty/themes/art_kanagawa.toml",
 ]
 
 [env]

@@ -8,14 +8,14 @@ background = '#e0e2ea'
 # Normal colors
 [colors.normal]
 
-blue    = "#2d5066"
+blue    = "#6693bf"
 cyan    = "#5a7785"
 green   = "#6e915f"
 magenta = "#624c83"
 red     = "#c84053"
 yellow  = "#de9800"
 black   = '#545464'
-white   = '#716e61'
+white   = '#dcd7ba'
 
 # Bright colors
 [colors.bright]
