@@ -12,7 +12,11 @@ export PATH=$HOME/.config/rofi/scripts:$PATH#
 ZSH_THEME="dst-custom"
 export EDITOR='nvim'
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
 plugins=(git zsh-autosuggestions)
+# Autosuggestion mappings
+bindkey '^E' autosuggest-accept
+
 source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
