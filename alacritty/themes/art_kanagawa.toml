@@ -1,0 +1,37 @@
+# Art Kanagawa - my vision of the right minimalistic kanagawa
+
+# Default colors
+[colors.primary]
+foreground = '#545464'
+background = '#e0e2ea'
+
+# Normal colors
+[colors.normal]
+
+blue    = "#2d5066"
+cyan    = "#5a7785"
+green   = "#6e915f"
+magenta = "#624c83"
+red     = "#c84053"
+yellow  = "#de9800"
+black   = '#545464'
+white   = '#716e61'
+
+# Bright colors
+[colors.bright]
+
+blue    = "#9fd8ff"
+cyan    = "#4e8ca2"
+green   = "#b7d0ae"
+magenta = "#766b90"
+red     = "#d27e99"
+yellow  = "#f9d791"
+black = "#9b9ea4"
+
+[[colors.indexed_colors]]
+index = 16
+color = '#d18616'
+
+[[colors.indexed_colors]]
+index = 17
+color = '#ffa198'
