@@ -42,6 +42,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export BAT_THEME=nightfox
+export BAT_THEME=gruvbox-light
 
 eval "$(zoxide init zsh)"
