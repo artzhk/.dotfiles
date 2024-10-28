@@ -38,26 +38,28 @@ syntax on
 autocmd BufRead,BufNewFile *.bashrc set filetype=sh
 
 " Define colors to match the scheme in the first image
-hi  Comment       guifg=#8a8980  
-hi  Identifier    guifg=#77713f  
-hi  String        guifg=#526e47  
-hi  Function      guifg=#4d699b  
-hi  Keyword       guifg=#624c83  
-hi  Type          guifg=#597b75  
-hi  Special       guifg=#223249  
-hi  Operator      guifg=#836f4a  
-hi  Statement     guifg=#624c83  
-hi  shStatement   guifg=#624c83  
-hi  PreProc       guifg=#c84053  
-hi  Constant      guifg=#2d4f67  
-hi  CursorLineNr  cterm=bold     guifg=#de9800
-hi  CursorLine    guibg=#c7d7e0  
-hi  clear         LineNr         
-hi  MatchParen    guifg=#2d4f67 guibg=#dcd7ba
+hi  Comment       guifg=#8a8980                 
+hi  Identifier    guifg=#77713f
+hi  String        guifg=#526e47                 
+hi  Function      guifg=#4d699b                 
+hi  Keyword       guifg=#624c83                 
+hi  Type          guifg=#597b75                 
+hi  Special       guifg=#223249                 
+hi  Operator      guifg=#836f4a                 
+hi  Statement     guifg=#624c83                 
+hi  shStatement   guifg=#624c83                 
+hi  PreProc       guifg=#c84053                 
+hi  Constant      guifg=#2d4f67                 
+hi  CursorLineNr  cterm=bold     guifg=#de9800  
+hi  CursorLine    guibg=#c7d7e0                 
+hi  clear         LineNr                        
+hi  MatchParen    guifg=#2d4f67  guibg=#dcd7ba  
+hi  Title        cterm=bold     gui=bold       guifg=#4d699b
 
 call plug#begin()
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '--reverse  --expect=ctrl-v,ctrl-x,ctrl-t',}
 Plug 'junegunn/fzf.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
