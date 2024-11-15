@@ -2,11 +2,13 @@
 # ~/.bashrc
 #
 
+export PATH=/usr/local/bin:$PATH
 export PATH=/home/art/.local/bin:$PATH
 export PATH=/home/art/.local/scripts:$PATH
 export PATH=/home/art/.dotnet/tools:$PATH
 
 export BAT_THEME="gruvbox-light"
+export EDITOR="vim"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -34,6 +36,14 @@ alias v_dev="NVIM_APPNAME=nvim_dev nvim"
 
 set -o vi
 
+# bash history
+unset HISTFILESIZE
+HISTSIZE=3000
+PROMPT_COMMAND="history -a"
+export HISTSIZE PROMPT_COMMAND
+
+shopt -s histappend
+
 # functions 
 git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
@@ -44,6 +54,7 @@ PS1="\[\e[0;30m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
+
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --color=fg:#545464,fg+:#624c83,bg:#ffffff,bg+:#dcd7ba
   --color=hl:#6693bf,hl+:#d27e99,info:#6e915f,marker:#545464
@@ -52,6 +63,8 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --color=preview-label:#545464,label:#545464,query:#545464
   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
   --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
+
+# https://vitormv.github.io/fzf-themes#eyJib3JkZXJTdHlsZSI6InJvdW5kZWQiLCJib3JkZXJMYWJlbCI6IiIsImJvcmRlckxhYmVsUG9zaXRpb24iOjAsInByZXZpZXdCb3JkZXJTdHlsZSI6InJvdW5kZWQiLCJwYWRkaW5nIjoiMCIsIm1hcmdpbiI6IjAiLCJwcm9tcHQiOiI+ICIsIm1hcmtlciI6Ij4iLCJwb2ludGVyIjoi4peGIiwic2VwYXJhdG9yIjoi4pSAIiwic2Nyb2xsYmFyIjoi4pSCIiwibGF5b3V0IjoiZGVmYXVsdCIsImluZm8iOiJkZWZhdWx0IiwiY29sb3JzIjoiZmc6IzU0NTQ2NCxmZys6IzYyNGM4MyxiZzojZmZmZmZmLGJnKzojZGNkN2JhLGhsOiM2NjkzYmYsaGwrOiNkMjdlOTksaW5mbzojNmU5MTVmLG1hcmtlcjojNTQ1NDY0LHByb21wdDojNTQ1NDY0LHNwaW5uZXI6IzYyNGM4Myxwb2ludGVyOiNkMjdlOTksaGVhZGVyOiM1YTc3ODUsZ3V0dGVyOiNkY2Q3YmEsYm9yZGVyOiMyNjI2MjYscHJldmlldy1ib3JkZXI6IzU0NTQ2NCxwcmV2aWV3LXNjcm9sbGJhcjojNTQ1NDY0LHByZXZpZXctbGFiZWw6IzU0NTQ2NCxsYWJlbDojNTQ1NDY0LHF1ZXJ5OiM1NDU0NjQifQ==
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
