@@ -28,20 +28,23 @@ echo "You selected $os"
 echo "${GREEN}Updating dotfiles for $os... ${NC}"
 
 get_diff_and_copy ~/.dotfiles/.tmux.conf ~/
+mkdir -p ~/.local/scripts/
 
 if [[ $os != "android" ]]; then
     get_diff_and_copy ~/.dotfiles/alacritty ~/.config/
 fi
 
-mkdir -p ~/.oh-my-zsh/themes
-cp -vr ~/.dotfiles/.oh-my-zsh/themes ~/.oh-my-zsh/
-mkdir -p ~/.local/scripts/
+
+if [[ $os == "android" ]]; then
+    get_diff_and_copy ~/.dotfiles/macos/.tmux.conf.local ~/
+fi
 
 if [[ $os == "macos" ]]; then
+    mkdir -p ~/.oh-my-zsh/themes
+    cp -vr ~/.dotfiles/.oh-my-zsh/themes ~/.oh-my-zsh/
     get_diff_and_copy ~/.dotfiles/macos/.bashrc ~/
     get_diff_and_copy ~/.dotfiles/macos/.bash_profile ~/
     get_diff_and_copy ~/.dotfiles/macos/.zshrc ~/
-    get_diff_and_copy ~/.dotfiles/macos/aerospace ~/.config/
 fi
 
 if [[ $os == "archlinux" ]] ; then
