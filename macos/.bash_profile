@@ -41,7 +41,6 @@ alias cpcr='cpp-c-r'
 alias brc='source ~/.bash_profile'
 alias g='sudo git'
 alias t='tree'
-alias vim="nvim"
 alias lg="sudo lazygit"
 alias cd="z"
 alias vv="select_vim"
