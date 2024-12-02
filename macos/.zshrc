@@ -1,7 +1,15 @@
 source ~/.bash_profile
 
 #If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/Users/artem/.local/scripts:$PATH
+export PATH=$HOME/bin:/Users/artem/.config/emacs/bin:/usr/local/bin:/Users/artem/.local/scripts:/Users/artem/.local/bin:$PATH
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/:$PATH"
+export PATH="$HOME/bin:$PATH"
+
+# Brew path
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH="/Applications/CMake.app/Contents/bin":"$PATH"
 
 # Conda Path
 export PATH=$HOME/artem/miniforge3/bin:$PATH
@@ -9,24 +17,14 @@ export PATH=$HOME/artem/miniforge3/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Brew path
-export PATH=/opt/homebrew/bin:$PATH
-
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-
-export PATH="/Applications/CMake.app/Contents/bin":"$PATH"
 
 ZSH_THEME="dst-custom"
-
- zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to disable colors in ls.
- DISABLE_LS_COLORS="false"
-
-# Uncomment the following line to disable auto-setting terminal title.
- DISABLE_AUTO_TITLE="false"
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 plugins=(git zsh-autosuggestions)
+
+# Mappings
+bindkey "^E" autosuggest-accept
 
 source $ZSH/oh-my-zsh.sh
 
@@ -38,11 +36,6 @@ alias mysqlstart="sudo /usr/local/mysql/support-files/mysql.server start"
 alias mysqlstop="sudo /usr/local/mysql/support-files/mysql.server stop"
 
 set -o vi
-
-# compdef _gnu_generic timg
-
-#source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-#
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -59,9 +52,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/:$PATH"
-
-export PATH="$HOME/bin:$PATH"
 
 eval "$(zoxide init zsh)"
