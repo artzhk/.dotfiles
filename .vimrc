@@ -53,7 +53,7 @@ hi  DiffChange    guibg=#766b90    guifg=#ffffff
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
-nnoremap <silent><leader>fj :Files<CR>
+nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
 
 call plug#begin()
