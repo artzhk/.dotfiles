@@ -26,6 +26,7 @@ set -o vi
 
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
+alias cd="z"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
