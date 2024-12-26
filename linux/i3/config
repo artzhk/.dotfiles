@@ -1,5 +1,5 @@
 # Wallpapers
-exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
+exec feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
 
 # Statusbar
 exec_always --no-startup-id ~/.config/polybar/launch.sh --panels
@@ -11,7 +11,7 @@ gaps outer 3
 
 title_align left
 
-# Color schemes for windows
+# Color shemes for windows
 set $bgcolor    #ffffff
 set $active     #58a6ff
 set $in-bgcolor #6e915f
@@ -22,12 +22,11 @@ set $in-text    #b1bac4
 set $focused-ws #523d6400
 set $bar-color  #523d640D
 
-#                       border          background      text            indicator (a line which shows where the next window will be placed)
-client.focused          $active        $active         $bgcolor        $in-bgcolor
-client.unfocused        $bgcolor     $bgcolor    $text        $in-bgcolor
-client.focused_inactive $bgcolor     $bgcolor     $text        $in-bgcolor
-client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
-
+#                        border      background  text      indicator (a line which shows where the next window will be placed)
+client.focused           $active     $active     $bgcolor  $in-bgcolor                                                              
+client.unfocused         $bgcolor    $bgcolor    $text     $in-bgcolor                                                              
+client.focused_inactive  $bgcolor    $bgcolor    $text     $in-bgcolor                                                              
+client.urgent            $u-bgcolor  $u-bgcolor  $text     $u-bgcolor                                                               
 
 set $mod Mod4
 set $alt Mod1

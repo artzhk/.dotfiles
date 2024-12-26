@@ -26,6 +26,7 @@ cp -v ~/.vimrc ~/.dotfiles/
 cp -vr ~/.config/alacritty ~/.dotfiles/
 mkdir -p ~/.dotfiles/.oh-my-zsh/ && cp -vr ~/.oh-my-zsh/themes ~/.dotfiles/.oh-my-zsh/
 mkdir -p ~/.dotfiles/scripts/ && cp -v ~/.local/scripts/* ~/.dotfiles/scripts/
+cp -vr ~/.config/btop ./
 
 if [[ $os == "macos" ]]; then 
     cp -v ~/.bashrc ~/.dotfiles/macos/

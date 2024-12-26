@@ -43,7 +43,7 @@ hi  shStatement   guifg=#624c83
 hi  PreProc       guifg=#c84053                   
 hi  Constant      guifg=#2d4f67                   
 hi  CursorLineNr  cterm=bold       guifg=#de9800  
-hi  CursorLine    guibg=#c7d7e0                   
+hi  CursorLine    gui=reverse cterm=reverse term=reverse
 hi  clear         LineNr                          
 hi  MatchParen    guifg=#2d4f67    guibg=#dcd7ba  
 hi  Title         cterm=bold       gui=bold       guifg=#4d699b
