@@ -22,7 +22,6 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
 set number
-set cursorline
 set termguicolors
 set scrolloff=7
 syntax on
@@ -43,7 +42,6 @@ hi  shStatement   guifg=#624c83
 hi  PreProc       guifg=#c84053                   
 hi  Constant      guifg=#2d4f67                   
 hi  CursorLineNr  cterm=bold       guifg=#de9800  
-hi  CursorLine    gui=reverse cterm=reverse term=reverse
 hi  clear         LineNr                          
 hi  MatchParen    guifg=#2d4f67    guibg=#dcd7ba  
 hi  Title         cterm=bold       gui=bold       guifg=#4d699b
