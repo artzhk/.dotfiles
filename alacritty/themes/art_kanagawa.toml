@@ -20,8 +20,9 @@ white   = '#dcd7ba'
 # Bright colors
 [colors.bright]
 
-blue    = "#9fd8ff"
-cyan    = "#4e8ca2"
+blue = "#58a6ff"
+#cyan    = "#4e8ca2"
+cyan    = "#9fd8ff"
 green   = "#b7d0ae"
 magenta = "#766b90"
 red     = "#d27e99"
