@@ -3,12 +3,16 @@ let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
+" termguicolors fix
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
 set autoread
 set clipboard=unnamed
 set ignorecase
 set encoding=utf8
-set tabstop=4
-set shiftwidth=4
+set tabstop=8
+set shiftwidth=8
 set expandtab
 set showmode
 set incsearch
@@ -23,7 +27,7 @@ vnoremap J :m '>+1<CR>gv=gv
 
 set number
 set termguicolors
-set scrolloff=7
+set scrolloff=8
 syntax on
 
 " Define colors to match the scheme in the first image
