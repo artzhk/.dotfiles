@@ -1,4 +1,5 @@
-general.import = [
+import = [
+#    "~/.config/alacritty/themes/github.toml",
     "~/.config/alacritty/themes/art_kanagawa.toml",
 ]
 
@@ -10,11 +11,10 @@ normal = { family = "Mononoki Nerd Font", style = "Regular" }
 bold = { family = "Mononoki Nerd Font", style = "Bold" }
 italic = { family = "Mononoki Nerd Font", style = "Regular" }
 
-size = 10
+size = 18
 
 [window]
-decorations = "Buttonless"
-startup_mode = "SimpleFullscreen"
+decorations = "Full"
 
 [selection]
 save_to_clipboard = true
