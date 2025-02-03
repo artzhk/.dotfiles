@@ -14,7 +14,9 @@ set encoding=utf8
 set tabstop=8
 set shiftwidth=8
 set expandtab
+set smartcase
 set showmode
+
 set incsearch
 
 " Inbuild Keymappings
@@ -31,27 +33,37 @@ set scrolloff=8
 syntax on
 
 " Define colors to match the scheme in the first image
-hi  clear         Visual                          
-hi  Visual        cterm=underline                 
-hi  Comment       guifg=#8a8980                   
-hi  Identifier    guifg=#77713f                   
-hi  String        guifg=#526e47                   
-hi  Function      guifg=#4d699b                   
-hi  Keyword       guifg=#624c83                   
-hi  Type          guifg=#597b75                   
-hi  Special       guifg=#223249                   
-hi  Operator      guifg=#836f4a                   
-hi  Statement     guifg=#624c83                   
-hi  shStatement   guifg=#624c83                   
-hi  PreProc       guifg=#c84053                   
-hi  Constant      guifg=#2d4f67                   
-hi  CursorLineNr  cterm=bold       guifg=#de9800  
-hi  clear         LineNr                          
-hi  MatchParen    guifg=#2d4f67    guibg=#dcd7ba  
-hi  Title         cterm=bold       gui=bold       guifg=#4d699b
-hi  DiffDelete    guibg=#d27e99    guifg=#ffffff  
-hi  DiffAdd       guibg=#b7d0ae    guifg=#ffffff  
-hi  DiffChange    guibg=#766b90    guifg=#ffffff  
+au ColorScheme * hi  clear      Visual
+au ColorScheme * hi  Normal     guibg=NONE                   ctermbg=NONE
+au ColorScheme * hi  Visual     guibg=#58a6ff                guifg=#ffffff  cterm=NONE     gui=NONE
+au ColorScheme * hi  Normal     guibg=NONE                   ctermbg=NONE
+au ColorScheme * hi  link       NormalFloat                  NormalNC
+au ColorScheme * hi  clear      SignColumn
+au ColorScheme * hi  clear      TelescopeBorder
+au ColorScheme * hi  clear      TelescopeResultsBorder
+au ColorScheme * hi  clear      FloatBorder
+au ColorScheme * hi  clear      NormalFloat
+au ColorScheme * hi  clear      FloatTitle
+au ColorScheme * hi  clear      FloatFooter
+au ColorScheme * hi  clear      Folded
+au ColorScheme * hi  clear      FoldColumn
+au ColorScheme * hi  clear      TabLineFill
+au ColorScheme * hi  clear      ColorColumn
+au ColorScheme * hi  clear      QuickFixLine
+au ColorScheme * hi  clear      Folded
+au ColorScheme * hi  clear      FoldColumn
+au ColorScheme * hi  clear      TabLineFill
+au ColorScheme * hi  clear      ColorColumn
+au ColorScheme * hi  clear      QuickFixLine
+au ColorScheme * hi  clear      MsgSeparator
+au ColorScheme * hi  clear      TreesitterContextLineNumber
+au ColorScheme * hi  clear      MsgSeparator
+au ColorScheme * hi  link       FloatBorder                  NormalNC
+au ColorScheme * hi  IncSearch  gui=NONE                     cterm=NONE     guibg=#d7474b  guifg=#ffffff
+au ColorScheme * hi  clear      TelescopeMatching
+au ColorScheme * hi  link       TelescopeMatching            IncSearch
+
+colorscheme retrobox
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
