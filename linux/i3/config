@@ -1,8 +1,8 @@
 # Wallpapers
-exec feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
+exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
 
 # Statusbar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --panels
+exec_always --no-startup-id ~/.config/polybar/launch.sh --$SYSTEM_THEME
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
@@ -32,7 +32,7 @@ set $mod Mod4
 set $alt Mod1
 
 # font
-font pango:Mononoki Nerd Font Mono 10
+font pango:IosevkaTerm Nerd Font Mono 10
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom -b
@@ -40,7 +40,7 @@ exec --no-startup-id picom -b
 # External applications
 
 ## Clipton integration
-exec_always --no-startup-id clipton watcher
+exec --no-startup-id clipton watcher
 set $launcher-clipboard-insert clipton
 
 ## Network manager
@@ -58,12 +58,15 @@ floating_modifier $mod
 
 # clipboard
 bindsym $alt+c exec $launcher-clipboard-insert
+
 # kill current window
 bindsym $mod+q kill
+
 # start a terminal
 bindsym $mod+Return exec alacritty
 bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh --window
+
 # run networkmanager
 bindsym $mod+n exec --no-startup-id networkmanager_dmenu
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui

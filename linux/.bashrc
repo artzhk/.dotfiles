@@ -5,8 +5,11 @@
 export PATH=/usr/local/bin:$PATH
 export PATH=/home/art/.local/bin:$PATH
 export PATH=/home/art/.local/scripts:$PATH
-export PATH=/home/art/.dotnet/tools:$PATH
+export PATH=/home/art/dotnet/tools:$PATH
 
+# Env config
+export GTK_THEME="Raleigh"
+export SYSTEM_THEME="dark"
 export BAT_THEME="gruvbox-light"
 export EDITOR="vim"
 
@@ -64,8 +67,6 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
   --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
 
-# https://vitormv.github.io/fzf-themes#eyJib3JkZXJTdHlsZSI6InJvdW5kZWQiLCJib3JkZXJMYWJlbCI6IiIsImJvcmRlckxhYmVsUG9zaXRpb24iOjAsInByZXZpZXdCb3JkZXJTdHlsZSI6InJvdW5kZWQiLCJwYWRkaW5nIjoiMCIsIm1hcmdpbiI6IjAiLCJwcm9tcHQiOiI+ICIsIm1hcmtlciI6Ij4iLCJwb2ludGVyIjoi4peGIiwic2VwYXJhdG9yIjoi4pSAIiwic2Nyb2xsYmFyIjoi4pSCIiwibGF5b3V0IjoiZGVmYXVsdCIsImluZm8iOiJkZWZhdWx0IiwiY29sb3JzIjoiZmc6IzU0NTQ2NCxmZys6IzYyNGM4MyxiZzojZmZmZmZmLGJnKzojZGNkN2JhLGhsOiM2NjkzYmYsaGwrOiNkMjdlOTksaW5mbzojNmU5MTVmLG1hcmtlcjojNTQ1NDY0LHByb21wdDojNTQ1NDY0LHNwaW5uZXI6IzYyNGM4Myxwb2ludGVyOiNkMjdlOTksaGVhZGVyOiM1YTc3ODUsZ3V0dGVyOiNkY2Q3YmEsYm9yZGVyOiMyNjI2MjYscHJldmlldy1ib3JkZXI6IzU0NTQ2NCxwcmV2aWV3LXNjcm9sbGJhcjojNTQ1NDY0LHByZXZpZXctbGFiZWw6IzU0NTQ2NCxsYWJlbDojNTQ1NDY0LHF1ZXJ5OiM1NDU0NjQifQ==
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/art/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -83,3 +84,4 @@ unset __conda_setup
 
 eval "$(zoxide init bash)"
 source ~/.local/share/blesh/ble.sh
+. "$HOME/.cargo/env"
