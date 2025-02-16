@@ -1,9 +1,4 @@
-# autorandr --change two-displays
-autorandr --change 4k-single
-#setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru -variant real-programmer-dvorak,
-#setxkbmap -option 'grp:shift_alt_toggle' -layout us,ru -variant real-programmer-dvorak,
-
-#setxkbmap -option caps:escape
+.config/polybar/launch.sh --$SYSTEM_THEME
 
 xfce4-power-manager &
 flameshot &
