@@ -47,6 +47,7 @@ if [[ $os == "archlinux" ]] ; then
     cp -vr ~/.config/bat ~/.dotfiles/linux/
     cp -vr ~/.config/kitty ~/.dotfiles/linux/
     cp -vr ~/.config/rofi ~/.dotfiles/linux/
+    cp -vr /etc/X11/xorg.conf.d ~/.dotfiles/linux/X11/
     mkdir ~/.dotfiles/linux/spicetify/Themes/text/ -p && cp -vr ~/.config/spicetify/Themes/text/color.ini ~/.dotfiles/linux/spicetify/Themes/text/
     cp -vr ~/.config/yazi ~/.dotfiles/linux/
     cp -vr ~/.config/i3 ~/.dotfiles/linux/
