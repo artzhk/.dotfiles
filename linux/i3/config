@@ -1,8 +1,12 @@
+# Importing variables
+set $theme echo "$SYSTEM_THEME"
+
 # Wallpapers
-exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
+# exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
+exec_always feh --bg-fill /home/art/.local/share/wallpapers/norway-4k.jpg
 
 # Statusbar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --$SYSTEM_THEME
+exec_always --no-startup-id ~/.config/polybar/launch.sh --$theme
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
@@ -12,27 +16,39 @@ gaps outer 3
 title_align left
 
 # Color shemes for windows
-set $bgcolor    #ffffff
-set $active     #58a6ff
+set $bgcolor    #545464
+set $active     #ffffff
 set $in-bgcolor #6e915f
-set $text       #545464
+set $text       #ffffff
 set $u-bgcolor  #ff0000
 set $indicator  #a8a3c1
 set $in-text    #b1bac4
 set $focused-ws #523d6400
 set $bar-color  #523d640D
 
+# Color shemes for windows
+# set $text    #ffffff
+# set $active     #58a6ff
+# set $in-bgcolor #6e915f
+# set $bgcolor       #545464
+# set $u-bgcolor  #ff0000
+# set $indicator  #a8a3c1
+# set $in-text    #b1bac4
+# set $focused-ws #523d6400
+# set $bar-color  #523d640D
+
 #                        border      background  text      indicator (a line which shows where the next window will be placed)
-client.focused           $active     $active     $bgcolor  $in-bgcolor                                                              
-client.unfocused         $bgcolor    $bgcolor    $text     $in-bgcolor                                                              
-client.focused_inactive  $bgcolor    $bgcolor    $text     $in-bgcolor                                                              
-client.urgent            $u-bgcolor  $u-bgcolor  $text     $u-bgcolor                                                               
+# client.focused           $active     $active     $bgcolor  $in-bgcolor
+client.focused           $active     $active     $bgcolor  $in-bgcolor
+client.unfocused         $bgcolor    $bgcolor    $text     $in-bgcolor
+client.focused_inactive  $bgcolor    $bgcolor    $text     $in-bgcolor
+client.urgent            $u-bgcolor  $u-bgcolor  $text     $u-bgcolor
 
 set $mod Mod4
 set $alt Mod1
 
 # font
-font pango:IosevkaTerm Nerd Font Mono 10
+font pango:IosevkaTerm Nerd Font Mono 12
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom -b

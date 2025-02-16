@@ -12,15 +12,19 @@
 ## style-11    style-12    style-13    style-14    style-15
 
 dir="$HOME/.config/rofi/launchers/type-1"
-theme='style-5'
+system_theme="$SYSTEM_THEME"
+
+if [ ! -e "$dir/$system_theme.rasi" ]; then
+    system_theme="dark"
+fi
 
 if [[ "$1" == "--window" ]]; then
     rofi \
         -show window \
-        -theme ${dir}/${theme}.rasi
+        -theme ${dir}/${system_theme}.rasi
     exit 2
 fi
 
 rofi \
     -show drun \
-    -theme ${dir}/${theme}.rasi
+    -theme ${dir}/${system_theme}.rasi

@@ -9,7 +9,7 @@ export PATH=/home/art/dotnet/tools:$PATH
 
 # Env config
 export GTK_THEME="Raleigh"
-export SYSTEM_THEME="dark"
+export SYSTEM_THEME="light"
 export BAT_THEME="gruvbox-light"
 export EDITOR="vim"
 
@@ -35,6 +35,7 @@ alias livegrep="fzf --preview 'cat {}' --bind 'ctrl-j:down,ctrl-k:up'"
 alias cd="z"
 
 alias v="NVIM_APPNAME=nvim nvim"
+alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias v_dev="NVIM_APPNAME=nvim_dev nvim"
 
 set -o vi
@@ -52,7 +53,7 @@ git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
-PS1="\[\e[0;30m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e[0;30m\] "
+PS1="\[\e[0;97m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e[0;30m\] "
 
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \

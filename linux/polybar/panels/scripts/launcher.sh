@@ -11,5 +11,4 @@ get_theme() {
 }
 
 theme=$(get_theme)
-export SYSTEM_THEME=$theme
 echo $theme

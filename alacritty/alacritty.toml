@@ -1,25 +1,20 @@
-import = [
-    "~/.config/alacritty/themes/github.toml",
-#    "~/.config/alacritty/themes/art_kanagawa.toml",
+general.import = [
+     "~/.config/alacritty/themes/colorscheme",
 ]
 
 [env]
 TERM = "xterm-256color"
 
-# [font]
-# normal = { family = "Mononoki Nerd Font", style = "Regular" }
-# bold = { family = "Mononoki Nerd Font", style = "Bold" }
-# italic = { family = "Mononoki Nerd Font", style = "Regular" }
-
 [font]
-normal = { family = "IosevkaTerm Nerd Font Mono", style = "Regular" }
-bold = { family = "IosevkaTerm Nerd Font Mono", style = "Medium" }
-italic = { family = "IosevkaTerm Nerd Font Mono", style = "Medium" }
+normal = { family = "IosevkaTerm Nerd Font", style = "Regular" }
+bold = { family = "IosevkaTerm Nerd Font", style = "SemiBold" }
+italic = { family = "IosevkaTerm Nerd Font", style = "SemiBold" }
 
-size = 18
+size = 12
 
 [window]
-decorations = "Full"
+decorations = "Buttonless"
+startup_mode = "SimpleFullscreen"
 
 [selection]
 save_to_clipboard = true

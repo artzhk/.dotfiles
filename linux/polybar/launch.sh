@@ -36,6 +36,8 @@ function launch_bar() {
     while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
     open_on_all_monitors_default $1
+    echo "$dir/scripts/set_terminal_scheme.sh $1"
+    $dir/scripts/set_terminal_scheme.sh $1
 }
 
 launch_bar $1
