@@ -2,6 +2,8 @@
 # ~/.bashrc
 #
 
+source ~/.local/state/colorscheme/.system_theme
+
 export PATH=/usr/local/bin:$PATH
 export PATH=/home/art/.local/bin:$PATH
 export PATH=/home/art/.local/scripts:$PATH
@@ -9,7 +11,6 @@ export PATH=/home/art/dotnet/tools:$PATH
 
 # Env config
 export GTK_THEME="Raleigh"
-export SYSTEM_THEME="light"
 export BAT_THEME="gruvbox-light"
 export EDITOR="vim"
 

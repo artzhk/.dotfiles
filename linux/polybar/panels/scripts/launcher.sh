@@ -11,4 +11,7 @@ get_theme() {
 }
 
 theme=$(get_theme)
+
+ln -sfn $HOME/.local/state/colorscheme/$theme.sh $HOME/.local/state/colorscheme/.system_theme
+
 echo $theme
