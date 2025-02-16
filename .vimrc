@@ -21,8 +21,6 @@ set incsearch
 
 " Inbuild Keymappings
 let mapleader=" "
-noremap <leader>y "*y
-noremap <leader>p "*p
 
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
@@ -30,7 +28,7 @@ vnoremap J :m '>+1<CR>gv=gv
 set number
 set termguicolors
 set scrolloff=8
-set background=light
+set background=dark
 syntax on
 
 " Define colors to match the scheme in the first image
@@ -62,6 +60,12 @@ colorscheme retrobox
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
 nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+
+" Outside buffer, might be overengeneered...
+nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
+vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
+nmap <silent><leader>p !!cat /tmp/buffer.txt<CR>
+vnoremap <silent><leader>p !cat /tmp/buffer.txt<CR>
 
 call plug#begin()
 
