@@ -1,5 +1,5 @@
 # Importing variables
-set $theme echo "$SYSTEM_THEME"
+set $theme "$SYSTEM_THEME"
 
 # Wallpapers
 # exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png

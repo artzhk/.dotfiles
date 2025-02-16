@@ -10,10 +10,10 @@ if [[ $theme != "--light" && $theme != "--dark" ]]; then
 fi
 
 if [[ $theme == "--light" ]]; then 
-        ln -sfn $PWD/.config/alacritty/themes/art_kanagawa.toml $PWD/.config/alacritty/themes/colorscheme
+        ln -sfn $HOME/.config/alacritty/themes/art_kanagawa.toml $HOME/.config/alacritty/themes/colorscheme
 fi
 
 if [[ $theme == "--dark" ]]; then 
-        ln -sfn $PWD/.config/alacritty/themes/art.toml $PWD/.config/alacritty/themes/colorscheme
+        ln -sfn $HOME/.config/alacritty/themes/art.toml $HOME/.config/alacritty/themes/colorscheme
 fi
 
