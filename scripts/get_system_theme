@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source $HOME/.local/state/colorscheme/.system_theme
+echo "$SYSTEM_THEME"

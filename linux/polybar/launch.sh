@@ -40,4 +40,5 @@ function launch_bar() {
     $dir/scripts/set_terminal_scheme.sh $1
 }
 
-launch_bar $1
+source $HOME/.local/state/colorscheme/.system_theme
+launch_bar "--$SYSTEM_THEME"

@@ -1,12 +1,9 @@
-# Importing variables
-set $theme "$SYSTEM_THEME"
-
 # Wallpapers
 # exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
 exec_always feh --bg-fill /home/art/.local/share/wallpapers/norway-4k.jpg
 
 # Statusbar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --$theme
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
