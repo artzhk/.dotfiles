@@ -16,6 +16,8 @@ set shiftwidth=8
 set expandtab
 set smartcase
 set showmode
+set laststatus=2
+set statusline=%f
 
 set incsearch
 
