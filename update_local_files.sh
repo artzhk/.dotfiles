@@ -66,6 +66,11 @@ if [[ $os == "archlinux" ]] ; then
     get_diff_and_copy ~/.dotfiles/linux/spicetify/Themes/text/color.ini ~/.config/spicetify/Themes/text/
     cp -vr ~/.dotfiles/linux/yazi ~/.config/
     cp -vr ~/.dotfiles/linux/i3 ~/.config/
+    
+    mkdir -p ~/.local/state/colorscheme
+    cp -v ~/.dotfiles/linux/.local/state/colorscheme/* ~/.local/state/colorscheme/
+    [ -f ~/.local/state/colorscheme/dark.sh ] && ln -sfn ~/.local/state/colorscheme/dark.sh ~/.local/state/colorscheme/.system_theme 
+
 fi
 
 
