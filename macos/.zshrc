@@ -35,6 +35,14 @@ alias mysqladmin="/usr/local/mysql/bin/mysqladmin"
 alias mysqlstart="sudo /usr/local/mysql/support-files/mysql.server start"
 alias mysqlstop="sudo /usr/local/mysql/support-files/mysql.server stop"
 alias expl="gh copilot explain"
+alias gp="git pull"
+alias gP="git push"
+alias gs="git status"
+alias gaa="git add ."
+alias ga="git add"
+alias gc='bash -c "read -p \"Commit Message: \" rep; git commit -m \$rep "'
+# fzf list to restor to select from
+alias gr="git restore"
 
 set -o vi
 
