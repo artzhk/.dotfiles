@@ -42,6 +42,7 @@ alias ga="git add"
 alias gc='bash -c "read -p \"Commit Message: \" rep; git commit -m \$rep "'
 # fzf list to restor to select from
 alias gr="git restore"
+alias gbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)"'
 
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"

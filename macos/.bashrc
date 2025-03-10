@@ -29,6 +29,17 @@ alias w2="i3-resurrect restore -w 2"
 alias vv="select_vim"
 alias livegrep="fzf --preview 'cat {}' --bind 'ctrl-j:down,ctrl-k:up'"
 alias cd="z"
+alias gbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)"'
+alias gp="git pull"
+alias gP="git push"
+alias gs="git status"
+alias gaa="git add ."
+alias ga="git add"
+alias gc='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
+# fzf list to restor to select from
+alias gr="git restore"
+alias gw="git worktree"
+
 
 alias v="NVIM_APPNAME=nvim nvim"
 alias v_dev="NVIM_APPNAME=nvim_dev nvim"
