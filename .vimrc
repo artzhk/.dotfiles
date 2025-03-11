@@ -16,8 +16,6 @@ set shiftwidth=8
 set expandtab
 set smartcase
 set showmode
-set laststatus=2
-set statusline=%f
 
 set incsearch
 
@@ -27,6 +25,8 @@ let mapleader=" "
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
+nnoremap <silent><leader>nr :set rnu!<CR>
+
 set number
 set termguicolors
 set scrolloff=8
@@ -35,7 +35,7 @@ syntax on
 
 " Define colors to match the scheme in the first image
 au  ColorScheme  *  hi  clear         Visual
-"au  ColorScheme  *  hi  Normal        guibg=NONE                   ctermbg=NONE
+" au  ColorScheme  *  hi  Normal        guibg=NONE                   ctermbg=NONE
 au  ColorScheme  *  hi  Visual        guibg=#58a6ff                guifg=#ffffff  cterm=NONE     gui=NONE
 au  ColorScheme  *  hi  MatchParen     term=bold  guifg=#ffffff guibg=NONE
 au  ColorScheme  *  hi  link          NormalFloat                  NormalNC
