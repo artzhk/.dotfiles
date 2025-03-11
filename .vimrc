@@ -27,6 +27,12 @@ vnoremap J :m '>+1<CR>gv=gv
 
 nnoremap <silent><leader>nr :set rnu!<CR>
 
+" External buffer, might be overengeneered...
+nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
+vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
+nmap <silent><leader>p !!cat /tmp/buffer.txt<CR>
+vnoremap <silent><leader>p !cat /tmp/buffer.txt<CR>
+
 set number
 set termguicolors
 set scrolloff=8
@@ -66,12 +72,6 @@ nnoremap <silent><leader>u :UndotreeToggle<CR>
 
 "" LSP 
 
-
-" Outside buffer, might be overengeneered...
-nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
-vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
-nmap <silent><leader>p !!cat /tmp/buffer.txt<CR>
-vnoremap <silent><leader>p !cat /tmp/buffer.txt<CR>
 
 call plug#begin()
 
