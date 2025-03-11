@@ -4,8 +4,8 @@ source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
 " termguicolors fix
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 set autoread
 set clipboard=unnamed
@@ -35,33 +35,37 @@ syntax on
 
 " Define colors to match the scheme in the first image
 au  ColorScheme  *  hi  clear         Visual
-au  ColorScheme  *  hi  Normal        guibg=NONE                   ctermbg=NONE
+"au  ColorScheme  *  hi  Normal        guibg=NONE                   ctermbg=NONE
 au  ColorScheme  *  hi  Visual        guibg=#58a6ff                guifg=#ffffff  cterm=NONE     gui=NONE
+au  ColorScheme  *  hi  MatchParen     term=bold  guifg=#ffffff guibg=NONE
 au  ColorScheme  *  hi  link          NormalFloat                  NormalNC
 au  ColorScheme  *  hi  CursorLineNr  guifg=#58a6ff                guibg=#ffffff
-au  ColorScheme  *  hi  clear         SignColumn
-au  ColorScheme  *  hi  clear         FloatBorder
-au  ColorScheme  *  hi  clear         NormalFloat
-au  ColorScheme  *  hi  clear         FloatTitle
-au  ColorScheme  *  hi  clear         FloatFooter
-au  ColorScheme  *  hi  clear         Folded
-au  ColorScheme  *  hi  clear         FoldColumn
-au  ColorScheme  *  hi  clear         TabLineFill
-au  ColorScheme  *  hi  clear         ColorColumn
-au  ColorScheme  *  hi  clear         QuickFixLine
-au  ColorScheme  *  hi  clear         Folded
-au  ColorScheme  *  hi  clear         FoldColumn
-au  ColorScheme  *  hi  clear         TabLineFill
-au  ColorScheme  *  hi  clear         MsgSeparator
+" au  ColorScheme  *  hi  clear         SignColumn
+" au  ColorScheme  *  hi  clear         FloatBorder
+" au  ColorScheme  *  hi  clear         NormalFloat
+" au  ColorScheme  *  hi  clear         FloatTitle
+" au  ColorScheme  *  hi  clear         FloatFooter
+" au  ColorScheme  *  hi  clear         Folded
+" au  ColorScheme  *  hi  clear         FoldColumn
+" au  ColorScheme  *  hi  clear         TabLineFill
+" au  ColorScheme  *  hi  clear         ColorColumn
+" au  ColorScheme  *  hi  clear         QuickFixLine
+" au  ColorScheme  *  hi  clear         Folded
+" au  ColorScheme  *  hi  clear         FoldColumn
+" au  ColorScheme  *  hi  clear         TabLineFill
+" au  ColorScheme  *  hi  clear         MsgSeparator
 au  ColorScheme  *  hi  clear         TreesitterContextLineNumber
 au  ColorScheme  *  hi  IncSearch     gui=NONE                     cterm=NONE     guibg=#d7474b  guifg=#ffffff
 
-colorscheme retrobox
+colorscheme murphy
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
 nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+
+"" LSP 
+
 
 " Outside buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
@@ -75,5 +79,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '--reverse  --exp
 Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mbbill/undotree'
+Plug 'prabirshrestha/vim-lsp'
 
 call plug#end()
