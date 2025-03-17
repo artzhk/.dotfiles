@@ -1,23 +1,19 @@
 source ~/.bash_profile
-source ~/.dotfiles/.aliases
 
-#If you come from bash you might have to change your $PATH.
+# PATH
+##If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/Users/artem/.config/emacs/bin:/usr/local/bin:/Users/artem/.local/scripts:/Users/artem/.local/bin:$PATH
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/:$PATH"
 export PATH="$HOME/bin:$PATH"
-
-# Brew path
+## Brew path
 export PATH=/opt/homebrew/bin:$PATH
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH="/Applications/CMake.app/Contents/bin":"$PATH"
-
-# Conda Path
+## Conda Path
 export PATH=$HOME/artem/miniforge3/bin:$PATH
-
-# Path to your oh-my-zsh installation.
+## Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-
 
 ZSH_THEME="dst-custom"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
@@ -28,6 +24,7 @@ plugins=(git zsh-autosuggestions)
 bindkey "^E" autosuggest-accept
 
 source $ZSH/oh-my-zsh.sh
+source ~/.dotfiles/.aliases
 
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"

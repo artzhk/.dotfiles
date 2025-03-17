@@ -8,14 +8,14 @@ foreground = '#b3b1ad'
 
 # Normal colors
 [colors.normal]
-black   = '#484f58'
+black   = '#b1bac4'
 red     = '#ff7b72'
 green   = '#81b29a'
 yellow  = '#dbc074'
 blue    = '#7fa1bd'
 magenta = '#bc8cff'
 cyan    = '#84aee4'
-white   = '#b1bac4'
+white   = '#484f58'
 
 # blue    = '#58a6ff'
 # cyan    = '#39c5cf'
