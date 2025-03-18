@@ -2,6 +2,7 @@
 #
 
 ERROR_TEXT="\e[31m"
+INFO_TEXT="\e[32m"
 ENDCOLOR="\e[0m"
 
 function create() {
@@ -10,7 +11,7 @@ function create() {
 
         if [[ "$1" =~ ^-* ]]; then
                 if [[ "$1" =~ ^--?n$ ]]; then 
-                        echo "Process numbers"
+                        echo "${INFO_TEXT}Process numbers${ENDCOLOR}"
                         number="$(echo "$input" | grep -P -o "[\d]+$")"
                 fi 
 
