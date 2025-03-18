@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+
+ERROR_TEXT="\e[31m"
+ENDCOLOR="\e[0m"
+
+function create() {
+        input=$1;
+
+
+        if [[ "$1" =~ ^-* ]]; then
+                if [[ "$1" =~ ^--?n$ ]]; then 
+                        echo "Process numbers"
+                        number="$(echo "$input" | grep -P -o "[\d]+$")"
+                fi 
+
+                echo "Uknown Parameter"
+        fi      
+
+        # Number at the end of the link
+        # Make possible to get the custom regex from params
+        number="$(echo "$input" | grep -P -o "[\d]+$")"
+
+        if [[ -z "$number"  ]]; then 
+                echo -e "${ERROR_TEXT}ERROR${ENDCOLOR}: An empty string processed as ticket ID"
+                exit 1
+        fi
+
+        echo "$number"
+        # git worktree add -f ~/repos/PBD_WT/"$number" -b AZ/"$number"
+}
+
+create $1
