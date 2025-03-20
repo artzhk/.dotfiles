@@ -1,7 +1,7 @@
 au  ColorScheme  *  hi  Normal        guibg=#444444   guifg=#ffffff  ctermbg=NONE
 au  ColorScheme  *  hi  EndOfBuffer   guibg=#444444   guifg=#ffff00  ctermbg=NONE
 au  ColorScheme  *  hi  Visual        term=underline  ctermfg=120    ctermbg=238    guibg=#87ff87  guifg=#444444
-au  ColorScheme  *  hi  MatchParen    term=bold       guifg=#ffffff  guibg=NONE
+au  ColorScheme  *  hi  MatchParen    term=bold  gui=bold     guifg=#ffff00  guibg=NONE
 au  ColorScheme  *  hi  CursorLineNr  guifg=#58a6ff   guibg=#ffffff
 au  ColorScheme  *  hi  clear         Constant
 au  ColorScheme  *  hi  Constant      guifg=#ffffff   guibg=NONE
@@ -13,7 +13,9 @@ au  ColorScheme  *  hi  link          PreProc         LineNr
 au  ColorScheme  *  hi  clear         Identifier
 au  ColorScheme  *  hi  link          Identifier      LineNr
 au  ColorScheme  *  hi  clear         Statement
-au  ColorScheme  *  hi  link          Statement       Constant
+au  ColorScheme  *  hi  link          Statement       LineNr
+au  ColorScheme  *  hi  clear         Operator
+au  ColorScheme  *  hi  link          Operator        LineNr
 au  ColorScheme  *  hi  clear         Function
 au  ColorScheme  *  hi  link          Function        LineNr
 au  ColorScheme  *  hi  clear         Special
