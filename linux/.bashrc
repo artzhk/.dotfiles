@@ -18,37 +18,6 @@ export EDITOR="vim"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# alias ls='ls --color=auto'
-# alias grep='grep --color=auto'
-# alias tmKISS='tmux kill-server'
-# alias tmns='tmux-session'
-# alias cpcr='cpp-c-r' 
-# alias brc='source ~/.bash_profile'
-# alias g='git'
-# alias t='tree'
-# alias lg="lazygit"
-# alias math="genius"
-# alias s1="i3-resurrect save -w 1"
-# alias s2="i3-resurrect save -w 2"
-# alias w1="i3-resurrect restore -w 1"
-# alias w2="i3-resurrect restore -w 2"
-# alias vv="select_vim"
-# alias livegrep="fzf --preview 'cat {}' --bind 'ctrl-j:down,ctrl-k:up'"
-# alias cd="z"
-# alias gp="git pull"
-# alias gP="git push"
-# alias gs="git status"
-# alias gaa="git add ."
-# alias ga="git add"
-# alias gc='bash -c "read -p \"Commit Message: \" rep; git commit -m \$rep "'
-# # fzf list to restor to select from
-# alias gr="git restore"
-# alias gbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)"'
-# 
-# alias v="NVIM_APPNAME=nvim nvim"
-# alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
-# alias v_dev="NVIM_APPNAME=nvim_dev nvim"
-
 set -o vi
 
 # bash history
