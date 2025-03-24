@@ -36,3 +36,6 @@ alias gw="git worktree"
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
+# git graph
+# https://stackoverflow.com/questions/1057564/pretty-git-branch-graphs
+alias glg="git log --graph --abbrev-commit --decorate --format=format:\'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n\'\'          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)\'"
