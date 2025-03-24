@@ -15,10 +15,12 @@ set encoding=utf8
 set tabstop=8
 set shiftwidth=8
 set expandtab
-set smartcase
 set showmode
+set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
+set colorcolumn=120
 
+set smartcase
 set incsearch
 
 " Inbuild Keymappings
@@ -28,6 +30,7 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
 nnoremap <silent><leader>nr :set rnu!<CR>
+au CursorMoved * exe printf('match PmenuSbar /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
@@ -90,7 +93,7 @@ augroup END
 " Automatic Plug install
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' 
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
