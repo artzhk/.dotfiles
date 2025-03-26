@@ -3,6 +3,7 @@
 #
 
 export LANG="en_US"
+export LS_ALL=C
 
 set -o vi
 

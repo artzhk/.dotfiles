@@ -32,6 +32,10 @@ vnoremap J :m '>+1<CR>gv=gv
 nnoremap <silent><leader>nr :set rnu!<CR>
 au CursorMoved * exe printf('match PmenuSbar /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
+" Man pages 
+command -nargs=* Man new | 0read !man <args> | col -b
+nnoremap <silent><leader>h :Man <C-R><C-W><CR>
+
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
 vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
