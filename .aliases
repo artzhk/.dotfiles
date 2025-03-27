@@ -41,4 +41,4 @@ alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
 
 # git graph
-alias glg="git log --graph --full-history --all --pretty=format:\"%h | %cn | %cD | %d%x20%s\""
+alias glg="git log --graph --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
