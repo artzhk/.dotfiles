@@ -3,12 +3,14 @@ let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 source ~/.dotfiles/vim/proper-murphy.vim
+"source ~/.dotfiles/vim/proper-retrobox.vim
 
 " termguicolors fix
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 set autoread
+set cursorline
 set clipboard=unnamed
 set ignorecase
 set encoding=utf8
@@ -45,7 +47,7 @@ vnoremap <silent><leader>p !cat /tmp/buffer.txt<CR>
 set number
 set termguicolors
 set scrolloff=8
-set background=dark
+set background=light
 syntax on
 
 colorscheme murphy
@@ -64,6 +66,7 @@ if executable('pylsp')
         \ 'allowlist': ['python'],
         \ })
 endif
+
 
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
