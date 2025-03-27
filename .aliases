@@ -7,6 +7,8 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+# grep directory
+alias gd='ls -a | grep'
 alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
