@@ -15,12 +15,14 @@ function create() {
         input="";
 
         if [[ "$1" =~ ^-* ]]; then
-                if [[ "$1" =~ ^--?n$ ]]; then 
+                if [[ "$1" =~ ^-?n$ ]]; then 
                         echo -e "${INFO_TEXT}Extract number${ENDCOLOR}"
+
                         if [[ -z "$2" ]]; then 
-                                echo -e "${INFO_TEXT}No input provided"
+                                echo -e "${INFO_TEXT}No input provided${ENDCOLOR}"
                                 exit 1
                         fi 
+
                         input="$(echo "$2" | grep -P -o "[\d]+$")"
                 fi 
         fi      

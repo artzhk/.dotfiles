@@ -31,7 +31,6 @@ alias gs="git status"
 alias gaa="git add ."
 alias ga="git add"
 alias gc="git commit"
-alias gcm="git commit -m"
 alias gcc='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
 # fzf list to restor to select from
 alias gr="git restore"
