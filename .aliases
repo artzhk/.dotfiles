@@ -6,6 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
+alias ll='ls -l'
 alias grep='grep --color=auto'
 # grep directory
 alias gd='ls -a | grep'
