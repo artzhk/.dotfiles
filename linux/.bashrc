@@ -2,9 +2,9 @@
 # ~/.bashrc
 #
 
-source ~/.local/state/colorscheme/.system_theme
 source ~/.dotfiles/.aliases
 
+export PATH=~/.cargo/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/home/art/.local/bin:$PATH
 export PATH=/home/art/.local/scripts:$PATH

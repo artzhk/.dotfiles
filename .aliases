@@ -44,5 +44,16 @@ alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
 
+# Docker
+alias dd="docker"
+alias ddrmi="docker rmi"
+alias ddi="docker images"
+# Remove inactive images
+alias ddrmii="docker rmi $(docker images -q)"
+alias dda="docker ps -a"
+# Docker remove all inactive containers
+alias ddrmci="docker rm $(docker ps -a -q)"
+alias ddr="docker run"
+
 # git graph
 alias glg="git log --graph --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
