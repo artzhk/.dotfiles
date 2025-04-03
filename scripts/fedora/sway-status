@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# https://www.reddit.com/r/swaywm/comments/m3sbge/how_do_i_get_battery_percentage_in_sway_config/
+
+# Battery
+battery=$(upower -i /org/freedesktop/UPower/devices/battery_macsmc_battery | grep percentage | cut -d ":" -f 2 | xargs)
+battery_state=$(upower -i /org/freedesktop/UPower/devices/battery_macsmc_battery | grep state | cut -d ":" -f 2 | xargs)
+
+# CPU temp
+cpu=$(sensors | grep "Package" | cut -f 1-3,5 -d " ")
+
+# Date
+date=$(date +'%Y-%m-%d %X')
+
+# Space 
+space=$(df -a -H | grep "dev.*/$" | cut -d " " -f 3-7 | xargs | sed "s/\(.*\) \(.*\)/\2 \/ \1/")
+
+# Alsa master volume
+volume=$(amixer get Master | grep "Right:" | cut -f 7,8 -d " ")
+
+# Status bar
+echo $space "|" $volume "|" $cpu "|" [$battery] - $battery_state "|" $date
