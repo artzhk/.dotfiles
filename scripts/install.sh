@@ -13,7 +13,7 @@ function install() {
         fi 
 
         for i in $(ls -a $src_folder); do 
-                if [[ "$i" != "install.sh" ]]; then
+                if [[ ! -d "$i" && "$i" != "install.sh" ]]; then
                         ln -vsfn $src_folder/$i $target_folder/$i
                 fi
         done
