@@ -2,8 +2,8 @@ set langmenu=en_US
 let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
-source ~/.dotfiles/vim/proper-murphy.vim
-"source ~/.dotfiles/vim/proper-retrobox.vim
+"source ~/.dotfiles/vim/proper-murphy.vim
+source ~/.dotfiles/vim/proper-retrobox.vim
 
 " termguicolors fix
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -50,11 +50,12 @@ set scrolloff=8
 set background=light
 syntax on
 
-colorscheme murphy
+colorscheme retrobox
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
 nnoremap <silent><leader>du :Files<CR>
+nnoremap <silent><leader>mb :Buffers<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
 
 "" LSP 
@@ -87,8 +88,6 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-    " refer to doc to add more commands
 endfunction
 
 augroup lsp_install

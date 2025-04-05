@@ -1,5 +1,5 @@
 general.import = [
-     "~/.config/alacritty/themes/colorscheme",
+     "~/.config/alacritty/colorscheme",
 ]
 
 [env]

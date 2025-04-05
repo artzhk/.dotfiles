@@ -2,13 +2,13 @@
 # ~/.bashrc
 #
 
-source ~/.dotfiles/.aliases
+source ~/.dotfiles/bash/.aliases
 
 export PATH=~/.cargo/bin:$PATH
 export PATH=/usr/local/bin:$PATH
-export PATH=/home/art/.local/bin:$PATH
-export PATH=/home/art/.local/scripts:$PATH
-export PATH=/home/art/dotnet/tools:$PATH
+export PATH=~/.local/bin:$PATH
+export PATH=~/.local/scripts:$PATH
+export PATH=~/dotnet/tools:$PATH
 
 # Env config
 export GTK_THEME="Raleigh"
@@ -57,4 +57,5 @@ unset __conda_setup
 
 eval "$(zoxide init bash)"
 source ~/.local/share/blesh/ble.sh
-. "$HOME/.cargo/env"
+
+#. "$HOME/.cargo/env"
