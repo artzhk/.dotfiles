@@ -9,7 +9,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias grep='grep --color=auto'
 # grep directory
-alias gd='ls -a | grep'
+alias dg='ls -a | grep'
 alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
@@ -36,10 +36,14 @@ alias gcc='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
 alias gca="git commit --allow-empty --amend --only"
 alias gd="git diff"
 alias gds="git diff --staged"
+alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
 # fzf list to restor to select from
 alias gr="git restore"
 alias grs="git restore --staged"
 alias gw="git worktree"
+# git graph
+alias glg="git log --graph --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
+
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
@@ -54,6 +58,5 @@ alias dda="docker ps -a"
 # Docker remove all inactive containers
 alias ddrmci='bash -c "docker rm \$(docker ps -a -q)"'
 alias ddr="docker run"
-
-# git graph
-alias glg="git log --graph --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
+# Docker compose
+alias ddc="docker compose"
