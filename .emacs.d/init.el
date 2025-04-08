@@ -1,14 +1,52 @@
 ;; (load-theme 'tango-dark t)
-(load-theme 'modus-operandi-tinted t)
+(load-theme 'modus-operandi t)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(display-line-numbers-mode 1)
+(global-display-line-numbers-mode t)
 
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
+(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil )
+
 (setq org-todo-keywords
-      '((sequence "TODO" "IN_PROGRESS" "DONE")))
+      '((sequence "TODO" "|" "IN_PROGRESS" "|" "DONE")))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("/home/art/repos/proj/back/todo.org")))
+
+(defun org-space--ensure-symlink (file-path)
+  "if path is outside ~/org-space/, creaet it as a symlink to ~/org-space/."
+  (let ((home-path (expand-file-name "~/"))
+	(org-space-path (expand-file-name "~/org-space/")))
+    ;; Skip if already in ~/org-space/
+    (unless (string-prefix-p org-space-path (file-truename file-path))
+      (let* ((relative-path (file-relative-name file-path home-path))
+	     (target-path (expand-file-name relative-path org-space-path)))
+	;;Create parent dirs in ~/org-space/
+	(make-directory (file-name-directory target-path) t)
+	;; If the target exists, symlink to it
+	(if (file-exists-p target-path)
+	    (massage "Warning: Target exists in ~/org-space/: %s" target-path)
+	  ;; Otherwise, write a dummy file to the target (so we can symlink)
+	  (write-region "" nil target-path))
+	;; Replace the original path with a symlink to ~/org-space/
+	(delete-file file-path)
+	(make-symbolic-link target-path file-path t)))))
+
+;; Hook to trigger when a new file is created
+(defun org-space-maybe-mirror-new-file ()
+  (when (and (derived-mode-p 'org-mode)
+	     (not (file-exists-p (buffer-file-name))))
+    (org-space--ensure-symlink (buffer-file-name))))
+
+(add-hook 'find-file-hook #'org-space-maybe-mirror-new-file)
+
+(setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
+
