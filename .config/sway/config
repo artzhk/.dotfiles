@@ -11,7 +11,9 @@ input "type:touchpad" {
         middle_emulation enabled
 }
 
-# Default config for sway
+set $QT_STYLE_OVERRIDE kvantum   
+set $QT_QPA_PLATFORMTHEME qt5ct 
+
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
 #
@@ -33,7 +35,7 @@ set $term alacritty
 bindsym $mod+q kill
 
 # Your preferred application launcher
-set $menu rofi -show run
+set $menu rofi -show drun
 set $opened rofi -show window
 
 ### Output configuration

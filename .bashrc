@@ -11,9 +11,11 @@ export PATH=~/.local/scripts:$PATH
 export PATH=~/dotnet/tools:$PATH
 
 # Env config
-export GTK_THEME="Raleigh"
+export GTK_THEME="Arc"
 export BAT_THEME="base16"
 export EDITOR="vim"
+export QT_STYLE_OVERRIDE=kvantum
+export QT_QPA_PLATFORMTHEME=kvantum
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return

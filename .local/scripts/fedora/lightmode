@@ -1,4 +1,6 @@
 #!/usr/bin/bash
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-ln -sfn ~/.dotfiles/alacritty/themes/art_kanagawa.toml ~/.config/alacritty/colorscheme
+kvantummanager --set KvArc
+
+ln -sfn ~/.dotfiles/.config/alacritty/themes/art_kanagawa.toml ~/.config/alacritty/colorscheme
