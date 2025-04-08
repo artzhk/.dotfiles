@@ -35,8 +35,14 @@ nnoremap <silent><leader>nr :set rnu!<CR>
 au CursorMoved * exe printf('match PmenuSbar /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " Man pages 
+"" how to open the buf to be readonly?
 command -nargs=* Man new | 0read !man <args> | col -b
 nnoremap <silent><leader>h :Man <C-R><C-W><CR>
+
+" TODO: Better marks list
+" command Mlist marks | grep -P "^[A-Z]"
+" nnoremap <silent><leader>ml :Man <C-R><C-W><CR>
+
 
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y

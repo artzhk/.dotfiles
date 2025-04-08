@@ -1,3 +1,4 @@
+#
 #!/bin/bash
 #
 
@@ -5,8 +6,11 @@ ERROR_TEXT="\e[31m"
 INFO_TEXT="\e[32m"
 ENDCOLOR="\e[0m"
 
-function create() {
+function extract_number() {
+        string=$2
+}
 
+function create() {
         if [[ -z "$1"  ]]; then 
                 echo -e "${ERROR_TEXT}ERROR${ENDCOLOR}: An empty string processed as ticket ID"
                 exit 1
