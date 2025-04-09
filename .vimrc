@@ -59,10 +59,20 @@ syntax on
 colorscheme retrobox
 
 " Plugin remaps
-nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> nnoremap <silent><leader>l :Buffers<cr>
-nnoremap <silent><leader>du :Files<CR>
-nnoremap <silent><leader>mb :Buffers<CR>
+nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> 
+nnoremap <silent><leader>f :Files<CR>
+nnoremap <silent><leader>b :Buffers<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+
+
+" Put the lsps in the separate file
+if executable('sql-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'sql-language-server',
+        \ 'cmd': {server_info->['sql-language-server', 'up', '--method', 'stdio']},
+        \ 'allowlist': [''],
+        \ })
+endif
 
 "" LSP 
 if executable('pylsp')
@@ -70,7 +80,7 @@ if executable('pylsp')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pylsp',
         \ 'cmd': {server_info->['pylsp']},
-        \ 'allowlist': ['python'],
+        \ 'allowlist': ['python', 'py'],
         \ })
 endif
 
