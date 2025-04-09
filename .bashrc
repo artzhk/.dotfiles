@@ -17,6 +17,10 @@ export EDITOR="vim"
 export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=kvantum
 
+if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then 
+        export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+fi
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
