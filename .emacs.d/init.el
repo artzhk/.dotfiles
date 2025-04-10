@@ -12,14 +12,15 @@
 
 (set-frame-font "IosevkaTerm Nerd Font Mono 20" nil )
 
+;; ORG settings
+(setq org-todo-keywords-faces
+      '(("TODO" . org-warning) 
+	("IN_PROGRESS" . "yellow")
+	("CANCELED" . (:foreground "blue" :weight bold))
+	("DONE" . (:foreground "green" :weight bold))))
+	
 (setq org-todo-keywords
-      '((sequence "TODO" "|" "IN_PROGRESS" "|" "DONE")))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files '("/home/art/repos/proj/back/todo.org")))
+      '((sequence "TODO(t)" "IN_PROGRESS(i!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
 (defun org-space--ensure-symlink (file-path)
   "if path is outside ~/org-space/, creaet it as a symlink to ~/org-space/."
