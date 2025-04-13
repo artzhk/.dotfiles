@@ -6,6 +6,19 @@
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
 
+;; Jypiter support
+(require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(setq evil-want-C-u-scroll t)
+(setq evil-want-C-a-scroll t)
+(setq evil-mode t)
+
+(require 'evil)
+
+(evil-mode)
+
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
@@ -18,9 +31,9 @@
 	("IN_PROGRESS" . "yellow")
 	("CANCELED" . (:foreground "blue" :weight bold))
 	("DONE" . (:foreground "green" :weight bold))))
-	
 (setq org-todo-keywords
       '((sequence "TODO(t)" "IN_PROGRESS(i!)" "|" "DONE(d!)" "CANCELED(c@)")))
+(setq org-startup-indented t) 
 
 (defun org-space--ensure-symlink (file-path)
   "if path is outside ~/org-space/, creaet it as a symlink to ~/org-space/."
@@ -33,8 +46,8 @@
 	;;Create parent dirs in ~/org-space/
 	(make-directory (file-name-directory target-path) t)
 	;; If the target exists, symlink to it
-	(if (file-exists-p target-path)
-	    (massage "Warning: Target exists in ~/org-space/: %s" target-path)
+	(if (file-exists-p target-path)	
+    (massage "Warning: Target exists in ~/org-space/: %s" target-path)
 	  ;; Otherwise, write a dummy file to the target (so we can symlink)
 	  (write-region "" nil target-path))
 	;; Replace the original path with a symlink to ~/org-space/
@@ -51,3 +64,28 @@
 
 (setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("/home/art/org-space/repos/PBD_WT/1277.org" "/home/art/org-space/repos/proj/todo.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/CanvasManipulations.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/MidtermChecklist.org" "/home/art/org-space/daily.org") t)
+ '(package-selected-packages
+   '(ein ## org-modern org-fragtog latex-table-wizard evil dash compat)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(setq org-preview-latex-process-alist
+      '((dvipng :programs ("latex" "dvipng")
+                :description "dvi > png"
+                :message "you need to install latex and dvipng."
+                :image-input-type "dvi"
+                :image-output-type "png"
+                :image-size-adjust (2.0 . 2.0) ;; scale value
+                :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
+                :image-converter ("dvipng -D 300 -T tight -o %O %f"))))
