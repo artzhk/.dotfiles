@@ -72,7 +72,7 @@
  '(org-agenda-files
    '("/home/art/org-space/repos/PBD_WT/1277.org" "/home/art/org-space/repos/proj/todo.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/CanvasManipulations.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/MidtermChecklist.org" "/home/art/org-space/daily.org") t)
  '(package-selected-packages
-   '(ein ## org-modern org-fragtog latex-table-wizard evil dash compat)))
+   '(ein eink-theme ## org-modern org-fragtog latex-table-wizard evil dash compat)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
