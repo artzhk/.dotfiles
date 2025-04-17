@@ -70,7 +70,7 @@ if executable('sql-language-server')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'sql-language-server',
         \ 'cmd': {server_info->['sql-language-server', 'up', '--method', 'stdio']},
-        \ 'allowlist': [''],
+        \ 'allowlist': ['sql'],
         \ })
 endif
 
