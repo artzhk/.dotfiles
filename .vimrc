@@ -15,8 +15,8 @@ set clipboard=unnamed
 set ignorecase
 set encoding=utf8
 set tabstop=8
+set softtabstop=0 noexpandtab
 set shiftwidth=8
-set expandtab
 set showmode
 set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
@@ -59,64 +59,65 @@ syntax on
 colorscheme retrobox
 
 " Plugin remaps
-nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR> 
-nnoremap <silent><leader>f :Files<CR>
+nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
+nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>b :Buffers<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+nnoremap <silent><leader>f :Autoformat<CR>
 
 
 " Put the lsps in the separate file
 if executable('sql-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'sql-language-server',
-        \ 'cmd': {server_info->['sql-language-server', 'up', '--method', 'stdio']},
-        \ 'allowlist': ['sql'],
-        \ })
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'sql-language-server',
+				\ 'cmd': {server_info->['sql-language-server', 'up', '--method', 'stdio']},
+				\ 'allowlist': ['sql'],
+				\ })
 endif
 
-"" LSP 
+"" LSP
 if executable('pylsp')
-    " pip install python-lsp-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pylsp',
-        \ 'cmd': {server_info->['pylsp']},
-        \ 'allowlist': ['python', 'py'],
-        \ })
+	" pip install python-lsp-server
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'pylsp',
+				\ 'cmd': {server_info->['pylsp']},
+				\ 'allowlist': ['python', 'py'],
+				\ })
 endif
 
 
 function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [e <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]e <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nnoremap <buffer> <expr><c-k> lsp#scroll(+4)
-    nnoremap <buffer> <expr><c-j> lsp#scroll(-4)
+	setlocal omnifunc=lsp#complete
+	setlocal signcolumn=yes
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+	nmap <buffer> gd <plug>(lsp-definition)
+	nmap <buffer> gs <plug>(lsp-document-symbol-search)
+	nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+	nmap <buffer> gr <plug>(lsp-references)
+	nmap <buffer> gi <plug>(lsp-implementation)
+	nmap <buffer> gt <plug>(lsp-type-definition)
+	nmap <buffer> <leader>rn <plug>(lsp-rename)
+	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
+	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
+	nmap <buffer> K <plug>(lsp-hover)
+	nnoremap <buffer> <expr><c-k> lsp#scroll(+4)
+	nnoremap <buffer> <expr><c-j> lsp#scroll(-4)
 
-    let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+	let g:lsp_format_sync_timeout = 1000
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+	au!
+	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
 " Automatic Plug install
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' 
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin()
@@ -126,5 +127,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'vim-autoformat/vim-autoformat'
 
 call plug#end()
