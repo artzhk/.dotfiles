@@ -34,7 +34,7 @@ vnoremap J :m '>+1<CR>gv=gv
 nnoremap <silent><leader>nr :set rnu!<CR>
 au CursorMoved * exe printf('match PmenuSbar /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-" Man pages 
+" Man pages
 "" how to open the buf to be readonly?
 command -nargs=* Man new | 0read !man <args> | col -b
 nnoremap <silent><leader>h :Man <C-R><C-W><CR>
