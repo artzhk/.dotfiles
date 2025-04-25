@@ -1,6 +1,4 @@
-#
 #!/bin/bash
-#
 
 ERROR_TEXT="\e[31m"
 INFO_TEXT="\e[32m"
@@ -10,9 +8,14 @@ function extract_number() {
         string=$2
 }
 
+function help() {
+	echo -e "${INFO_TEXT}Usage${ENDCOLOR}\n	-> -n : extract last digit from the link to form a ticket;\n	${INFO_TEXT}Example:${ENDCOLOR} make_wt -n https://linkwithnumberattheend/4738 => AZ/4738 \n ---------------------"
+}
+
 function create() {
         if [[ -z "$1"  ]]; then 
                 echo -e "${ERROR_TEXT}ERROR${ENDCOLOR}: An empty string processed as ticket ID"
+		help
                 exit 1
         fi
 
@@ -24,6 +27,7 @@ function create() {
 
                         if [[ -z "$2" ]]; then 
                                 echo -e "${INFO_TEXT}No input provided${ENDCOLOR}"
+				help
                                 exit 1
                         fi 
 
