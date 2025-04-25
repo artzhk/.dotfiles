@@ -23,6 +23,7 @@ function install() {
         echo -e "${GREEN}-> Installing with ${BOLD}$mode${NC}${GREEN} dots from${NC} ${BOLD}${BLUE}$src_folder${NC}${GREEN} to ${NC}${BOLD}${BLUE}$target_folder${NC}\n"
 
         if [[ ! -d $target_folder ]]; then 
+                echo -e "${BOLD}${GREEN}Creating target folder $target_folder${NC}"
                 mkdir -p $target_folder
         fi 
 

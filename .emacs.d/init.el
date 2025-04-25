@@ -14,6 +14,7 @@
 (setq evil-want-C-u-scroll t)
 (setq evil-want-C-a-scroll t)
 (setq evil-mode t)
+(setq evil-undo-system 'undo-redo)
 
 (require 'evil)
 
@@ -69,10 +70,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("/home/art/org-space/repos/PBD_WT/1277.org" "/home/art/org-space/repos/proj/todo.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/CanvasManipulations.org" "/home/art/org-space/vaults/main/Uni/PWD CM2015/MidtermChecklist.org" "/home/art/org-space/daily.org") t)
  '(package-selected-packages
    '(ein eink-theme ## org-modern org-fragtog latex-table-wizard evil dash compat)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -80,6 +80,7 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; Latex preview configs
 (setq org-preview-latex-process-alist
       '((dvipng :programs ("latex" "dvipng")
                 :description "dvi > png"
@@ -89,3 +90,7 @@
                 :image-size-adjust (2.0 . 2.0) ;; scale value
                 :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
                 :image-converter ("dvipng -D 300 -T tight -o %O %f"))))
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)

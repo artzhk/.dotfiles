@@ -15,7 +15,7 @@ alias tmns='tmux-session'
 alias cpcr='cpp-c-r' 
 alias brc='source ~/.bash_profile'
 alias g='git'
-alias guc="git_upstream_current"
+alias guc="git push -u origin $(git branch --show-current)"
 alias t='tree'
 alias lg="lazygit"
 alias math="genius"
@@ -42,7 +42,7 @@ alias gr="git restore"
 alias grs="git restore --staged"
 alias gw="git worktree"
 # git graph
-alias glg="git log --graph --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
+alias glg="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"

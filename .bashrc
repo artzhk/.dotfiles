@@ -8,6 +8,7 @@ export PATH=~/.cargo/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
 export PATH=~/.local/scripts:$PATH
+export PATH=~/.local/watches:$PATH
 export PATH=~/dotnet/tools:$PATH
 
 # Env config
