@@ -10,7 +10,7 @@ alias ll='ls -l'
 alias grep='grep --color=auto'
 
 alias grE=grep_exclude
-function grep_exclude() {
+grep_exclude() {
 	grep --color=auto -v -E \"$*\"
 }
 
@@ -30,8 +30,8 @@ alias w2="i3-resurrect restore -w 2"
 alias vv="select_vim"
 alias livegrep="fzf --preview 'cat {}' --bind 'ctrl-j:down,ctrl-k:up'"
 
-alias g='git'
-alias guc="git push -u origin $(git branch --show-current)"
+alias g="git"
+alias guc="git push -u origin \$(git branch --show-current)"
 alias gp="git pull"
 alias gP="git push"
 alias gs="git status"
@@ -56,7 +56,6 @@ alias gr="git restore"
 alias grs="git restore --staged"
 ## git worktree
 alias gw="git worktree"
-
 # git graph
 alias glg="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 
@@ -69,10 +68,10 @@ alias dd="docker"
 alias ddrmi="docker rmi"
 alias ddi="docker images"
 # Remove inactive images
-alias ddrmii='bash -c "docker rmi \$(docker images -q)"'
+alias ddrmii="docker rmi \$(docker images -q)"
 alias dda="docker ps -a"
 # Docker remove all inactive containers
-alias ddrmci='bash -c "docker rm \$(docker ps -a -q)"'
+alias ddrmci="docker rm \$(docker ps -a -q)"
 alias ddr="docker run"
 # Docker compose
 alias ddc="docker compose"

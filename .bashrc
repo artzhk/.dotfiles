@@ -1,6 +1,4 @@
-#
 # ~/.bashrc
-#
 
 source ~/.dotfiles/bash/.aliases
 

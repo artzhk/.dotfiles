@@ -1,5 +1,5 @@
-;; (load-theme 'tango-dark t)
-(load-theme 'modus-operandi t)
+;;(load-theme 'tango-dark t)
+(load-theme 'adwaita t)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
