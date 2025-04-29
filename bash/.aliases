@@ -51,6 +51,8 @@ alias gcbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)
 alias gd="git diff"
 alias gds="git diff --staged"
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
+## git diff file select
+alias gdf="git difftool \$(git status -s | fzf | sed -e \"s/.* \(.*\)/\1/\")"
 # fzf list to restor to select from
 alias gr="git restore"
 alias grs="git restore --staged"
