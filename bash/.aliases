@@ -18,7 +18,7 @@ grep_exclude() {
 alias dg='ls -a | grep'
 alias tmKISS='tmux kill-server'
 alias tmns='tmux-session'
-alias cpcr='cpp-c-r' 
+alias cpcr='cpp-c-r'
 alias brc='source ~/.bash_profile'
 alias t='tree'
 alias lg="lazygit"
@@ -42,7 +42,7 @@ alias gap="git add --patch"
 alias gc="git commit"
 alias gC='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
 alias gca="git commit --allow-empty --amend --only"
-## git checkout 
+## git checkout
 # git get remote
 alias ggr="git branch --remote | fzf"
 # git checkout branch remote
@@ -51,6 +51,9 @@ alias gcbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)
 alias gd="git diff"
 alias gds="git diff --staged"
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
+alias gdcc="git diff HEAD \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1)"
+alias gddcc="git difftool HEAD \$(git log --pretty=format:\"%H %d%x20%s %cI\"  --oneline --no-abbrev-commit | fzf | cut -d \" \" -f 1)"
+## TODO: git get file history
 ## git diff file select
 alias gdf="git difftool \$(git status -s | fzf | sed -e \"s/.* \(.*\)/\1/\")"
 # fzf list to restor to select from
@@ -59,8 +62,8 @@ alias grs="git restore --staged"
 ## git worktree
 alias gw="git worktree"
 # git graph
-alias glg="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
-
+alias glga="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
+alias glg="git log --graph --color=always --full-history --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
