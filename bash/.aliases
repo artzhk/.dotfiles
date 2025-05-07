@@ -30,6 +30,7 @@ alias w2="i3-resurrect restore -w 2"
 alias vv="select_vim"
 alias livegrep="fzf --preview 'cat {}' --bind 'ctrl-j:down,ctrl-k:up'"
 
+# git basics
 alias g="git"
 alias guc="git push -u origin \$(git branch --show-current)"
 alias gp="git pull"
@@ -38,24 +39,40 @@ alias gs="git status"
 alias gaa="git add ."
 alias ga="git add"
 alias gap="git add --patch"
-## git commit
+
+# git commit
 alias gc="git commit"
 alias gC='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
 alias gca="git commit --allow-empty --amend --only"
-## git checkout
+
+# git checkout
 # git get remote
 alias ggr="git branch --remote | fzf"
 # git checkout branch remote
 alias gcbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)"'
-## git diff
+alias gcb='bash -c "git checkout \$(git branch | sed \"s/origin\///\" | fzf)"'
+
+# git diff
 alias gd="git diff"
 alias gds="git diff --staged"
+# git diff interactive
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
-alias gdcc="git diff HEAD \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1)"
-alias gddcc="git difftool HEAD \$(git log --pretty=format:\"%H %d%x20%s %cI\"  --oneline --no-abbrev-commit | fzf | cut -d \" \" -f 1)"
-## TODO: git get file history
-## git diff file select
+# git diff head to selected commit for file [git diff current -> commit]
+alias gdcc="git diff \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD"
+alias gddcc="git difftool \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD "
+alias gdccf=commits_per_file
+alias gddccf=difftool_commits_per_file
+commits_per_file() {
+	git diff $(git log --pretty=format:"%H %d%x20%s %cI" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
+}
+difftool_commits_per_file() {
+	git difftool $(git log --pretty=format:"%H %d%x20%s %cI" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
+}
+# git diff file select
 alias gdf="git difftool \$(git status -s | fzf | sed -e \"s/.* \(.*\)/\1/\")"
+# TODO: git get all commits for file
+
+
 # fzf list to restor to select from
 alias gr="git restore"
 alias grs="git restore --staged"
@@ -64,6 +81,8 @@ alias gw="git worktree"
 # git graph
 alias glga="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 alias glg="git log --graph --color=always --full-history --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
+
+# vvim
 alias v="NVIM_APPNAME=nvim nvim"
 alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
 alias vdev="NVIM_APPNAME=nvim_dev nvim"
