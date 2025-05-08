@@ -71,7 +71,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ein eink-theme ## org-modern org-fragtog latex-table-wizard evil dash compat)))
+   '(## compat dash ein eink-theme evil latex-table-wizard lsp-mode
+	org-fragtog org-modern)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
