@@ -54,6 +54,7 @@ alias gcb='bash -c "git checkout \$(git branch | sed \"s/origin\///\" | fzf)"'
 
 # git diff
 alias gd="git diff"
+alias gdd="git difftool"
 alias gds="git diff --staged"
 # git diff interactive
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
@@ -68,6 +69,7 @@ commits_per_file() {
 difftool_commits_per_file() {
 	git difftool $(git log --pretty=format:"%H %d%x20%s %cI" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
 }
+
 # git diff file select
 alias gdf="git difftool \$(git status -s | fzf | sed -e \"s/.* \(.*\)/\1/\")"
 # TODO: git get all commits for file
