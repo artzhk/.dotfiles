@@ -7,8 +7,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
-gaps inner 3
-gaps outer 3
+gaps inner 0
+gaps outer 0
 
 title_align left
 
@@ -81,7 +81,7 @@ bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh --window
 
 # run networkmanager
-bindsym $mod+n exec --no-startup-id networkmanager_dmenu
+bindsym $mod+1 exec --no-startup-id networkmanager_dmenu
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui
 bindsym $mod+p move workspace to output right
 
@@ -125,6 +125,9 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+# switch focus between tiling floating stuff
+bindsym $mod+a focus mode_toggle
+
 
 # Workspaces names
 set $ws1 "1"
