@@ -66,7 +66,8 @@ nnoremap <silent><leader>u :UndotreeToggle<CR>
 nnoremap <silent><leader>f :Autoformat<CR>
 
 
-" Put the lsps in the separate file
+"" LSP
+" TODO: Put the lsps in the separate file
 if executable('sql-language-server')
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'sql-language-server',
@@ -75,7 +76,15 @@ if executable('sql-language-server')
 				\ })
 endif
 
-"" LSP
+
+if executable('~/lib/clang/bin/clangd')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'clang',
+				\ 'cmd': {server_info->['~/lib/clang/bin/clangd', '--background-index', '--clang-tidy', 'stdio']},
+				\ 'allowlist': ['h', 'c', 'hpp', 'cpp'],
+				\ })
+endif
+
 if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({
