@@ -83,6 +83,22 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; Screenshots pasting
+;; https://stackoverflow.com/questions/17435995/paste-an-image-on-clipboard-to-emacs-org-mode-file-without-saving-it
+(defun paste-screenshot ()
+  "Take a screenshot into a time stamped unique-named file in the
+same directory as the org-buffer and insert a link to this file."
+  (interactive)
+  (let* ((dir "./Cache/")
+	  (_ (make-directory dir t))
+	  (filename (concat dir (format-time-string "%Y%m%d_%H%M%S_")
+			    (make-temp-name "") ".png")))
+  ;;(call-process "wl-paste" nil filename nil "-t" "image/png")
+(call-process-shell-command
+ (format "wl-paste -t image/png > %s" (shell-quote-argument filename)))
+  (insert (concat "[[" filename "]]"))
+  (org-display-inline-images)))
+
 ;; Latex preview configs
 (setq org-preview-latex-process-alist
       '((dvipng :programs ("latex" "dvipng")
