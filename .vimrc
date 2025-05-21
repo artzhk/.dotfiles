@@ -43,13 +43,19 @@ nnoremap <silent><leader>h :Man <C-R><C-W><CR>
 " command Mlist marks | grep -P "^[A-Z]"
 " nnoremap <silent><leader>ml :Man <C-R><C-W><CR>
 
+" No yanking options
+vnoremap <silent><leader>p "_dP
+nnoremap <silent><leader>p V"_dP
+nnoremap <silent><leader>d "_d
 
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
 vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
-nmap <silent><leader>p !!cat /tmp/buffer.txt<CR>
-vnoremap <silent><leader>p !cat /tmp/buffer.txt<CR>
-
+nnoremap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
+nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
+vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
+vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
+nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 set number
 set termguicolors
 set scrolloff=8
