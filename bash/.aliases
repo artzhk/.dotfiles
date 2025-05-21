@@ -105,3 +105,7 @@ alias ddrmci="docker rm \$(docker ps -a -q)"
 alias ddr="docker run"
 # Docker compose
 alias ddc="docker compose"
+
+# NM cli 
+# Select and connect
+alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"8 18 18\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
