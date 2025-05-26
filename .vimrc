@@ -28,6 +28,10 @@ set incsearch
 " Inbuild Keymappings
 let mapleader=" "
 
+" qflist
+nnoremap <silent><C-b> :cp<CR>
+nnoremap <silent><C-s> :cn<CR>
+
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
@@ -71,12 +75,16 @@ nnoremap <silent><leader>b :Buffers<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
 nnoremap <silent><leader>f :Autoformat<CR>
 
+
+" Vim Go
 let g:go_def_mode="gopls"
 let g:go_info_mode="gopls"
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 let g:go_list_type = "quickfix"
 set completeopt-=preview
+command GLB GoBuild
+
 
 "" LSP
 " TODO: Put the lsps in the separate file
@@ -105,20 +113,6 @@ if executable('pylsp')
 				\ 'allowlist': ['python', 'py'],
 				\ })
 endif
-
-" augroup LspGo
-"   au!
-"   autocmd User lsp_setup call lsp#register_server({
-"       \ 'name': 'go-lang',
-"       \ 'cmd': {server_info->['gopls']},
-"       \ 'whitelist': ['go'],
-"       \ })
-"   autocmd FileType go setlocal omnifunc=lsp#complete
-"   autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
-"   autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
-"   autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
-" augroup END
-" 
 
 function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
