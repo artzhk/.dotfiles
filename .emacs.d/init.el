@@ -11,8 +11,8 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;;(setq evil-want-C-u-scroll t)
-;;(setq evil-want-C-a-scroll t)
+(setq evil-want-C-u-scroll t)
+(setq evil-want-C-a-scroll t)
 ;;(setq evil-mode t)
 (setq evil-undo-system 'undo-redo)
 
