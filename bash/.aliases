@@ -48,6 +48,8 @@ alias gap="git add --patch"
 alias gc="git commit"
 alias gC='bash -c "read -p \"Commit Message: \" rep; git commit -m \"\$rep\" "'
 alias gca="git commit --allow-empty --amend --only"
+# git get hash
+alias ggh="git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1"
 
 # git checkout
 # git get remote

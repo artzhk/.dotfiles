@@ -21,6 +21,12 @@ set showmode
 set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
 set colorcolumn=120
+set number
+set termguicolors
+set scrolloff=8
+set background=light
+syntax on
+colorscheme retrobox
 
 set smartcase
 set incsearch
@@ -60,13 +66,7 @@ nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
-set number
-set termguicolors
-set scrolloff=8
-set background=light
-syntax on
 
-colorscheme retrobox
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
@@ -85,34 +85,8 @@ let g:go_list_type = "quickfix"
 set completeopt-=preview
 command GLB GoBuild
 
-
-"" LSP
-" TODO: Put the lsps in the separate file
-if executable('sql-language-server')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'sql-language-server',
-				\ 'cmd': {server_info->['sql-language-server', 'up', '--method', 'stdio']},
-				\ 'allowlist': ['sql'],
-				\ })
-endif
-
-
-if executable('~/lib/clang/bin/clangd')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'clang',
-				\ 'cmd': {server_info->['~/lib/clang/bin/clangd', '--background-index', '--clang-tidy', 'stdio']},
-				\ 'allowlist': ['h', 'c', 'hpp', 'cpp'],
-				\ })
-endif
-
-if executable('pylsp')
-	" pip install python-lsp-server
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'pylsp',
-				\ 'cmd': {server_info->['pylsp']},
-				\ 'allowlist': ['python', 'py'],
-				\ })
-endif
+" LSP setup
+source ~/.dotfiles/vim/lsp.vim
 
 function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
@@ -128,6 +102,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
 	nmap <buffer> K <plug>(lsp-hover)
+	nmap <buffer> dq <plug>(lsp-document-diagnostics)
 	nnoremap <buffer> <expr><c-k> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-j> lsp#scroll(-4)
 
