@@ -64,6 +64,8 @@ alias gdd="git difftool"
 alias gds="git diff --staged"
 # git diff interactive
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
+# git get hash
+alias ggh="git log --pretty=format:\"%H %d%x20%s %cI\"1 | fzf | cut -d \" \" -f 1"
 # git diff head to selected commit for file [git diff current -> commit]
 alias gdcc="git diff \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD"
 alias gddcc="git difftool \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD "
@@ -110,4 +112,4 @@ alias ddc="docker compose"
 
 # NM cli 
 # Select and connect
-alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"8 18 18\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
+alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"8 18 16\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
