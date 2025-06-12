@@ -62,10 +62,13 @@ alias gcb='bash -c "git checkout \$(git branch | sed \"s/origin\///\" | fzf)"'
 alias gd="git diff"
 alias gdd="git difftool"
 alias gds="git diff --staged"
+
 # git diff interactive
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
+
 # git get hash
 alias ggh="git log --pretty=format:\"%H %d%x20%s %cI\"1 | fzf | cut -d \" \" -f 1"
+
 # git diff head to selected commit for file [git diff current -> commit]
 alias gdcc="git diff \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD"
 alias gddcc="git difftool \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD "
@@ -81,13 +84,16 @@ difftool_commits_per_file() {
 # git diff file select
 alias gdf="git difftool \$(git status -s | fzf | sed -e \"s/.* \(.*\)/\1/\")"
 # TODO: git get all commits for file
-
-
 # fzf list to restor to select from
 alias gr="git restore"
 alias grs="git restore --staged"
-## git worktree
+
+# git worktree
 alias gw="git worktree"
+# TODO: Can be converted to the functions that accepts path to worktrees
+alias gwar="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/PBD_WT/\$1 \$1' sh"
+alias gwarb="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/PBD_WT/\$1 -b \$1' sh"
+
 # git graph
 alias glga="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 alias glg="git log --graph --color=always --full-history --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
