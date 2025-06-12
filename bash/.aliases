@@ -53,7 +53,7 @@ alias ggh="git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1
 
 # git checkout
 # git get remote
-alias ggr="git branch --remote | fzf"
+alias ggr="git branch --remote | fzf | sed  \"s/origin\///g\" | tr -d \" \""
 # git checkout branch remote
 alias gcbr='bash -c "git checkout \$(git branch -r | sed \"s/origin\///\" | fzf)"'
 alias gcb='bash -c "git checkout \$(git branch | sed \"s/origin\///\" | fzf)"'
