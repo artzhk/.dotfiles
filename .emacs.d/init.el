@@ -8,19 +8,23 @@
 
 ;; Jypiter support
 (require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+;; Magit melpa
+(require 'exec-path-from-shell)
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 (setq evil-want-C-u-scroll t)
 (setq evil-want-C-a-scroll t)
 ;;(setq evil-mode t)
 (setq evil-undo-system 'undo-redo)
 
+;; Vim mode
 (require 'evil)
-
 (evil-mode)
-(global-visual-line-mode)
 
+(global-visual-line-mode)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
@@ -72,8 +76,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(## compat dash ein eink-theme evil latex-table-wizard lsp-mode
-	org-fragtog org-modern)))
+   '(## compat dash ein eink-theme evil html2org latex-table-wizard
+	lsp-mode magit markdown-mode markdown-preview-mode org-fragtog
+	org-modern)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

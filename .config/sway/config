@@ -1,6 +1,7 @@
 input "type:keyboard" {
 	xkb_layout "us,ru"
 		xkb_variant "prime-dvorak,"
+		xkb_options "grp:rwin_toggle"
 		xkb_options "grp:alt_shift_toggle"
 }
 
@@ -39,7 +40,7 @@ set $term alacritty
 bindsym $mod+q kill
 
 # Your preferred application launcher
-set $menu rofi -show drun
+set $menu wmenu-run
 set $opened rofi -show window
 
 ### Output configuration

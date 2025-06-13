@@ -14,9 +14,7 @@ set cursorline
 set clipboard=unnamed
 set ignorecase
 set encoding=utf8
-set tabstop=8
-set softtabstop=0 noexpandtab
-set shiftwidth=8
+set shiftwidth=8 tabstop=8 softtabstop=0 noexpandtab smartindent
 set showmode
 set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
@@ -73,7 +71,10 @@ nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>b :Buffers<CR>
 nnoremap <silent><leader>u :UndotreeToggle<CR>
-nnoremap <silent><leader>f :Autoformat<CR>
+nnoremap <leader>f :Autoformat<CR>
+imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
 
 
 " Vim Go
@@ -107,7 +108,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nnoremap <buffer> <expr><c-k> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-j> lsp#scroll(-4)
 
-	let g:lsp_format_sync_timeout = 1000
+	let g:lsp_format_sync_timeout = 50
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
@@ -132,5 +133,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
+Plug 'github/copilot.vim'
 
 call plug#end()
