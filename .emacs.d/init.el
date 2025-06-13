@@ -10,6 +10,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+
 ;; Magit melpa
 (require 'exec-path-from-shell)
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")

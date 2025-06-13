@@ -65,7 +65,6 @@ vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 
-
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 nnoremap <silent><leader>du :Files<CR>
@@ -74,8 +73,6 @@ nnoremap <silent><leader>u :UndotreeToggle<CR>
 nnoremap <leader>f :Autoformat<CR>
 imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
-
-
 
 " Vim Go
 let g:go_def_mode="gopls"
