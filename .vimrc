@@ -2,8 +2,6 @@ set langmenu=en_US
 let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
-"source ~/.dotfiles/vim/proper-murphy.vim
-source ~/.dotfiles/vim/proper-retrobox.vim
 
 " termguicolors fix
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -22,9 +20,7 @@ set colorcolumn=120
 set number
 set termguicolors
 set scrolloff=8
-set background=light
 syntax on
-colorscheme retrobox
 
 set smartcase
 set incsearch
@@ -40,7 +36,6 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
 nnoremap <silent><leader>nr :set rnu!<CR>
-au CursorMoved * exe printf('match PmenuSbar /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " Man pages
 "" how to open the buf to be readonly?
@@ -60,8 +55,6 @@ nnoremap <silent><leader>d "_d
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
 vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
 nnoremap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
-nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
-vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
 nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 
@@ -102,17 +95,18 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
 	nmap <buffer> K <plug>(lsp-hover)
 	nmap <buffer> dq <plug>(lsp-document-diagnostics)
-	nnoremap <buffer> <expr><c-k> lsp#scroll(+4)
-	nnoremap <buffer> <expr><c-j> lsp#scroll(-4)
+	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
+	nnoremap <buffer> <expr><c-k> lsp#scroll(-4)
 
 	let g:lsp_format_sync_timeout = 50
+	let g:lsp_diagnostics_virtual_text_align = "right"
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
 	au!
 	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
-	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+	" autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
 " Automatic Plug install
@@ -133,3 +127,5 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'github/copilot.vim'
 
 call plug#end()
+
+source ~/.profile.vim
