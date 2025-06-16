@@ -25,7 +25,6 @@ if executable('typescript-language-server')
 				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
 				\ })
 
-	let g:lsp_diagnostics_virtual_text_align = "right"
 endif
 
 if executable('pylsp')
