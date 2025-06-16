@@ -130,4 +130,5 @@ Plug 'github/copilot.vim'
 
 call plug#end()
 
-source ~/.profile.vim
+" Additional per mashine customizations
+"source ~/.profile.vim
