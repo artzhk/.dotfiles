@@ -69,6 +69,10 @@ alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color 
 # git get hash
 alias ggh="git log --pretty=format:\"%H %d%x20%s %cI\"1 | fzf | cut -d \" \" -f 1"
 
+# git status
+## all edited existed files 
+alias gS="git status -s | grep -v \"^ D\" | cut -c 4-)"
+
 # git diff head to selected commit for file [git diff current -> commit]
 alias gdcc="git diff \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD"
 alias gddcc="git difftool \$(git log --pretty=format:\"%H %d%x20%s %cI\" | fzf | cut -d \" \" -f 1) HEAD "
