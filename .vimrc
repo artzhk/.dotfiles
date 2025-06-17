@@ -102,6 +102,9 @@ function! s:on_lsp_buffer_enabled() abort
 
 	let g:lsp_format_sync_timeout = 50
 	let g:lsp_diagnostics_virtual_text_align = "right"
+	let g:lsp_preview_doubletap = [function('lsp#ui#vim#output#focuspreview')]
+	let g:lsp_preview_float = 0
+
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
@@ -131,4 +134,4 @@ Plug 'github/copilot.vim'
 call plug#end()
 
 " Additional per mashine customizations
-"source ~/.profile.vim
+source ~/.profile.vim

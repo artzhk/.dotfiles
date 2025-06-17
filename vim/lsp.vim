@@ -18,16 +18,18 @@ if executable('~/lib/clang/bin/clangd')
 endif
 
 if executable('typescript-language-server')
-	" npm i -g vscode-eslint-language-server
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'vscode-eslint-language-server',
-				\ 'cmd': {server_info->['vscode-eslint-language-server', '--stdio']},
-				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
-				\ })
+
 	" npm i -g typescript-language-server
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'typescript-language-server',
 				\ 'cmd': {server_info->['typescript-language-server', '--stdio']},
+				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
+				\ })
+
+	" npm i -g vscode-eslint-language-server
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'vscode-eslint-language-server',
+				\ 'cmd': {server_info->['vscode-eslint-language-server']},
 				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
 				\ })
 
