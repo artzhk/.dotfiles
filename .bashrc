@@ -1,4 +1,4 @@
-# ~/.bashrc
+#!/bin/bash
 
 source ~/.dotfiles/bash/.aliases
 
@@ -16,10 +16,6 @@ export EDITOR="vim"
 export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=kvantum
 
-if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then 
-        export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
-fi
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -33,12 +29,11 @@ export HISTSIZE PROMPT_COMMAND
 
 shopt -s histappend
 
-# functions 
+# command line appearance
+## functions 
 git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
-
-# command line appearance
 PS1="\[\e[0m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e[0m\] "
 
 # Use bash-completion, if available
@@ -62,5 +57,3 @@ unset __conda_setup
 
 eval "$(zoxide init bash)"
 source ~/.local/share/blesh/ble.sh
-
-#. "$HOME/.cargo/env"
