@@ -34,11 +34,15 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-. "$HOME/.cargo/env"
+if [[ -f /home/art/.config/env ]]; then 
+	source /home/art/.config/env
+fi
 
 if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then 
         export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 fi
 
-source /home/art/.config/broot/launcher/bash/br
+if [[ -f /home/art/.config/broot/launcher/bash/br ]]; then 
+	source /home/art/.config/broot/launcher/bash/br
+fi
 
