@@ -17,6 +17,7 @@ set showmode
 set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
 set colorcolumn=120
+set textwidth=120
 set number
 set termguicolors
 set scrolloff=8
