@@ -11,6 +11,10 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+;; Copilot suggestion
+(require 'copilot)
+(global-set-key (kbd "C-c C-p") 'copilot-accept-completion)
+
 ;; Magit melpa
 (require 'exec-path-from-shell)
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")
@@ -76,10 +80,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
+     default))
  '(package-selected-packages
-   '(## compat dash ein eink-theme evil html2org latex-table-wizard
-	lsp-mode magit markdown-mode markdown-preview-mode org-fragtog
-	org-modern)))
+   '(## compat copilot dash ein eink-theme evil helm helm-bibtex html2org
+	latex-table-wizard lsp-mode magit markdown-mode
+	markdown-preview-mode org-fragtog org-modern org-noter org-ref
+	org-roam org-roam-bibtex pdf-tools)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -114,6 +122,62 @@ same directory as the org-buffer and insert a link to this file."
                 :image-size-adjust (2.0 . 2.0) ;; scale value
                 :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
                 :image-converter ("dvipng -D 300 -T tight -o %O %f"))))
+
+;; Org-mode and basic LaTeX/PDF support
+(require 'org)
+(require 'ox-latex)
+(setq org-startup-with-latex-preview t) ;; auto preview LaTeX
+
+;; Org Export to PDF using pdflatex (or xelatex if you prefer)
+(setq org-latex-compiler "pdflatex") ;; or xelatex
+(setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"))
+
+;; Enable image display in org-mode
+(setq org-startup-with-inline-images t)
+(setq org-image-actual-width '(300)) ;; limit image width
+
+;; Allow pasting images (if you already have a script)
+;; Just make sure org-download is installed if needed:
+;; (use-package org-download :ensure t)
+
+;; Optional: auto refresh inline images after paste
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
+
+;; Optional: LaTeX class customization for styling
+(setq org-latex-classes
+      '(("article"
+         "\\documentclass[11pt]{article}
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{graphicx}
+\\usepackage{tikz}
+\\usepackage{hyperref}
+\\usepackage{float}
+\\usepackage{booktabs}
+\\usepackage{color}
+\\usepackage{geometry}
+\\geometry{margin=1in}"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}"))))
+
+(setq org-latex-classes '(("apa6"
+       "\\documentclass[a4paper,man]{apa6}
+\\usepackage[nodoi]{apacite}
+\\usepackage[T1]{fontenc}
+\\usepackage{graphicx}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+(assoc "apa6" org-latex-classes)
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
+
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
