@@ -130,7 +130,8 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; Org Export to PDF using pdflatex (or xelatex if you prefer)
 (setq org-latex-compiler "pdflatex") ;; or xelatex
-(setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
+			      "pdflatex -interaction nonstopmode -output-directory %o %f"))
 
 ;; Enable image display in org-mode
 (setq org-startup-with-inline-images t)
@@ -164,6 +165,12 @@ same directory as the org-buffer and insert a link to this file."
        "\\documentclass[a4paper,man]{apa6}
 \\usepackage[nodoi]{apacite}
 \\usepackage[T1]{fontenc}
+\\usepackage{fancyhdr}
+\\usepackage{lastpage}
+\\pagestyle{fancy}
+\\fancyfoot[C]{%
+  Page \\thepage\\ of \\pageref*{LastPage}%
+}
 \\usepackage{graphicx}"
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")

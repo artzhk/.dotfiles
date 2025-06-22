@@ -10,12 +10,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
-export DOCKER_HOST=unix:////wsl/shared-docker/docker.sock
-
-alias esla="eslint --fix \$(git status -s | grep -v '^ D' | cut -c 4-)"
-alias preta="prettier -c \$(git status -s | grep -v '^ D' | cut -c 4-) -w"
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists

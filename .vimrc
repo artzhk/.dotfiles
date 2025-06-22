@@ -49,6 +49,18 @@ nnoremap <silent><leader>h :Man <C-R><C-W><CR>
 " command Mlist marks | grep -P "^[A-Z]"
 " nnoremap <silent><leader>ml :Man <C-R><C-W><CR>
 
+function s:copy_filename()
+	let file = expand('%:p')
+	" write to the tmp/buffer.txt file
+	if file == ''
+		let file = 'untitled'
+	endif
+	execute '!echo "' . file . '" > /tmp/buffer.txt'
+endfunction
+
+" Yank to system external buffer
+command -nargs=* CP call s:copy_filename()
+
 " No yanking options
 vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
