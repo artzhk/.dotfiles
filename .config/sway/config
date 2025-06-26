@@ -259,7 +259,12 @@ bar {
 		}
 }
 
+# Window Appearance:
 default_border pixel 2
 default_floating_border pixel 2
+
+client.focused #58a6ff #285577 #ffffff #2e9ef4 #58a6ff
+
+
 
 include /etc/sway/config.d/*
