@@ -119,4 +119,6 @@ alias ddc="docker compose"
 
 # NM cli 
 # Select and connect
-alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"8 18 16\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
+#
+#alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"8 18 16\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
+alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"10 16 14\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"

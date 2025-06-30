@@ -40,7 +40,7 @@ set $term alacritty
 bindsym $mod+q kill
 
 # Your preferred application launcher
-set $menu wmenu-run
+set $menu rofi -show drun 
 set $opened rofi -show window
 
 ### Output configuration
