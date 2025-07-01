@@ -23,6 +23,10 @@ set termguicolors
 set scrolloff=8
 set nowrap
 
+" ripgrep to qflist instead of fancy stupid plugins
+set grepprg=rg\ --vimgrep
+set grepformat^=%f:%l:%c:%m
+
 syntax on
 
 set smartcase
@@ -65,6 +69,15 @@ command -nargs=* CP call s:copy_filename()
 vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
+
+" Rg search no brackets to qflist
+" usage :Rgq <pattern> <folder>
+" is that way more better than any telescope bloated shit...?
+command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
+
+" Quickfix list
+nnoremap <silent><leader>q :copen<CR>
+nnoremap <silent><leader>c :cclose<CR>
 
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
