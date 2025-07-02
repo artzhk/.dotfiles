@@ -54,8 +54,7 @@ func <SID>prompt_rg()
 endfunc
 nnoremap <silent><C-b> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
-nnoremap <silent><leader>q :copen<CR>
-nnoremap <silent><leader>c :cclose<CR>
+nnoremap <silent><leader>lq :copen<CR>
 nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
 
 " fzf 
@@ -76,17 +75,30 @@ nnoremap <silent><leader>h :Man <C-R><C-W><CR>
 " command Mlist marks | grep -P "^[A-Z]"
 " nnoremap <silent><leader>ml :Man <C-R><C-W><CR>
 
-function s:copy_filename()
+function s:copy_filepath()
 	let file = expand('%:p')
 	" write to the tmp/buffer.txt file
 	if file == ''
 		let file = 'untitled'
 	endif
+	let @" = file
+	execute '!echo "' . file . '" > /tmp/buffer.txt'
+endfunction
+
+function s:copy_filename()
+	let file = expand('%:t')
+	" write to the tmp/buffer.txt file
+	if file == ''
+		let file = 'untitled'
+	endif
+	" write to the register
+	let @" = file
 	execute '!echo "' . file . '" > /tmp/buffer.txt'
 endfunction
 
 " Yank to system external buffer
-command -nargs=* CP call s:copy_filename()
+command -nargs=* Cp call s:copy_filepath()
+command -nargs=* Cf call s:copy_filename()
 
 " No yanking options
 vnoremap <silent><leader>p "_dP
@@ -105,8 +117,18 @@ nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>b :Buffers<CR>
+
+"" FZF config
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window = ['hidden,down,70%', 'ctrl-/']
+
+"" Undotree
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+
+"" Autoformat
 nnoremap <leader>f :Autoformat<CR>
+
+"" Copilot
 imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
 
