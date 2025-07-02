@@ -36,8 +36,31 @@ set incsearch
 let mapleader=" "
 
 " qflist
+" Rg search no brackets to qflist
+" usage :Rgq <pattern> <folder>
+" is that way more better than any telescope bloated shit...?
+" https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
+command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
+func <SID>prompt_rg()
+	let pattern = input("Pattern: ")
+	if pattern == '' 
+		return
+	endif
+	let folder = input("Folder: ", getcwd())
+	if folder == ''
+		let folder = getcwd()
+	endif 
+	execute 'Rgq ' . pattern . ' ' . folder
+endfunc
 nnoremap <silent><C-b> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
+nnoremap <silent><leader>q :copen<CR>
+nnoremap <silent><leader>c :cclose<CR>
+nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
+
+" fzf 
+"" fzf on current dir 
+nnoremap <silent><leader>cd <cmd>execute 'Files ' . fnameescape(expand('%:p:h'))<CR>
 
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
@@ -70,14 +93,6 @@ vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
 
-" Rg search no brackets to qflist
-" usage :Rgq <pattern> <folder>
-" is that way more better than any telescope bloated shit...?
-command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
-
-" Quickfix list
-nnoremap <silent><leader>q :copen<CR>
-nnoremap <silent><leader>c :cclose<CR>
 
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
@@ -118,6 +133,8 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer> gr <plug>(lsp-references)
 	nmap <buffer> gi <plug>(lsp-implementation)
 	nmap <buffer> gt <plug>(lsp-type-definition)
+	nnoremap <buffer><leader>va <plug>(lsp-code-action)
+	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
 	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
@@ -130,6 +147,9 @@ function! s:on_lsp_buffer_enabled() abort
 	let g:lsp_diagnostics_virtual_text_align = "right"
 	let g:lsp_preview_doubletap = [function('lsp#ui#vim#output#focuspreview')]
 	let g:lsp_preview_float = 0
+
+	" Put diagnostics in the quickfix list
+	let g:lsp_diagnostics_quickfix = 1
 
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
