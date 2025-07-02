@@ -77,8 +77,8 @@ bindsym $mod+q kill
 
 # start a terminal
 bindsym $mod+Return exec alacritty
-bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
-bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh --window
+bindsym $mod+d exec --no-startup-id rofi -show drun
+bindsym $mod+space exec --no-startup-id rofi -show window
 
 # run networkmanager
 bindsym $mod+1 exec --no-startup-id networkmanager_dmenu
