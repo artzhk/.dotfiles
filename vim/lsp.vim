@@ -27,11 +27,11 @@ if executable('typescript-language-server')
 				\ })
 
 	" npm i -g vscode-eslint-language-server
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'vscode-eslint-language-server',
-				\ 'cmd': {server_info->['vscode-eslint-language-server']},
-				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
-				\ })
+"	au User lsp_setup call lsp#register_server({
+"				\ 'name': 'vscode-eslint-language-server',
+"				\ 'cmd': {server_info->['vscode-eslint-language-server']},
+"				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
+"				\ })
 
 endif
 

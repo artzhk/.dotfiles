@@ -105,7 +105,6 @@ vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
 
-
 " External buffer, might be overengeneered...
 nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
 vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y

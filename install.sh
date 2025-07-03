@@ -66,7 +66,6 @@ setup .emacs.d
 
 echo -e "${BOLD}Are you using X11? ${NC}"
 
-
 for i in $(ls -a $SRC_PATH/.config | grep -P "^[A-z]+")  ; do
         setup .config/$i cp
 done
