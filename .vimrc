@@ -39,8 +39,8 @@ let mapleader=" "
 " Rg search no brackets to qflist
 " usage :Rgq <pattern> <folder>
 " is that way more better than any telescope bloated shit...?
-" https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
 command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
+" https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
 func <SID>prompt_rg()
 	let pattern = input("Pattern: ")
 	if pattern == '' 
