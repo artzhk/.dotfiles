@@ -73,7 +73,22 @@
 
 (add-hook 'find-file-hook #'org-space-maybe-mirror-new-file)
 
-(setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
+;;(setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
+
+;; Merges files in dir to export
+(defun merge-org-to-mobile-export (dir)
+  (interactive "DDirectory: ")
+  (let* ((export-dir "~/org-space/exports/")
+	 (files (directory-files dir t "\\.org$" ))
+	 (folder-name (file-name-nondirectory (directory-file-name dir)))
+	 (output (expand-file-name (concat folder-name ".org") export-dir)))
+    (make-directory (file-name-directory export-dir) t)
+    (with-temp-file output
+      (dolist (file files)
+	(insert-file-contents file)
+	(insert (format "#+TITLE: From %s\n\n" (file-name-nondirectory file)))
+	(insert "\n\n")))
+    (message "Stuff merged %d files into %s" (length files) output)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -83,6 +98,8 @@
  '(custom-safe-themes
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
      default))
+ '(org-agenda-files
+   (directory-files-recursively "~/org-space/" "\\.org$"))
  '(package-selected-packages
    '(## compat copilot dash ein eink-theme evil helm helm-bibtex html2org
 	latex-table-wizard lsp-mode magit markdown-mode
