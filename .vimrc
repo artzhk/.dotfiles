@@ -8,6 +8,7 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 set autoread
+set hidden
 set cursorline
 set clipboard=unnamed
 set ignorecase
@@ -56,6 +57,11 @@ nnoremap <silent><C-b> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
 nnoremap <silent><leader>lq :copen<CR>
 nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
+" qflist wrap
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
 
 " fzf 
 "" fzf on current dir 
