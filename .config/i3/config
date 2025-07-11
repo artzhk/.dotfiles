@@ -23,17 +23,6 @@ set $in-text    #b1bac4
 set $focused-ws #523d6400
 set $bar-color  #523d640D
 
-# Color shemes for windows
-# set $text    #ffffff
-# set $active     #58a6ff
-# set $in-bgcolor #6e915f
-# set $bgcolor       #545464
-# set $u-bgcolor  #ff0000
-# set $indicator  #a8a3c1
-# set $in-text    #b1bac4
-# set $focused-ws #523d6400
-# set $bar-color  #523d640D
-
 #                        border      background  text      indicator (a line which shows where the next window will be placed)
 # client.focused           $active     $active     $bgcolor  $in-bgcolor
 client.focused           $active     $active     $bgcolor  $in-bgcolor
@@ -180,23 +169,22 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 mode "resize" {
-        # Pressing up will shrink the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym j resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+# Pressing up will shrink the window’s height.
+	bindsym h resize shrink width 10 px or 10 ppt
+		bindsym k resize grow height 10 px or 10 ppt
+		bindsym j resize shrink height 10 px or 10 ppt
+		bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Up resize grow height 10 px or 10 ppt
-        bindsym Down resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+# back to normal: Enter or Escape or $mod+r
+		bindsym Return mode "default"
+		bindsym Escape mode "default"
+		bindsym $mod+r mode "default"
 }
+
+bar {
+	status_command i3status
+}
+
 
 bindsym $mod+r mode "resize"
 
