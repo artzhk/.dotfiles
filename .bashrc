@@ -29,6 +29,9 @@ export HISTSIZE PROMPT_COMMAND
 
 shopt -s histappend
 
+# FZF 
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,.venv,env,cache}/*" -g "!*{DS_Store,swp,pyc,db}"'
+
 # command line appearance
 ## functions 
 git_branch() {
@@ -57,3 +60,7 @@ unset __conda_setup
 
 eval "$(zoxide init bash)"
 source ~/.local/share/blesh/ble.sh
+
+if [ -f ~/.profile ]; then
+    source ~/.profile
+fi

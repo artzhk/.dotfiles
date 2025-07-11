@@ -3,14 +3,17 @@ let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
-" termguicolors fix
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+let $FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND
+let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS . '--reverse --bind "alt-a:select-all,alt-d:deselect-all" --tiebreak=end,pathname,chunk'
+
+"" termguicolors fix
+"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 set autoread
 set hidden
 set cursorline
-set clipboard=unnamed
+set clipboard=unnamedplus
 set ignorecase
 set encoding=utf8
 set shiftwidth=8 tabstop=8 softtabstop=0 noexpandtab smartindent
@@ -20,7 +23,7 @@ set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
 set colorcolumn=120
 set textwidth=120
 set number
-set termguicolors
+"set termguicolors
 set scrolloff=8
 set nowrap
 
@@ -44,27 +47,28 @@ command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
 " https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
 func <SID>prompt_rg()
 	let pattern = input("Pattern: ")
-	if pattern == '' 
+	if pattern == ''
 		return
 	endif
 	let folder = input("Folder: ", getcwd())
 	if folder == ''
 		let folder = getcwd()
-	endif 
+	endif
 	execute 'Rgq ' . pattern . ' ' . folder
 endfunc
 nnoremap <silent><C-b> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
 nnoremap <silent><leader>lq :copen<CR>
 nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
+
 " qflist wrap
 augroup quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
+	autocmd!
+	autocmd FileType qf setlocal wrap
 augroup END
 
-" fzf 
-"" fzf on current dir 
+" fzf
+"" fzf on current dir
 nnoremap <silent><leader>cd <cmd>execute 'Files ' . fnameescape(expand('%:p:h'))<CR>
 
 vnoremap K :m '<-2<CR>gv=gv
@@ -88,6 +92,7 @@ function s:copy_filepath()
 		let file = 'untitled'
 	endif
 	let @" = file
+	let @+ = file
 	execute '!echo "' . file . '" > /tmp/buffer.txt'
 endfunction
 
@@ -99,6 +104,7 @@ function s:copy_filename()
 	endif
 	" write to the register
 	let @" = file
+	let @+ = file
 	execute '!echo "' . file . '" > /tmp/buffer.txt'
 endfunction
 
@@ -124,8 +130,18 @@ nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>b :Buffers<CR>
 
 "" FZF config
+function! s:build_quickfix_list(lines)
+	call setqflist(map(copy(a:lines), '{ "filename": v:val, "lnum": 1 }'))
+	copen
+	cc
+endfunction
 let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['hidden,down,70%', 'ctrl-/']
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 1, 'xoffset': 1, 'border': 'sharp' } }
+let g:fzf_action = {
+			\ 'ctrl-s': function('s:build_quickfix_list'),
+			\}
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files', {'window': { 'width': 0.3, 'height': 1, 'xoffset': 2 }})
 
 "" Undotree
 nnoremap <silent><leader>u :UndotreeToggle<CR>
@@ -196,7 +212,7 @@ endif
 
 call plug#begin()
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '--reverse  --expect=ctrl-v,ctrl-x,ctrl-t',}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '',}
 Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mbbill/undotree'
