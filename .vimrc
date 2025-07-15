@@ -87,42 +87,30 @@ nnoremap <silent><leader>h :Man <C-R><C-W><CR>
 
 function s:copy_filepath()
 	let file = expand('%:p')
-	" write to the tmp/buffer.txt file
-	if file == ''
-		let file = 'untitled'
-	endif
 	let @" = file
 	let @+ = file
-	execute '!echo "' . file . '" > /tmp/buffer.txt'
+	echo 'Copied filepath: ' . file
 endfunction
 
 function s:copy_filename()
 	let file = expand('%:t')
 	" write to the tmp/buffer.txt file
-	if file == ''
-		let file = 'untitled'
-	endif
 	" write to the register
 	let @" = file
 	let @+ = file
-	execute '!echo "' . file . '" > /tmp/buffer.txt'
+	echo 'Copied filename: ' . file
 endfunction
 
 " Yank to system external buffer
 command -nargs=* Cp call s:copy_filepath()
 command -nargs=* Cf call s:copy_filename()
+nnoremap <silent><leader>CF :Cf<CR>
+nnoremap <silent><leader>CP :Cp<CR>
 
 " No yanking options
 vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
-
-" External buffer, might be overengeneered...
-nnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
-vnoremap <silent><leader>y :w! /tmp/buffer.txt<CR> ""y
-nnoremap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
-vnoremap <silent><leader><S-P> !cat /tmp/buffer.txt<CR>
-nmap <silent><leader><S-P> !!cat /tmp/buffer.txt<CR>
 
 " Plugin remaps
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
