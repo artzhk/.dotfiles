@@ -11,7 +11,7 @@ export PATH=~/dotnet/tools:$PATH
 
 # Env config
 export GTK_THEME="Arc"
-export BAT_THEME="base16"
+export BAT_THEME="ansi"
 export EDITOR="vim"
 export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=kvantum
@@ -31,7 +31,7 @@ shopt -s histappend
 
 # FZF 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,.venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
-export FZF_DEFAULT_OPTS='--preview "bat --color=always --theme=base16 {}"'
+export FZF_DEFAULT_OPTS='--preview "bat --color=always {}" --preview-window=right:50%:hidden --bind=ctrl-/:toggle-preview'
 
 # command line appearance
 ## functions 
