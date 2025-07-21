@@ -9,10 +9,11 @@ if executable('sql-language-server')
 endif
 
 
-if executable('~/lib/clang/bin/clangd')
+" make + qfilst
+if executable('clangd')
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'clang',
-				\ 'cmd': {server_info->['~/lib/clang/bin/clangd', '--background-index', '--clang-tidy', 'stdio']},
+				\ 'cmd': {server_info->['clangd', '--background-index', '--clang-tidy']},
 				\ 'allowlist': ['h', 'c', 'hpp', 'cpp'],
 				\ })
 endif

@@ -4,8 +4,7 @@ source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
 let $FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND
-let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS . '--reverse --bind "alt-a:select-all,alt-d:deselect-all" --tiebreak=end,pathname,chunk'
-
+"let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS
 "" termguicolors fix
 "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
