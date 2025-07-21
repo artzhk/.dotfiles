@@ -4,7 +4,8 @@ source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
 let $FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND
-"let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS
+let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS
+
 "" termguicolors fix
 "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -157,29 +158,26 @@ function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
 	setlocal signcolumn=yes
 	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-	nmap <buffer><leader>gd <plug>(lsp-definition)
-	nmap <buffer><leader>gs <plug>(lsp-document-symbol-search)
-	nmap <buffer><leader>gS <plug>(lsp-workspace-symbol-search)
-	nmap <buffer><leader>gr <plug>(lsp-references)
+	nmap <buffer>gd <plug>(lsp-definition)
+	nmap <buffer>gs <plug>(lsp-document-symbol-search)
+	nmap <buffer>gS <plug>(lsp-workspace-symbol-search)
+	nmap <buffer>gr <plug>(lsp-references)
 	nmap <buffer><leader>gi <plug>(lsp-implementation)
-	nmap <buffer><leader>gt <plug>(lsp-type-definition)
+	nmap <buffer>gt <plug>(lsp-type-definition)
 	nnoremap <buffer><leader>va <plug>(lsp-code-action)
 	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
 	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
-	nmap <buffer><leader>k <plug>(lsp-hover)
+	nmap <buffer>K <plug>(lsp-hover)
 	nmap <buffer> dq <plug>(lsp-document-diagnostics)
 	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-k> lsp#scroll(-4)
 
 	let g:lsp_format_sync_timeout = 50
+	let g:lsp_hover_ui = 'preview'
 	let g:lsp_diagnostics_virtual_text_align = "right"
-	let g:lsp_preview_doubletap = [function('lsp#ui#vim#output#focuspreview')]
-	let g:lsp_preview_float = 0
-
-	" Put diagnostics in the quickfix list
-	let g:lsp_diagnostics_quickfix = 1
+	let g:lsp_diagnostics_virtual_text_wrap = "truncate"
 
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction

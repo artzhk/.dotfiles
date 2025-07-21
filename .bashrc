@@ -31,7 +31,7 @@ shopt -s histappend
 
 # FZF 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,.venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
-export FZF_DEFAULT_OPTS='--preview "bat --color=always {}" --preview-window=right:50%:hidden --bind=ctrl-/:toggle-preview,alt-a:select-all,alt-d:deselect-all --tiebreak=end,pathname,chunk'
+export FZF_DEFAULT_OPTS='--preview "bat --color=always --theme=ansi {}" --preview-window=right:50%:hidden --bind=ctrl-/:toggle-preview,alt-a:select-all,alt-d:deselect-all --tiebreak=end,pathname,chunk'
 
 # command line appearance
 ## functions 
