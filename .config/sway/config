@@ -110,8 +110,11 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 # Screenshot
 bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
 
+# Magnification
+# https://github.com/negrel/wooz
+bindsym $mod+y exec --no-startup-id ~/.local/bin/wooz
+
 # Moving around:
-#
 # Move your focus around
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -199,6 +202,8 @@ mode "display" {
 		bindsym $mod+b output HDMI-A-1 transform 0 scale 1.0 resolution 2560x1440 position 0 0; output eDP-1 disable
 # External only vertical
 		bindsym $mod+v output HDMI-A-1 transform 270 scale 1.0 resolution 2560x1440 position 0 0; output eDP-1 disable
+# Only eDP-1
+		bindsym $mod+e output eDP-1 enable; output eDP-1 resolution 3024x1890 position 0 0; output HDMI-A-1 disable
 
 # Return to default mode
 		bindsym Return mode "default"
