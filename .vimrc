@@ -129,7 +129,7 @@ let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 1, 'xoffset': 1, 'borde
 let g:fzf_action = {
 			\ 'ctrl-s': function('s:build_quickfix_list'),
 			\}
-inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files', {'window': { 'width': 0.3, 'height': 1, 'xoffset': 2 }})
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files', {'window': { 'width': 0.5, 'height': 1, 'xoffset': 2 }})
 
 "" Undotree
 nnoremap <silent><leader>u :UndotreeToggle<CR>

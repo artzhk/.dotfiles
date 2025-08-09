@@ -19,18 +19,21 @@ export QT_QPA_PLATFORMTHEME=kvantum
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-set -o vi
+set -o emacs
 
 # bash history
 unset HISTFILESIZE
-HISTSIZE=3000
+export HISTFILE=~/.bash_history
+HISTSIZE=10000
 PROMPT_COMMAND="history -a"
 export HISTSIZE PROMPT_COMMAND
+export HISTIGNORE="ls:pwd:exit:clear:history:mkdir"
 
+history -r ~/.bash_history
 shopt -s histappend
 
 # FZF 
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,.venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
 export FZF_DEFAULT_OPTS='--preview "bat --color=always --theme=ansi {}" --preview-window=right:50%:hidden --bind=ctrl-/:toggle-preview,alt-a:select-all,alt-d:deselect-all --tiebreak=end,pathname,chunk'
 
 # command line appearance
