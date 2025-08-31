@@ -18,21 +18,23 @@ if executable('clangd')
 				\ })
 endif
 
+" Ruby (ruby-lsp via mise)
+if executable('mise') && filereadable(expand('~/lib/ruby-lsp/exe/ruby-lsp')) && filereadable(expand('./.ruby-version'))
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'ruby-lsp',
+        \ 'cmd': {server_info->['mise', 'x', '--', expand('~/lib/ruby-lsp/exe/ruby-lsp')]},
+        \ 'allowlist': ['ruby', 'rb'],
+        \ })
+endif
+
 if executable('typescript-language-server')
 
 	" npm i -g typescript-language-server
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'typescript-language-server',
-				\ 'cmd': {server_info->['typescript-language-server', '--stdio']},
+				\ 'cmd': {server_info->['/usr/bin/typescript-language-server', '--stdio']},
 				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
 				\ })
-
-	" npm i -g vscode-eslint-language-server
-"	au User lsp_setup call lsp#register_server({
-"				\ 'name': 'vscode-eslint-language-server',
-"				\ 'cmd': {server_info->['vscode-eslint-language-server']},
-"				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
-"				\ })
 
 endif
 

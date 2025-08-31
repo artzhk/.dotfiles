@@ -63,7 +63,6 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 eval "$(zoxide init bash)"
-#source ~/.local/share/blesh/ble.sh
 
 if [ -f ~/.profile ]; then
     source ~/.profile
