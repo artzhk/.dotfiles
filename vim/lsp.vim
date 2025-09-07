@@ -28,14 +28,22 @@ if executable('mise') && filereadable(expand('~/lib/ruby-lsp/exe/ruby-lsp')) && 
 endif
 
 if executable('typescript-language-server')
-
 	" npm i -g typescript-language-server
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'typescript-language-server',
-				\ 'cmd': {server_info->['/usr/bin/typescript-language-server', '--stdio']},
+				\ 'cmd': {server_info->['typescript-language-server', '--stdio']},
 				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
 				\ })
 
+endif
+
+if executable('rust-analyzer')
+	" rustup component add rust-analyzer
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'rust-analyzer',
+				\ 'cmd': {server_info->['rust-analyzer']},
+				\ 'allowlist': ['rust'],
+				\ })
 endif
 
 if executable('pylsp')

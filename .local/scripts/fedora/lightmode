@@ -1,6 +1,7 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
+ln -sfn ~/.dotfiles/.config/alacritty/themes/art_kanagawa.toml ~/.config/alacritty/colorscheme
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 kvantummanager --set KvArc
 
-ln -sfn ~/.dotfiles/.config/alacritty/themes/art_kanagawa.toml ~/.config/alacritty/colorscheme
