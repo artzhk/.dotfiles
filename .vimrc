@@ -140,6 +140,8 @@ nnoremap <leader>f :Autoformat<CR>
 "" Copilot
 imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
+let g:copilot_enabled = v:false
+
 
 " Vim Go
 let g:go_def_mode="gopls"
