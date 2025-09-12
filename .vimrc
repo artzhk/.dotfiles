@@ -31,7 +31,8 @@ set nowrap
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
 
-syntax on
+syntax enable
+filetype plugin indent on
 
 set smartcase
 set incsearch
@@ -202,6 +203,7 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '',}
 Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'rust-lang/rust.vim'
 Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
