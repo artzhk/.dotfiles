@@ -32,9 +32,14 @@ set incsearch
 " inbuild keymappings
 let mapleader=" "
 " super start with no jump
-nnoremap * *``
+nnoremap * :keepjumps normal! mi*`i<CR>
+
 " line numbers switch
 nnoremap <silent><leader>nr :set rnu!<CR>
+
+" tabs
+nnoremap <silent><leader>tn :tabn<CR>
+nnoremap <silent><leader>tp :tabp<CR>
 
 " qflist navigation
 nnoremap <silent><C-b> :cp<CR>
@@ -158,7 +163,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer>gS <plug>(lsp-workspace-symbol-search)
 	nmap <buffer>gr <plug>(lsp-references)
 	nmap <buffer><leader>gi <plug>(lsp-implementation)
-	nmap <buffer>gt <plug>(lsp-type-definition)
+	nmap <buffer><leader>gt <plug>(lsp-type-definition)
 	nnoremap <buffer><leader>va <plug>(lsp-code-action)
 	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
