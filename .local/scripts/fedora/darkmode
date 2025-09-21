@@ -1,8 +1,9 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
+ln -sfn /dev/null ~/.config/alacritty/colorscheme
+ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme.ini
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
 kvantummanager --set KvArcDark
 
-ln -sfn /dev/null ~/.config/alacritty/colorscheme
-ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme.ini

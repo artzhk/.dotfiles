@@ -6,14 +6,10 @@ source $VIMRUNTIME/menu.vim
 let $FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND
 let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS
 
-"" termguicolors fix
-"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
 set autoread
 set hidden
 set cursorline
-set clipboard=unnamedplus
+set clipboard=autoselect
 set ignorecase
 set encoding=utf8
 set shiftwidth=8 tabstop=8 softtabstop=0 noexpandtab smartindent
@@ -27,39 +23,28 @@ set number
 set scrolloff=8
 set nowrap
 
-" ripgrep to qflist instead of fancy stupid plugins
-set grepprg=rg\ --vimgrep
-set grepformat^=%f:%l:%c:%m
-
-syntax on
+syntax enable
+filetype plugin indent on
 
 set smartcase
 set incsearch
 
-" Inbuild Keymappings
+" inbuild keymappings
 let mapleader=" "
+" super start with no jump
+nnoremap * :keepjumps normal! mi*`i<CR>
 
-" qflist
-" Rg search no brackets to qflist
-" usage :Rgq <pattern> <folder>
-" is that way more better than any telescope bloated shit...?
-command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
-" https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
-func <SID>prompt_rg()
-	let pattern = input("Pattern: ")
-	if pattern == ''
-		return
-	endif
-	let folder = input("Folder: ", getcwd())
-	if folder == ''
-		let folder = getcwd()
-	endif
-	execute 'Rgq ' . pattern . ' ' . folder
-endfunc
+" line numbers switch
+nnoremap <silent><leader>nr :set rnu!<CR>
+
+" tabs
+nnoremap <silent><leader>tn :tabn<CR>
+nnoremap <silent><leader>tp :tabp<CR>
+
+" qflist navigation
 nnoremap <silent><C-b> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
 nnoremap <silent><leader>lq :copen<CR>
-nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
 
 " qflist wrap
 augroup quickfix
@@ -67,24 +52,16 @@ augroup quickfix
 	autocmd FileType qf setlocal wrap
 augroup END
 
-" fzf
-"" fzf on current dir
-nnoremap <silent><leader>cd <cmd>execute 'Files ' . fnameescape(expand('%:p:h'))<CR>
-
+" moving visual selection
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
-nnoremap <silent><leader>nr :set rnu!<CR>
-
-" Man pages
-"" how to open the buf to be readonly?
+" man pages
+" TODO: open the buf to be readonly
 command -nargs=* Man new | 0read !man <args> | col -b
 nnoremap <silent><leader>h :Man <C-R><C-W><CR>
 
-" TODO: Better marks list
-" command Mlist marks | grep -P "^[A-Z]"
-" nnoremap <silent><leader>ml :Man <C-R><C-W><CR>
-
+" current file helpers
 function s:copy_filepath()
 	let file = expand('%:p')
 	let @" = file
@@ -101,23 +78,45 @@ function s:copy_filename()
 	echo 'Copied filename: ' . file
 endfunction
 
-" Yank to system external buffer
 command -nargs=* Cp call s:copy_filepath()
 command -nargs=* Cf call s:copy_filename()
 nnoremap <silent><leader>CF :Cf<CR>
 nnoremap <silent><leader>CP :Cp<CR>
 
-" No yanking options
+" no yanking options
 vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
 
-" Plugin remaps
-nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
+" ======== External stuff integration ========
+" rg search no brackets to qflist
+" ripgrep to qflist instead of fancy stupid plugins
+set grepprg=rg\ --vimgrep
+set grepformat^=%f:%l:%c:%m
+
+" usage :Rgq <pattern> <folder>
+command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
+" https://stackoverflow.com/questions/70569858/neovim-e81-using-sid-not-in-a-script-context
+func <SID>prompt_rg()
+	let pattern = input("Pattern: ")
+	if pattern == ''
+		return
+	endif
+	let folder = input("Folder: ", getcwd())
+	if folder == ''
+		let folder = getcwd()
+	endif
+	execute 'Rgq ' . pattern . ' ' . folder
+endfunc
+nnoremap <silent><leader>rg :call <SID>prompt_rg()<CR>
+
+" fzf
+"" fzf on current dir
+nnoremap <silent><leader>cd <cmd>execute 'Files ' . fnameescape(expand('%:p:h'))<CR>
+
+" plugin remaps
 nnoremap <silent><leader>du :Files<CR>
 nnoremap <silent><leader>b :Buffers<CR>
-
-"" FZF config
 function! s:build_quickfix_list(lines)
 	call setqflist(map(copy(a:lines), '{ "filename": v:val, "lnum": 1 }'))
 	copen
@@ -131,17 +130,18 @@ let g:fzf_action = {
 			\}
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files', {'window': { 'width': 0.5, 'height': 1, 'xoffset': 2 }})
 
-"" Undotree
+"" undotree
 nnoremap <silent><leader>u :UndotreeToggle<CR>
 
-"" Autoformat
+"" autoformat
 nnoremap <leader>f :Autoformat<CR>
 
-"" Copilot
+"" copilot
 imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
+let g:copilot_enabled = v:false
 
-" Vim Go
+" vim Go
 let g:go_def_mode="gopls"
 let g:go_info_mode="gopls"
 let g:go_fmt_command = "goimports"
@@ -151,7 +151,7 @@ let g:go_list_type = "quickfix"
 set completeopt-=preview
 command GLB GoBuild
 
-" LSP setup
+" lsp setup
 source ~/.dotfiles/vim/lsp.vim
 
 function! s:on_lsp_buffer_enabled() abort
@@ -163,7 +163,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer>gS <plug>(lsp-workspace-symbol-search)
 	nmap <buffer>gr <plug>(lsp-references)
 	nmap <buffer><leader>gi <plug>(lsp-implementation)
-	nmap <buffer>gt <plug>(lsp-type-definition)
+	nmap <buffer><leader>gt <plug>(lsp-type-definition)
 	nnoremap <buffer><leader>va <plug>(lsp-code-action)
 	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
@@ -179,7 +179,7 @@ function! s:on_lsp_buffer_enabled() abort
 	let g:lsp_diagnostics_virtual_text_align = "right"
 	let g:lsp_diagnostics_virtual_text_wrap = "truncate"
 
-	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+	autocmd! BufWritePre *.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
@@ -188,7 +188,7 @@ augroup lsp_install
 	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-" Automatic Plug install
+" automatic plug install
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
 	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -200,6 +200,7 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '',}
 Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'rust-lang/rust.vim'
 Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
