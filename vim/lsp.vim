@@ -55,3 +55,20 @@ if executable('pylsp')
 				\ })
 endif
 
+if executable('cspell-lsp')
+	" npm install -g @vlabo/cspell-lsp
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'cspell',
+				\ 'cmd': {server_info->['cspell-lsp', '--stdio']},
+				\ 'allowlist': ['typescript', 'javascript', 'python', 'rust', 'go', 'c', 'cpp', 'h', 'hpp', 'cs', 'csharp', 'html', 'css', 'json', 'yaml', 'yml', 'md', 'markdown'],
+				\ })
+endif
+
+if executable('csharp-ls') 
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'csharp-ls',
+				\ 'cmd': {server_info->['csharp-ls']},
+				\ 'allowlist': ['cs', 'csharp', 'slnx'],
+				\ })
+endif
+
