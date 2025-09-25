@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: [
+    "-I/home/art/.local/include",
+    "-L/home/art/.local/lib"
+    ]
+

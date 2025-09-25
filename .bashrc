@@ -10,6 +10,8 @@ export PATH=~/.local/watches:$PATH
 export PATH=~/dotnet/tools:$PATH
 
 # Env config
+export LD_LIBRARY_PATH=~/.local/lib:$LD_LIBRARY_PATH
+export CPATH=~/.local/include:$CPATH
 export GTK_THEME="Arc"
 export BAT_THEME="ansi"
 export EDITOR="vim"
