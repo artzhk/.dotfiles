@@ -64,8 +64,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-eval "$(zoxide init bash)"
-
 if [ -f ~/.profile ]; then
     source ~/.profile
 fi
