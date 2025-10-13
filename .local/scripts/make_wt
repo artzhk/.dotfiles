@@ -37,14 +37,22 @@ function create() {
                         fi 
 
                         input="$(echo "$2" | grep -P -o "[\d]+$")"
+			git worktree add -f ~/repos/PBD_WT/AZ/"$input" -b AZ/"$input"
+			exit 1;
                 fi 
         fi      
 
         if [[ -z "$input" ]]; then
                 input="$1"
         fi      
+
+	if [[ `git rev-parse --verify "$input" 2>/dev/null` ]]; then
+		echo "works"
+		git worktree add ~/repos/PBD_WT/"$input" -b "$input"
+		exit 1;
+	fi
         
-        git worktree add -f ~/repos/PBD_WT/"$input" -b AZ/"$input"
+        git worktree add -f ~/repos/PBD_WT/AZ/"$input" -b AZ/"$input"
 }
 
 create $1 $2
