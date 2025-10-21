@@ -88,6 +88,74 @@ vnoremap <silent><leader>p "_dP
 nnoremap <silent><leader>p V"_dP
 nnoremap <silent><leader>d "_d
 
+" [k]omment un[k]omment stuff
+function s:komment()
+	" Languages that use //
+	let slash_exts = [
+				\ 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'java', 'js', 'ts',
+				\ 'go', 'swift', 'scala', 'kotlin', 'rs', 'cs', 'dart',
+				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader'
+				\ ]
+
+	" Languages that use #
+	let hash_exts = [
+				\ 'py', 'sh', 'bash', 'zsh', 'rb', 'pl', 'pm', 'r', 'jl',
+				\ 'yaml', 'yml', 'toml', 'ini', 'make', 'Dockerfile', 'awk',
+				\ 'tcl', 'sed', 'gnuplot'
+				\ ]
+
+	" Languages that use ;
+	let semicolon_exts = [
+				\ 'lisp', 'cl', 'el', 'scm', 'rkt', 'asm'
+				\ ]
+
+	" Languages that use % (LaTeX, MATLAB, etc.)
+	let percent_exts = [
+				\ 'tex', 'ltx', 'matlab', 'octave'
+				\ ]
+
+	" Languages that use -- (SQL, Ada, Lua, Haskell)
+	let dashdash_exts = [
+				\ 'sql', 'lua', 'hs', 'adb', 'ads'
+  				\ ]
+
+	" Languages that use REM or '
+	let apostrophe_exts = [
+				\ 'vb', 'vbs', 'bas'
+				\ ]
+
+	let quote_exts = [ '.vimrc' ]
+
+	" Collect all into one dictionary for convenience
+	let by_style_exts = {
+				\ '//': slash_exts,
+				\ '#': hash_exts,
+				\ ';': semicolon_exts,
+				\ '%': percent_exts,
+				\ '--': dashdash_exts,
+				\ "'": apostrophe_exts,
+				\ "\"": quote_exts,
+				\ }
+
+
+	let l:ext = expand('%:e')
+	let l:root = expand('%:r')
+	let char = '#'
+
+ 	for [prefix, exts] in items(by_style_exts)
+ 		if l:ext != '' && index(exts, l:ext) != -1 || index(exts, l:root) != -1
+			let l:char = prefix
+ 		endif
+	endfor
+	execute "norm! 0i" . l:char . " "
+endfunction
+
+nnoremap <silent><leader>k :call <SID>komment()<CR>
+vnoremap <silent><leader>k :call <SID>komment()<CR>
+nnoremap <silent><leader>K :norm _xx<CR>
+vnoremap <silent><leader>K :norm _xx<CR>
+
+
 " ======== External stuff integration ========
 " rg search no brackets to qflist
 " ripgrep to qflist instead of fancy stupid plugins
