@@ -94,13 +94,13 @@ function s:komment()
 	let slash_exts = [
 				\ 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'java', 'js', 'ts',
 				\ 'go', 'swift', 'scala', 'kotlin', 'rs', 'cs', 'dart',
-				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader'
+				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx'
 				\ ]
 
 	" Languages that use #
 	let hash_exts = [
 				\ 'py', 'sh', 'bash', 'zsh', 'rb', 'pl', 'pm', 'r', 'jl',
-				\ 'yaml', 'yml', 'toml', 'ini', 'make', 'Dockerfile', 'awk',
+				\ 'yaml', 'yml', 'toml', 'ini', 'make', 'dockerfile', 'Dockerfile', 'awk',
 				\ 'tcl', 'sed', 'gnuplot'
 				\ ]
 
@@ -117,14 +117,14 @@ function s:komment()
 	" Languages that use -- (SQL, Ada, Lua, Haskell)
 	let dashdash_exts = [
 				\ 'sql', 'lua', 'hs', 'adb', 'ads'
-  				\ ]
+				\ ]
 
 	" Languages that use REM or '
 	let apostrophe_exts = [
 				\ 'vb', 'vbs', 'bas'
 				\ ]
 
-	let quote_exts = [ '.vimrc' ]
+	let quote_exts = [ '.vimrc', 'vimrc' ]
 
 	" Collect all into one dictionary for convenience
 	let by_style_exts = {
@@ -138,23 +138,26 @@ function s:komment()
 				\ }
 
 
-	let l:ext = expand('%:e')
-	let l:root = expand('%:r')
-	let char = '#'
+	let ext = expand('%:e')
+	let root = expand('%:r')
+	let filename = expand('%:t')
 
- 	for [prefix, exts] in items(by_style_exts)
- 		if l:ext != '' && index(exts, l:ext) != -1 || index(exts, l:root) != -1
-			let l:char = prefix
- 		endif
+	let char = "#"
+
+	for [prefix, exts] in items(by_style_exts)
+		" if (ext != '' && index(exts, ext) != -1) || index(exts, root) != -1
+		if index(exts, filename) != -1 || (ext != '' && index(exts, ext) != -1) || index(exts, root) != -1
+			let char = prefix
+			break
+		endif
 	endfor
-	execute "norm! 0i" . l:char . " "
+	execute "norm! 0i" . char . " "
 endfunction
 
 nnoremap <silent><leader>k :call <SID>komment()<CR>
 vnoremap <silent><leader>k :call <SID>komment()<CR>
 nnoremap <silent><leader>K :norm _xx<CR>
 vnoremap <silent><leader>K :norm _xx<CR>
-
 
 " ======== External stuff integration ========
 " rg search no brackets to qflist

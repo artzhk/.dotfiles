@@ -8,7 +8,6 @@ if executable('sql-language-server')
 				\ })
 endif
 
-
 " make + qfilst
 if executable('clangd')
 	au User lsp_setup call lsp#register_server({
