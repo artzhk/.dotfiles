@@ -145,6 +145,49 @@ same directory as the org-buffer and insert a link to this file."
 (require 'ox-latex)
 (setq org-startup-with-latex-preview t) ;; auto preview LaTeX
 
+;; Put in init.el, after Org is loaded
+(with-eval-after-load 'org
+  (let* ((dvisvgm-proc
+          '(dvisvgm
+            :programs ("latex" "dvisvgm")
+            :description "dvi → svg"
+            :message "Install TeX (latex) and dvisvgm."
+            :image-input-type "dvi"
+            :image-output-type "svg"
+            :image-size-adjust (1.5 . 1.5)
+            :latex-compiler ("latex -interaction=nonstopmode -output-directory %o %f")
+            :image-converter ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
+    ;; Ensure dvisvgm entry exists (merge, don't clobber others)
+    (setq org-preview-latex-process-alist
+          (let ((alist org-preview-latex-process-alist))
+            (if (assoc 'dvisvgm alist) alist (cons dvisvgm-proc alist))))
+    ;; Prefer dvisvgm, fallback to imagemagick if dvisvgm missing
+    (setq org-preview-latex-default-process
+          (if (executable-find "dvisvgm") 'dvisvgm 'imagemagick))))
+
+;; Nuke stale buffer-local defaults that still point to dvipng
+(add-hook 'org-mode-hook
+          (defun my/org-force-dvisvgm ()
+            (when (eq org-preview-latex-default-process 'dvipng)
+              (setq-local org-preview-latex-default-process 'dvisvgm))
+            (unless (assoc 'dvisvgm org-preview-latex-process-alist)
+              (setq-local org-preview-latex-process-alist
+                          (cons
+                           '(dvisvgm
+                             :programs ("latex" "dvisvgm")
+                             :description "dvi → svg"
+                             :message "Install TeX (latex) and dvisvgm."
+                             :image-input-type "dvi"
+                             :image-output-type "svg"
+                             :image-size-adjust (1.5 . 1.5)
+			     :scale (
+                             :latex-compiler ("latex -interaction=nonstopmode -output-directory %o %f")
+                             :image-converter ("dvisvgm --no-fonts --exact-bbox -o %O %f"))
+                           org-preview-latex-process-alist)))))
+
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :scale 2.0))
+
 ;; Org Export to PDF using pdflatex (or xelatex if you prefer)
 (setq org-latex-compiler "pdflatex") ;; or xelatex
 (setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
@@ -152,7 +195,7 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; Enable image display in org-mode
 (setq org-startup-with-inline-images t)
-(setq org-image-actual-width '(300)) ;; limit image width
+(setq org-image-actual-width '(800)) ;; limit image width
 
 ;; Allow pasting images (if you already have a script)
 ;; Just make sure org-download is installed if needed:
