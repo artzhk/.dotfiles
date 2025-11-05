@@ -1,5 +1,4 @@
-"" LSP
-" TODO: Put the lsps in the separate file
+"" LSPs
 if executable('sql-language-server')
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'sql-language-server',

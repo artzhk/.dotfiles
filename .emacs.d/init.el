@@ -12,18 +12,16 @@
 (package-initialize)
 
 ;; Copilot suggestion
-(require 'copilot)
+(require 'copilot-chat)
 (global-set-key (kbd "C-c C-p") 'copilot-accept-completion)
 
 ;; Magit melpa
 (require 'exec-path-from-shell)
-(exec-path-from-shell-copy-env "SSH_AGENT_PID")
-(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
-(setq evil-want-C-u-scroll t)
-(setq evil-want-C-a-scroll t)
 ;;(setq evil-mode t)
 (setq evil-undo-system 'undo-redo)
+(setq evil-want-C-u-scroll t)
+(setq evil-want-C-a-scroll t)
 
 ;; Vim mode
 (require 'evil)
@@ -99,12 +97,98 @@
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
      default))
  '(org-agenda-files
-   (directory-files-recursively "~/org-space/" "\\.org$"))
+   '("/Users/artem/org-space/.dotfiles/.local/scripts/make_wt.org"
+     "/Users/artem/org-space/de/words.org"
+     "/Users/artem/org-space/exports/GP.org"
+     "/Users/artem/org-space/exports/PWD CM2015.org"
+     "/Users/artem/org-space/exports/global-dirs.org"
+     "/Users/artem/org-space/exports/heap_vis_tui.org"
+     "/Users/artem/org-space/exports/oath-cli.org"
+     "/Users/artem/org-space/exports/org-space.org"
+     "/Users/artem/org-space/exports/proj.org"
+     "/Users/artem/org-space/network/essentials.org"
+     "/Users/artem/org-space/repos/PBD_TEST/linux-setup.org"
+     "/Users/artem/org-space/repos/PBD_WT/1264-intern.org"
+     "/Users/artem/org-space/repos/PBD_WT/1277.org"
+     "/Users/artem/org-space/repos/PBD_WT/1352_intern.org"
+     "/Users/artem/org-space/repos/PBD_WT/5786.org"
+     "/Users/artem/org-space/repos/PBD_WT/5974.org"
+     "/Users/artem/org-space/repos/PBD_WT/6009.org"
+     "/Users/artem/org-space/repos/PBD_WT/Automatisations.org"
+     "/Users/artem/org-space/repos/PBD_WT/CustomConnections.org"
+     "/Users/artem/org-space/repos/PBD_WT/GraphStuff.org"
+     "/Users/artem/org-space/repos/PBD_WT/customTemplatesCustomisation.org"
+     "/Users/artem/org-space/repos/ascii-vis/idea.org"
+     "/Users/artem/org-space/repos/drafts/go/todo.org"
+     "/Users/artem/org-space/repos/full-width/idea.org"
+     "/Users/artem/org-space/repos/global-dirs/idea.org"
+     "/Users/artem/org-space/repos/heap_vis_tui/idea.org"
+     "/Users/artem/org-space/repos/oath-cli/idea.org"
+     "/Users/artem/org-space/repos/packet-tracking/idea.org"
+     "/Users/artem/org-space/repos/proj/todo.org"
+     "/Users/artem/org-space/vaults/main/Compilers/compilers.org"
+     "/Users/artem/org-space/vaults/main/CyberSecurity/Steganography/Steganography.org"
+     "/Users/artem/org-space/vaults/main/CyberSecurity/cybersecurity.org"
+     "/Users/artem/org-space/vaults/main/Linux/Understanding.org"
+     "/Users/artem/org-space/vaults/main/ML/NLP/natural-language-processing.org"
+     "/Users/artem/org-space/vaults/main/Math/Linear/Vectors.org"
+     "/Users/artem/org-space/vaults/main/Math/Numbers/ImaginaryNumbers.org"
+     "/Users/artem/org-space/vaults/main/Math/Trigonometry/FT.org"
+     "/Users/artem/org-space/vaults/main/TCPIP/TCPIP.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W3/CollisionDetection.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W3/Forces.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W3/W3-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/CanvasManipulations.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/GradedAssignment-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/MidtermChecklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/Vectors.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W1-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W10-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W11-12-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W13-14-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W15-16-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W17-18-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W19-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W2-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W4-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W5-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W6-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W7-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W8-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/W9-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP/midterm-report.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/18-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/Midterm.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/Programming with Data.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W1-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W10-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W11-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W12-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W13-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W14-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W15-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W16-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W17-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W19-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W2-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W3-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W4-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W5-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W6-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W7-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W8-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/W9-Checklist.org"
+     "/Users/artem/org-space/vaults/main/Uni/PWD CM2015/midterm-report.org"
+     "/Users/artem/org-space/vaults/main/Uni/GP.org"
+     "/Users/artem/org-space/cv.org"
+     "/Users/artem/org-space/daily.org"
+     "/Users/artem/org-space/ideas.org"
+     "/Users/artem/org-space/todo.org"))
  '(package-selected-packages
    '(## compat copilot dash ein eink-theme evil helm helm-bibtex html2org
 	latex-table-wizard lsp-mode magit markdown-mode
 	markdown-preview-mode org-fragtog org-modern org-noter org-ref
-	org-roam org-roam-bibtex pdf-tools)))
+	org-roam org-roam-bibtex ox-latex-subfigure pdf-tools)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -119,36 +203,46 @@
   "Take a screenshot into a time stamped unique-named file in the
 same directory as the org-buffer and insert a link to this file."
   (interactive)
-  (let* ((dir "./Cache/")
-	  (_ (make-directory dir t))
-	  (filename (concat dir (format-time-string "%Y%m%d_%H%M%S_")
-			    (make-temp-name "") ".png")))
-  ;;(call-process "wl-paste" nil filename nil "-t" "image/png")
-(call-process-shell-command
- (format "wl-paste -t image/png > %s" (shell-quote-argument filename)))
-  (insert (concat "[[" filename "]]"))
-  (org-display-inline-images)))
+  (if (eq system-type 'darwin)
+    (let* ((base-dir (or (and buffer-file-name
+			(file-name-directory buffer-file-name))
+		    default-directory))
+	(dir (expand-file-name "Cache" base-dir))
+	(_ (make-directory dir t))
+	(filename (expand-file-name
+		(format "%s_%s.png"
+			(format-time-string "%Y%m%d_%H%M%S")
+			(substring (md5 (format "%s%s" (user-uid) (float-time))) 0 6))
+		dir))
+	;; Use the built-in macOS screenshot tool
+	(status (call-process "screencapture" nil nil nil "-i" filename)))
+	(if (and (numberp status) (zerop status)
+	    (file-exists-p filename)
+	    (> (nth 7 (file-attributes filename)) 0))
+	(progn
+	    (insert (concat "[[./" (file-relative-name filename base-dir) "]]"))
+	    (when (derived-mode-p 'org-mode)
+	    (org-display-inline-images)))
+	(when (file-exists-p filename) (delete-file filename))
+	(user-error "Screenshot canceled or failed; nothing inserted"))))
+  (unless (eq system-type 'darwin)
+    (let* ((dir "./Cache/")
+	    (_ (make-directory dir t))
+	    (filename (concat dir (format-time-string "%Y%m%d_%H%M%S_")
+				(make-temp-name "") ".png")))
+      ;; check if the wayland executable exist or x11 screen shot utility
+    (call-process-shell-command
+    (format "wl-paste -t image/png > %s" (shell-quote-argument filename)))
+    (insert (concat "[[" filename "]]"))
+  (org-display-inline-images))))
 
-;; Latex preview configs
-(setq org-preview-latex-process-alist
-      '((dvipng :programs ("latex" "dvipng")
-                :description "dvi > png"
-                :message "you need to install latex and dvipng."
-                :image-input-type "dvi"
-                :image-output-type "png"
-                :image-size-adjust (2.0 . 2.0) ;; scale value
-                :latex-compiler ("latex -interaction nonstopmode -output-directory %o %f")
-                :image-converter ("dvipng -D 300 -T tight -o %O %f"))))
 
 ;; Org-mode and basic LaTeX/PDF support
 (require 'org)
 (require 'ox-latex)
 (setq org-startup-with-latex-preview t) ;; auto preview LaTeX
 
-;; Put in init.el, after Org is loaded
-(with-eval-after-load 'org
-  (let* ((dvisvgm-proc
-          '(dvisvgm
+(let* ((dvisvgm-conf '(dvisvgm
             :programs ("latex" "dvisvgm")
             :description "dvi → svg"
             :message "Install TeX (latex) and dvisvgm."
@@ -157,36 +251,24 @@ same directory as the org-buffer and insert a link to this file."
             :image-size-adjust (1.5 . 1.5)
             :latex-compiler ("latex -interaction=nonstopmode -output-directory %o %f")
             :image-converter ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
+(with-eval-after-load 'org
     ;; Ensure dvisvgm entry exists (merge, don't clobber others)
     (setq org-preview-latex-process-alist
           (let ((alist org-preview-latex-process-alist))
-            (if (assoc 'dvisvgm alist) alist (cons dvisvgm-proc alist))))
+            (if (assoc 'dvisvgm alist) alist (cons dvisvgm-conf alist))))
     ;; Prefer dvisvgm, fallback to imagemagick if dvisvgm missing
     (setq org-preview-latex-default-process
-          (if (executable-find "dvisvgm") 'dvisvgm 'imagemagick))))
-
+          (if (executable-find "dvisvgm") 'dvisvgm 'imagemagick)))
 ;; Nuke stale buffer-local defaults that still point to dvipng
 (add-hook 'org-mode-hook
           (defun my/org-force-dvisvgm ()
-            (when (eq org-preview-latex-default-process 'dvipng)
+	    (let ((alist org-preview-latex-process-alist))
+	    (let ((process org-preview-latex-default-process))
+            (when (eq process 'dvipng)
               (setq-local org-preview-latex-default-process 'dvisvgm))
-            (unless (assoc 'dvisvgm org-preview-latex-process-alist)
+            (unless (assoc 'dvisvgm alist)
               (setq-local org-preview-latex-process-alist
-                          (cons
-                           '(dvisvgm
-                             :programs ("latex" "dvisvgm")
-                             :description "dvi → svg"
-                             :message "Install TeX (latex) and dvisvgm."
-                             :image-input-type "dvi"
-                             :image-output-type "svg"
-                             :image-size-adjust (1.5 . 1.5)
-			     :scale (
-                             :latex-compiler ("latex -interaction=nonstopmode -output-directory %o %f")
-                             :image-converter ("dvisvgm --no-fonts --exact-bbox -o %O %f"))
-                           org-preview-latex-process-alist)))))
-
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 2.0))
+                          (cons dvisvgm-conf alist))))))))
 
 ;; Org Export to PDF using pdflatex (or xelatex if you prefer)
 (setq org-latex-compiler "pdflatex") ;; or xelatex
@@ -240,11 +322,17 @@ same directory as the org-buffer and insert a link to this file."
 
 (assoc "apa6" org-latex-classes)
 
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :scale 2.0))
+
 (use-package pdf-tools
   :ensure t
   :config
   (pdf-tools-install))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python3 . t)))
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)

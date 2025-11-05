@@ -42,7 +42,7 @@ nnoremap <silent><leader>tn :tabn<CR>
 nnoremap <silent><leader>tp :tabp<CR>
 
 " qflist navigation
-nnoremap <silent><C-m> :cp<CR>
+nnoremap <silent><C-h> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
 nnoremap <silent><leader>lq :copen<CR>
 
