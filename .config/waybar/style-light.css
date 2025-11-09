@@ -1,0 +1,139 @@
+@define-color bevel_base   #684d3b;
+@define-color bevel_high   #d7c1a3;
+@define-color bevel_high3   #e9d2b4;
+@define-color bevel_high2   #f1c7a2;
+@define-color bevel_danger  #a35c3e;
+@define-color bevel_success  #338a75;
+@define-color bevel_light  mix(@bevel_base, @bevel_high, 0.8);
+@define-color bevel_dark   mix(@bevel_high, @bevel_base, 0.5);
+
+* {
+        border: none;
+        font-family: Roboto, Helvetica, Arial, sans-serif;
+        font-size: 13px;
+        min-height: 0;
+}
+
+/* make the toplevel transparent so the inner box can show rounded/border */
+window#waybar {
+        background-color: transparent;
+}
+
+/* all visuals live on the inner box */
+window#waybar > box {
+        background-color: @bevel_high;
+
+        /* outer main border (ring) — must be a real border, not box-shadow */
+        border: 2px solid @bevel_base;
+
+        /* inner 3D bevel */
+        box-shadow:
+                inset -2px 2px 0 0 @bevel_light,
+                /* bottom/right */ inset 2px -2px 0 0 @bevel_dark; /* top/left */
+
+        /* spacing around the bar */
+        padding: 4px 8px;
+}
+
+tooltip {
+        background: @bevel_high3;
+        color: @bevel_base;
+        border: 2px solid @bevel_base;
+        border-radius: 2px;
+
+        /* inner 3D bevel */
+        box-shadow:
+                inset -3px 3px 0 0 @bevel_light,
+                /* bottom/right */ inset 3px -3px 0 0 @bevel_dark; /* top/left */
+}
+
+tooltip label {
+        color: @bevel_base;
+        padding: 4px 8px;
+        font-weight: 600;
+}
+
+#workspaces {
+        border-radius: 0px;
+}
+
+#workspaces button {
+        background: @bevel_base;
+        color: @bevel_high;
+        font-weight: 600;
+}
+
+#workspaces button.focused {
+        box-shadow:
+                inset -3px 3px 0 0 @bevel_light,
+                /* bottom/right */ inset 3px -3px 0 0 @bevel_dark; /* top/left */
+
+        padding: 4px;
+        background: @bevel_high3;
+        color: @bevel_base;
+        font-weight: 600;
+
+        /* outer main border (ring) — must be a real border, not box-shadow */
+        border: 1px solid @bevel_base;
+}
+
+#mode,
+#custom-power,
+#idle_inhibitor,
+#backlight,
+#language,
+#clock,
+#battery,
+#network,
+#pulseaudio,
+#tray,
+#cpu,
+#memory,
+#temperature {
+        padding: 0 10px;
+
+        margin: 2px; /* spacing between widgets */
+        padding: 4px;
+        background: @bevel_high3;
+        color: @bevel_base;
+        font-weight: 600;
+
+        /* outer main border (ring) — must be a real border, not box-shadow */
+        border: 1px solid @bevel_base;
+        border-radius: 2px;
+
+        /* inner 3D bevel */
+        box-shadow:
+                inset -3px 3px 0 0 @bevel_light,
+                /* bottom/right */ inset 3px -3px 0 0 @bevel_dark; /* top/left */
+}
+
+#clock {
+        padding: 4px 8px;
+}
+
+#language {
+        padding: 6px 3px;
+}
+
+#battery.charging {
+        color: @bevel_success;
+        background-color: #26a65b;
+}
+
+@keyframes blink {
+        to {
+                background-color: #ffffff;
+                color: black;
+        }
+}
+
+#battery.warning:not(.charging) {
+        background: #f53c3c;
+        color: white;
+        animation-name: blink;
+        animation-duration: 0.5s;
+        animation-timing-function: steps(12);
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+}

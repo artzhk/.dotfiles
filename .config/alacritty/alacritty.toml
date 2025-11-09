@@ -13,7 +13,7 @@ italic = { family = "IosevkaTerm Nerd Font", style = "SemiBold" }
 size = 12
 
 [window]
-decorations = "Buttonless"
+decorations = "None"
 startup_mode = "SimpleFullscreen"
 
 [selection]

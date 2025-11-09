@@ -1,0 +1,47 @@
+# ~/.config/mako/config
+#
+
+# Placement & layout
+anchor=bottom-left
+margin=10,10,30,10
+padding=16
+max-visible=5
+layer=overlay
+
+# Typography
+font=Iosevka 11
+
+# Colors (ARGB)
+background-color=#e9d2b4
+text-color=#684d3bFF
+border-color=#684d3bFF
+progress-color=#338a75FF
+
+# Borders/corners
+border-size=2
+border-radius=2
+
+# Icons
+icons=1
+max-icon-size=48
+icon-path=/usr/share/icons/hicolor:/usr/share/pixmaps
+
+# Timing
+default-timeout=6000
+ignore-timeout=0
+
+[urgency=low]
+default-timeout=3000
+
+[urgency=normal]
+default-timeout=3000
+
+[urgency=critical]
+background-color=#a35c3eFF
+text-color=#684d3bff
+border-color=#684d3bff
+default-timeout=0
+
+[app-name=Battery]
+format=<b>%s</b>\n%b
+

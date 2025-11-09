@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --- utils ---
+read_num() {
+  # prints integer or empty
+  local f="$1"
+  [[ -r "$f" ]] || { echo ""; return; }
+  tr -d '\n' <"$f" | grep -Eo '^[0-9]+' || true
+}
+
+divf() {
+  # safe floating division with format (default %.6f)
+  local num="$1" den="$2" fmt="${3:-%.6f}"
+  awk -v n="${num:-0}" -v d="${den:-1}" -v F="$fmt" 'BEGIN{
+    if (d == 0) { printf(F, 0); exit }
+    printf(F, n / d)
+  }'
+}
+
+fmt_time() {
+  awk -v h="$1" 'BEGIN{
+    m = int((h - int(h)) * 60 + 0.5);
+    hh = int(h);
+    if (m==60){hh+=1; m=0}
+    printf("%dh%02dm", hh, m)
+  }'
+}
+
+# --- select battery ---
+bat_dir="$(ls -d /sys/class/power_supply/BAT* 2>/dev/null | head -n1 || true)"
+if [[ -z "$bat_dir" ]]; then
+  notify-send -u low -a Battery "No battery detected"
+  exit 0
+fi
+
+# --- read sysfs ---
+cap="$(tr -d '\n' < "$bat_dir/capacity" 2>/dev/null || true)"
+stat="$(tr -d '\n' < "$bat_dir/status"   2>/dev/null || true)"
+
+energy_now="$(read_num "$bat_dir/energy_now")"
+energy_full="$(read_num "$bat_dir/energy_full")"
+power_now="$(read_num "$bat_dir/power_now")"
+voltage_now="$(read_num "$bat_dir/voltage_now")"
+charge_now="$(read_num "$bat_dir/charge_now")"
+charge_full="$(read_num "$bat_dir/charge_full")"
+current_now="$(read_num "$bat_dir/current_now")"
+cycle="$(tr -d '\n' < "$bat_dir/cycle_count" 2>/dev/null || true)"
+
+# --- compute power/energy in SI (W, Wh) ---
+W="" WH=""
+
+if [[ -n "$energy_now" && -n "$power_now" ]]; then
+  # µWh / µW case (common)
+  WH="$(divf "$energy_now" 1000000 "%.2f")"
+  W="$(divf "$power_now"   1000000 "%.2f")"
+elif [[ -n "$charge_now" && -n "$current_now" && -n "$voltage_now" ]]; then
+  # µAh, µA, µV  → convert to Wh and W
+  local_Ah="$(divf "$charge_now"  1000000 "%.6f")"
+  local_A="$(divf "$current_now"  1000000 "%.6f")"
+  local_V="$(divf "$voltage_now"  1000000 "%.6f")"
+  WH="$(awk -v Ah="$local_Ah" -v V="$local_V" 'BEGIN{printf("%.2f", Ah*V)}')"
+  W="$(awk  -v  A="$local_A"  -v V="$local_V" 'BEGIN{printf("%.2f",  A*V)}')"
+fi
+
+# time estimate
+HRS=""
+if [[ -n "$W" && $(awk -v w="$W" 'BEGIN{print (w>0)}') -eq 1 ]]; then
+  if [[ -n "$energy_now" && -n "$power_now" ]]; then
+    HRS="$(awk -v e="$energy_now" -v p="$power_now" 'BEGIN{printf("%.2f", e/p)}')"  # µWh/µW
+  elif [[ -n "$WH" && -n "$W" ]]; then
+    HRS="$(awk -v wh="$WH" -v w="$W" 'BEGIN{printf("%.2f", wh/w)}')"
+  fi
+fi
+
+when=""
+if [[ "$stat" == "Discharging" && -n "$HRS" ]]; then
+  when="⏱ $(fmt_time "$HRS") remaining"
+elif [[ "$stat" == "Charging" && -n "$HRS" ]]; then
+  when="⚡ $(fmt_time "$HRS") to full"
+fi
+
+power_str=""
+if [[ -n "$W" && $(awk -v w="$W" 'BEGIN{print (w>0.01)}') -eq 1 ]]; then
+  power_str="$(printf "%.2f W" "$W")"
+fi
+
+full_wh=""
+if [[ -n "$energy_full" ]]; then
+  full_wh="~$(divf "$energy_full" 1000000 "%.1f") Wh"
+elif [[ -n "$charge_full" && -n "$voltage_now" && "$voltage_now" -gt 0 ]]; then
+  # approximate Wh = (µAh/1e6) * (µV/1e6)
+  full_wh="$(awk -v Ah="$(divf "$charge_full" 1000000 "%.6f")" -v V="$(divf "$voltage_now" 1000000 "%.6f")" \
+              'BEGIN{printf("~%.1f Wh", Ah*V)}')"
+fi
+
+icon="battery"
+if [[ -n "$cap" ]]; then
+  case "$cap" in
+    9[0-9]|100) icon="battery-full-symbolic" ;;
+    7[0-9]|8[0-9]) icon="battery-good-symbolic" ;;
+    5[0-9]|6[0-9]) icon="battery-medium-symbolic" ;;
+    3[0-9]|4[0-9]) icon="battery-low-symbolic" ;;
+    *) icon="battery-caution-symbolic" ;;
+  esac
+fi
+[[ "$stat" == "Charging" ]] && icon="battery-good-charging-symbolic"
+
+cap_str="${cap:-?}% (${stat:-?})"
+
+details="$(
+  {
+    [[ -n "$when" ]] && echo "$when"
+    [[ -n "$power_str" ]] && echo "$power_str"
+    [[ -n "$full_wh" ]] && echo "Full: $full_wh"
+    [[ -n "$cycle" ]] && echo "Cycles: $cycle"
+  } | sed '/^$/d'
+)"
+
+notify-send -u low -a "Battery" -i "$icon" "Battery ${cap_str}" "${details:-}"

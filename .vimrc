@@ -94,7 +94,7 @@ function s:komment()
 	let slash_exts = [
 				\ 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'java', 'js', 'ts',
 				\ 'go', 'swift', 'scala', 'kotlin', 'rs', 'cs', 'dart',
-				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx'
+				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx', 'jsonc'
 				\ ]
 
 	" Languages that use #
