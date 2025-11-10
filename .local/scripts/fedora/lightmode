@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 ln -sfn ~/.dotfiles/.config/alacritty/themes/art_kanagawa.toml ~/.config/alacritty/colorscheme
-ln -sfn /usr/share/foot/themes/paper-color-light ~/.config/foot/colorscheme.ini
+ln -sfn /usr/share/foot/themes/gruvbox-light ~/.config/foot/colorscheme.ini
+ln -sfn ~/.dotfiles/.config/fuzzel/theme/gruvbox-light.ini ~/.config/fuzzel/theme.ini
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc'

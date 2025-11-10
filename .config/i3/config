@@ -1,9 +1,6 @@
 # Wallpapers
 # exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
-exec_always feh --bg-fill /home/art/.local/share/wallpapers/norway-4k.jpg
-
-# Statusbar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always feh --bg-fill /home/art/.local/share/wallpapers/vincent.jpg
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
@@ -57,7 +54,7 @@ bindsym $mod+space exec --no-startup-id rofi -show window
 # run networkmanager
 bindsym $mod+1 exec --no-startup-id networkmanager_dmenu
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui
-bindsym $mod+p move workspace to output right
+bindsym $mod+p move workspace to output up
 
 # change focus
 bindsym $mod+h focus left
@@ -159,6 +156,12 @@ mode "resize" {
 		bindsym k resize grow height 10 px or 10 ppt
 		bindsym j resize shrink height 10 px or 10 ppt
 		bindsym l resize grow width 10 px or 10 ppt
+
+# same bindings, but for the arrow keys
+		bindsym Left resize shrink width 10 px or 10 ppt
+		bindsym Up resize grow height 10 px or 10 ppt
+		bindsym Down resize shrink height 10 px or 10 ppt
+		bindsym Right resize grow width 10 px or 10 ppt
 
 # back to normal: Enter or Escape or $mod+r
 		bindsym Return mode "default"

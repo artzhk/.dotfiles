@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-ln -sfn /dev/null ~/.config/alacritty/colorscheme
-ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme.ini
+ln -sfn ~/.config/alacritty/themes/art.toml ~/.config/alacritty/colorscheme
+ln -sfn /usr/share/foot/themes/gruvbox-dark ~/.config/foot/colorscheme.ini
+ln -sfn ~/.dotfiles/.config/fuzzel/theme/gruvbox-dark.ini ~/.config/fuzzel/theme.ini
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
