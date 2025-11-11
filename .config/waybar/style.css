@@ -79,6 +79,7 @@ tooltip label {
 
 #mode,
 #custom-power,
+#custom-media,
 #idle_inhibitor,
 #backlight,
 #language,
@@ -118,7 +119,6 @@ tooltip label {
 
 #battery.charging {
         color: @bevel_success;
-        background-color: #26a65b;
 }
 
 @keyframes blink {

@@ -202,11 +202,13 @@
 	"tooltip-format": "Keyboard layout: {lang}\nVariant: {variant}"
     },
     "custom/media": {
-        "format": "{icon} {text}",
+        "format": "{icon}",
         "return-type": "json",
         "max-length": 40,
+	"tooltip": true,
+	"tooltip-format": "{text}",
         "format-icons": {
-            "spotify": " ",
+            "spotify": "",
             "default": "🎜"
         },
         "escape": true,
