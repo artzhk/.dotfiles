@@ -7,7 +7,6 @@ let $FZF_DEFAULT_COMMAND=$FZF_DEFAULT_COMMAND
 let $FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS
 
 set autoread
-set hidden
 set cursorline
 set clipboard=autoselect
 set ignorecase
@@ -19,9 +18,17 @@ set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
 set colorcolumn=120
 set textwidth=120
 set number
-"set termguicolors
 set scrolloff=8
 set nowrap
+set hidden
+set undofile
+set undolevels=1000
+set undoreload=10000
+
+" https://stackoverflow.com/questions/821902/disabling-swap-file-creation-in-vim
+set undodir=~/.vim/undo//
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
 
 syntax enable
 filetype plugin indent on
