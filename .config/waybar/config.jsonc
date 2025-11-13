@@ -3,19 +3,17 @@
     // "layer": "top", // Waybar at top layer
     "position": "left", // Waybar position (top|bottom|left|right)
     //"height": 10, // Waybar height (to be removed for auto height)
-    "width": 5, // Waybar width
+    "width": 3, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     "margin": 16,
     "mode": "dock",
     // Choose the order of the modules
     "modules-left": [
         "niri/workspaces",
-        "custom/media"
-    ],
-    "modules-center": [
-        "sway/window"
+	"niri/window"
     ],
     "modules-right": [
+        "custom/media",
         "mpd",
         "pulseaudio",
         "network",
@@ -29,7 +27,8 @@
         "battery",
         "battery#bat2",
         "clock",
-        "tray"
+        "tray",
+	"custom/power"
     ],
     // Modules configuration
     // "sway/workspaces": {
@@ -94,10 +93,7 @@
         // "icon-size": 21,
         "spacing": 10,
          "icons": {
-           "blueman": "bluetooth",
-           "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png",
-	   "Kitty": "terminal",
-	   "Lutris": "lutris"
+           "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
          }
     },
     "clock": {
@@ -144,11 +140,18 @@
         "format-full": "{capacity}% {icon}",
         "format-charging": "󰂄",
         "format-plugged": " ",
-        "format-alt": "{time} {icon}",
+        "format-alt": "{time}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
 	"format-icons": ["", "", "", "", ""],
 	"on-click": "~/.dotfiles/.local/scripts/battery-popup"
+    },
+    "niri/window": {
+	"format": "{title}",
+	"tooltip": true,
+	"rotate": 90,
+	"tooltip-format": "<big><u>Window Info</u></big>\n<sub>Title: {title}\nApp: {app}\nClass: {class}\nInstance: {instance}</sub>",
+	"max-length": 50
     },
     "battery#bat2": {
         "bat": "BAT2"

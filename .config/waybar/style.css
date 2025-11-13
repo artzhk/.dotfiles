@@ -80,6 +80,7 @@ tooltip label {
 #mode,
 #custom-power,
 #custom-media,
+#window,
 #idle_inhibitor,
 #backlight,
 #language,
@@ -115,6 +116,10 @@ tooltip label {
 
 #language {
         padding: 6px 3px;
+}
+
+#window {
+	padding: 10px 8px;
 }
 
 #battery.charging {
