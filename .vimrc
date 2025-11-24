@@ -101,7 +101,7 @@ function s:komment()
 	let slash_exts = [
 				\ 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'java', 'js', 'ts',
 				\ 'go', 'swift', 'scala', 'kotlin', 'rs', 'cs', 'dart',
-				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx', 'jsonc'
+				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx', 'css', 'scss', 'jsonc'
 				\ ]
 
 	" Languages that use #
@@ -245,8 +245,8 @@ function! s:on_lsp_buffer_enabled() abort
 	nnoremap <buffer><leader>va <plug>(lsp-code-action)
 	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
-	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
-	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
+	nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+	nmap <buffer> ]d <plug>(lsp-next-diagnostic)
 	nmap <buffer>K <plug>(lsp-hover)
 	nmap <buffer> dq <plug>(lsp-document-diagnostics)
 	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
