@@ -12,6 +12,7 @@ if executable('clangd')
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'clang',
 				\ 'cmd': {server_info->['clangd', '--background-index', '--clang-tidy']},
+				\ 'root_uri_patterns': ['compile_commands.json', '.git'],
 				\ 'allowlist': ['h', 'c', 'hpp', 'cpp'],
 				\ })
 endif

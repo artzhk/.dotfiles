@@ -47,7 +47,7 @@ function create() {
         fi      
 
 	if [[ `git rev-parse --verify "$input" 2>/dev/null` ]]; then
-		git worktree add ~/repos/PBD_WT/"$input" -b "$input"
+		git worktree add ~/repos/PBD_WT/"$input" "$input"
 		exit 1;
 	fi
         
