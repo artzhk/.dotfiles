@@ -45,6 +45,23 @@ if executable('rust-analyzer')
 				\ })
 endif
 
+if executable('ruff')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'ruff',
+				\ 'cmd': {server_info->['ruff', 'server']},
+				\ 'allowlist': ['python', 'py'],
+				\ })
+endif
+
+if executable('pyright-langserver')
+	" pip install python-lsp-server
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'pyright-langserver',
+				\ 'cmd': {server_info->['pyright-langserver', '--stdio']},
+				\ 'allowlist': ['python', 'py'],
+				\ })
+endif
+
 if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({

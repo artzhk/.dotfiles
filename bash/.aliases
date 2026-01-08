@@ -92,8 +92,8 @@ alias grs="git restore --staged"
 # git worktree
 alias gw="git worktree"
 # TODO: Can be converted to the functions that accepts path to worktrees
-alias gwar="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/PBD_WT/\$1 \$1' sh"
-alias gwarb="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/PBD_WT/\$1 -b \$1' sh"
+alias gwar="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/wt/\$1 \$1' sh"
+alias gwarb="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/wt/\$1 -b \$1' sh"
 
 # git graph
 alias glga="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""

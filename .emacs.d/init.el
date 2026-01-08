@@ -1,38 +1,53 @@
 ;;(load-theme 'tango-dark t)
-(load-theme 'adwaita t)
-
+;;(load-theme 'gruvbox-light-soft t)
+(load-theme 'tango t)
+;; ~/.emacs.d/init.el or early in config
+(add-to-list 'default-frame-alist '(undecorated . nil))   ;; ensure WM draws borders/buttons
+(setq frame-title-format '("%b — Emacs"))                ;; show buffer name in title
+(setq-default frame-resize-pixelwise t)                  ;; avoids odd sizing with CSD
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
 
-;; Jypiter support
+
+(add-to-list 'load-path "~/repos/img2orgtable-emacs")
+(require 'img2orgtable)
+(setq img2orgtable--screenshot-cmd "flameshot gui -r > %s")
+
+;; Set up package.el to work with MELPA
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+;;(package-initialize)
+;;(package-refresh-contents)
 
-;; Copilot suggestion
-(require 'copilot-chat)
-(global-set-key (kbd "C-c C-p") 'copilot-accept-completion)
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
 
-;; Magit melpa
-(require 'exec-path-from-shell)
-
-;;(setq evil-mode t)
+;; Enable Evil
+;; Vim mode
+(setq evil-mode t)
 (setq evil-undo-system 'undo-redo)
 (setq evil-want-C-u-scroll t)
 (setq evil-want-C-a-scroll t)
-
-;; Vim mode
+(setq evil-want-C-w-delete t)
 (require 'evil)
-(evil-mode)
+
+;; Copilot suggestion
+;;(require 'copilot-chat)
+;;(global-set-key (kbd "C-c C-p") 'copilot-accept-completion)
+
+;; Magit melpa
+(require 'exec-path-from-shell)
 
 (global-visual-line-mode)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
-(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil )
+(set-frame-font "IosevkaTerm Nerd Font Mono 14" nil )
 
 ;; ORG settings
 (setq org-todo-keywords-faces
@@ -96,11 +111,16 @@
  '(custom-safe-themes
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
      default))
+ '(org-agenda-files
+   '("~/org-space/vaults/main/Uni/PCaIOT/PCaIOT.org"
+     "/home/art/org-space/vaults/main/Uni/NLP/NLP.org"
+     "/home/art/org-space/vaults/main/Uni/MLaNN/MLaNN.org"))
  '(package-selected-packages
-   '(## compat copilot dash ein eink-theme evil helm helm-bibtex html2org
-	latex-table-wizard lsp-mode magit markdown-mode
-	markdown-preview-mode org-fragtog org-modern org-noter org-ref
-	org-roam org-roam-bibtex ox-latex-subfigure pdf-tools)))
+   '(## compat copilot copilot-chat dash ein eink-theme evil helm
+	helm-bibtex html2org latex-table-wizard lsp-mode magit
+	markdown-mode markdown-preview-mode org-fragtog org-modern
+	org-noter org-ref org-roam org-roam-bibtex ox-latex-subfigure
+	pdf-tools)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -152,7 +172,148 @@ same directory as the org-buffer and insert a link to this file."
 ;; Org-mode and basic LaTeX/PDF support
 (require 'org)
 (require 'ox-latex)
-(setq org-startup-with-latex-preview t) ;; auto preview LaTeX
+(setq org-startup-with-latex-preview nil) ;; auto preview LaTeX
+
+;; Optional: LaTeX class customization for styling
+(add-to-list 'org-latex-classes
+      '("article"
+         "\\documentclass[11pt]{article}
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{graphicx}
+\\usepackage{tikz}
+\\usepackage{hyperref}
+\\usepackage{float}
+\\usepackage{booktabs}
+\\usepackage{color}
+\\usepackage{geometry}
+\\geometry{margin=1in}"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")))
+
+(add-to-list 'org-latex-classes
+      '("cv"
+         "\\documentclass[8pt,letterpaper]{article}
+% tighter side margins
+\\usepackage[ignoreheadfoot,margin=1.5cm,footskip=0.8cm]{geometry}
+
+\\usepackage{titlesec}
+\\usepackage[dvipsnames]{xcolor}
+\\definecolor{primaryColor}{RGB}{0,0,0}
+\\usepackage{enumitem}
+\\usepackage[unicode,colorlinks=true,urlcolor=primaryColor]{hyperref}
+\\usepackage{changepage}
+\\usepackage{paracol}
+\\usepackage{needspace}
+\\usepackage[T1]{fontenc}
+\\usepackage[utf8]{inputenc}
+\\usepackage{lmodern}
+
+\\raggedright
+\\pagestyle{empty}
+\\setcounter{secnumdepth}{0}
+\\setlength{\\parindent}{0pt}
+\\setlength{\\topskip}{0pt}
+\\setlength{\\columnsep}{0.15cm}
+
+% compact section headings
+\\titleformat{\\section}{\\needspace{0\\baselineskip}\\bfseries\\large}{}{0pt}{}[\\vspace{1pt}\\titlerule]
+\\titlespacing*{\\section}{-1pt}{0.25cm}{0.15cm}
+
+% global compact lists
+\\setlist[itemize]{topsep=0.15ex,itemsep=0.15ex,parsep=0pt,partopsep=0pt,leftmargin=1.2em}
+\\setlist[enumerate]{topsep=0.15ex,itemsep=0.15ex,parsep=0pt,partopsep=0pt,leftmargin=1.5em}
+
+\\renewcommand\\labelitemi{$\\vcenter{\\hbox{\\small$\\bullet$}}$}
+
+% specific CV list envs, even tighter
+\\newenvironment{highlights}{%
+  \\begin{itemize}[topsep=0.1ex,parsep=0pt,partopsep=0pt,itemsep=0pt,leftmargin=0.8em]%
+}{%
+  \\end{itemize}%
+}
+
+\\newenvironment{highlightsforbulletentries}{%
+  \\begin{itemize}[topsep=0.1ex,parsep=0pt,partopsep=0pt,itemsep=0pt,leftmargin=0.8em]%
+}{%
+  \\end{itemize}%
+}
+
+\\newenvironment{onecolentry}{%
+  \\begin{adjustwidth}{0cm}{0cm}%
+}{%
+  \\end{adjustwidth}%
+}
+
+\\newenvironment{twocolentry}[2][]{%
+  \\onecolentry
+  \\def\\secondColumn{#2}%
+  \\setcolumnwidth{\\fill,4.2cm}%
+  \\begin{paracol}{2}%
+}{%
+  \\switchcolumn \\raggedleft \\secondColumn%
+  \\end{paracol}%
+  \\endonecolentry
+}
+
+\\newenvironment{threecolentry}[3][]{%
+  \\onecolentry
+  \\def\\thirdColumn{#3}%
+  \\setcolumnwidth{,\\fill,4.2cm}%
+  \\begin{paracol}{3}%
+  {\\raggedright #2}\\switchcolumn%
+}{%
+  \\switchcolumn \\raggedleft \\thirdColumn%
+  \\end{paracol}%
+  \\endonecolentry
+}
+
+% Big, tight CV title using only \\@title (no author/date)
+\\makeatletter
+\\renewcommand\\maketitle{%
+  \\begin{center}
+    \\vspace*{-0.4cm}%
+    {\\bfseries\\LARGE \\@title\\par}%
+    \\vspace{0.15cm}%
+  \\end{center}
+}
+\\makeatother
+"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")
+         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+         ("\\paragraph{%s}" . "\\paragraph*{%s}")
+         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-latex-classes '("apa6"
+       "\\documentclass[a4paper,man]{apa6}
+\\usepackage[nodoi]{apacite}
+\\usepackage[T1]{fontenc}
+\\usepackage{fancyhdr}
+\\usepackage{lastpage}
+\\pagestyle{fancy}
+\\fancyfoot[C]{%
+  Page \\thepage\\ of \\pageref*{LastPage}%
+}
+\\usepackage{graphicx}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+
+(assoc "apa6" org-latex-classes)
+(assoc "article" org-latex-classes)
+(assoc "cv" org-latex-classes)
+
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :scale 2.0))
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
 
 (let* ((dvisvgm-conf '(dvisvgm
             :programs ("latex" "dvisvgm")
@@ -187,6 +348,11 @@ same directory as the org-buffer and insert a link to this file."
 (setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
 			      "pdflatex -interaction nonstopmode -output-directory %o %f"))
 
+(with-eval-after-load 'ox-html
+  (setq org-html-mathjax-options
+        (cons '(scale . "200")
+              (assq-delete-all 'scale org-html-mathjax-options))))
+
 ;; Enable image display in org-mode
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width '(800)) ;; limit image width
@@ -197,55 +363,3 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; Optional: auto refresh inline images after paste
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-
-;; Optional: LaTeX class customization for styling
-(setq org-latex-classes
-      '(("article"
-         "\\documentclass[11pt]{article}
-\\usepackage{amsmath}
-\\usepackage{amssymb}
-\\usepackage{graphicx}
-\\usepackage{tikz}
-\\usepackage{hyperref}
-\\usepackage{float}
-\\usepackage{booktabs}
-\\usepackage{color}
-\\usepackage{geometry}
-\\geometry{margin=1in}"
-         ("\\section{%s}" . "\\section*{%s}")
-         ("\\subsection{%s}" . "\\subsection*{%s}"))))
-
-(setq org-latex-classes '(("apa6"
-       "\\documentclass[a4paper,man]{apa6}
-\\usepackage[nodoi]{apacite}
-\\usepackage[T1]{fontenc}
-\\usepackage{fancyhdr}
-\\usepackage{lastpage}
-\\pagestyle{fancy}
-\\fancyfoot[C]{%
-  Page \\thepage\\ of \\pageref*{LastPage}%
-}
-\\usepackage{graphicx}"
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-
-(assoc "apa6" org-latex-classes)
-
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 2.0))
-
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python3 . t)))
-
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
