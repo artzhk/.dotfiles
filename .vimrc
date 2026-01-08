@@ -24,6 +24,8 @@ set hidden
 set undofile
 set undolevels=1000
 set undoreload=10000
+set completeopt-=popup
+set completeopt+=menu,menuone,preview
 
 " https://stackoverflow.com/questions/821902/disabling-swap-file-creation-in-vim
 set undodir=~/.vim/undo//
@@ -101,7 +103,7 @@ function s:komment()
 	let slash_exts = [
 				\ 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'java', 'js', 'ts',
 				\ 'go', 'swift', 'scala', 'kotlin', 'rs', 'cs', 'dart',
-				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx', 'jsonc'
+				\ 'm', 'mm', 'vert', 'frag', 'glsl', 'shader', 'json', 'tsx', 'jsx', 'css', 'scss', 'jsonc'
 				\ ]
 
 	" Languages that use #
@@ -226,7 +228,6 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_autosave = 1
 let g:go_fmt_fail_silently = 1
 let g:go_list_type = "quickfix"
-set completeopt-=preview
 command GLB GoBuild
 
 " lsp setup
@@ -245,13 +246,14 @@ function! s:on_lsp_buffer_enabled() abort
 	nnoremap <buffer><leader>va <plug>(lsp-code-action)
 	nnoremap <buffer><leader>vq :LspCodeAction quickfix<CR>
 	nmap <buffer> <leader>rn <plug>(lsp-rename)
-	nmap <buffer> [e <plug>(lsp-previous-diagnostic)
-	nmap <buffer> ]e <plug>(lsp-next-diagnostic)
+	nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+	nmap <buffer> ]d <plug>(lsp-next-diagnostic)
 	nmap <buffer>K <plug>(lsp-hover)
 	nmap <buffer> dq <plug>(lsp-document-diagnostics)
 	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-k> lsp#scroll(-4)
 
+	let g:lsp_preview_float = 0
 	let g:lsp_format_sync_timeout = 50
 	let g:lsp_hover_ui = 'preview'
 	let g:lsp_diagnostics_virtual_text_align = "right"
