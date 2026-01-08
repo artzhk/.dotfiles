@@ -232,7 +232,7 @@ same directory as the org-buffer and insert a link to this file."
 				(make-temp-name "") ".png")))
       ;; check if the wayland executable exist or x11 screen shot utility
     (call-process-shell-command
-    (format "wl-paste -t image/png > %s" (shell-quote-argument filename)))
+    (format "flameshot gui -r > %s" (shell-quote-argument filename)))
     (insert (concat "[[" filename "]]"))
   (org-display-inline-images))))
 

@@ -3,6 +3,7 @@
 source ~/.dotfiles/bash/.aliases
 
 export PATH=~/.cargo/bin:$PATH
+export PATH=~/go/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=~/.local/bin:$PATH
 export PATH=~/.local/scripts:$PATH
