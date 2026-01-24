@@ -61,7 +61,6 @@ function setup() {
 bash $SRC_PATH/.install/install.sh $SRC_PATH $DST_PATH
 
 setup .local/scripts
-setup .local/scripts/fedora
 setup .emacs.d
 
 for i in $(ls -a $SRC_PATH/.config | grep -P "^[A-z]+"); do
