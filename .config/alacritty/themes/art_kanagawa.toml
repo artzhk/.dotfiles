@@ -1,33 +1,31 @@
-# Art Kanagawa - my vision of the right minimalistic kanagawa
+# github Alacritty Colors
 
 # Default colors
 [colors.primary]
-foreground = '#545464'
-background = '#fbf1c7'
+background = '#ffffff'
+foreground = '#24292f'
 
 # Normal colors
 [colors.normal]
-
-blue    = "#6693bf"
-cyan    = "#5a7785"
-green   = "#6e915f"
-magenta = "#624c83"
-red     = "#c84053"
-yellow  = "#de9800"
-white   = '#8f9671'
-black   = '#283452'
+black   = '#24292e'
+red     = '#d73a49'
+green   = '#28a745'
+yellow  = '#dbab09'
+blue    = '#0366d6'
+magenta = '#5a32a3'
+cyan    = '#0598bc'
+white   = '#6a737d'
 
 # Bright colors
 [colors.bright]
-
-blue     =  "#9fd8ff"
-cyan     =  "#4e8ca2"
-green    =  "#b7d0ae"
-magenta  =  "#766b90"
-red      =  "#d27e99"
-yellow   =  "#f9d791"
-white    =  "#9fA681"
-black    =  '#485472'
+black   = '#959da5'
+red     = '#cb2431'
+green   = '#22863a'
+yellow  = '#b08800'
+blue    = '#005cc5'
+magenta = '#5a32a3'
+cyan    = '#3192aa'
+white   = '#d1d5da'
 
 [[colors.indexed_colors]]
 index = 16
@@ -35,4 +33,4 @@ color = '#d18616'
 
 [[colors.indexed_colors]]
 index = 17
-color = '#ffa198'
+color = '#cb2431'

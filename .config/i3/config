@@ -1,6 +1,4 @@
 # Wallpapers
-# exec_always feh --bg-fill /home/art/.local/share/wallpapers/clouds.png
-exec_always feh --bg-fill /home/art/.local/share/wallpapers/vincent.jpg
 
 default_border pixel 2
 hide_edge_borders smart_no_gaps
@@ -16,7 +14,7 @@ set $mod Mod4
 set $alt Mod1
 
 # font
-font pango:IosevkaTerm Nerd Font Mono 12
+font pango:IosevkaTerm Nerd Font Mono 18
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom -b

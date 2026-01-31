@@ -58,14 +58,28 @@ function setup() {
 	bash $SRC_PATH/.install/install.sh $SRC_PATH/$path $DST_PATH/$path $mode
 }
 
+
+# creating dirs
+echo -e "${BOLD}${GREEN}-> Creating vim dirs ${NC}"
+mkdir -p ~/.vim/undo
+mkdir -p ~/.vim/backup
+mkdir -p ~/.vim/swap
+
+# installing tmux/vim plugins
+
+echo -e "${BOLD}${GREEN}-> Installing tmux plugins and vim plug ${NC}"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 bash $SRC_PATH/.install/install.sh $SRC_PATH $DST_PATH
 
 setup .local/scripts
-setup .local/scripts/fedora
 setup .emacs.d
 
 for i in $(ls -a $SRC_PATH/.config | grep -P "^[A-z]+"); do
-	setup .config/$i cp
+	setup .config/$i ln
 done
 
 
