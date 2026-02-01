@@ -78,8 +78,10 @@ bash $SRC_PATH/.install/install.sh $SRC_PATH $DST_PATH
 setup .local/scripts
 setup .emacs.d
 
+# use ln or cp file copying or linking
 for i in $(ls -a $SRC_PATH/.config | grep -P "^[A-z]+"); do
 	setup .config/$i ln
 done
 
-
+echo -e "${BOLD}${BLUE} === Dotfiles linked/copied successfully === ${NC}"
+echo -e "${BOLD}${BLUE} -> Consult containers to crosscompile vim ${NC}"

@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -eu
+
+LAPTOP="${1:-eDP-1}"
+
+# count active external outputs
+ext_active="$(swaymsg -t get_outputs -r \
+  | jq -r --arg L "$LAPTOP" '[.[] | select(.name != $L and .active == true)] | length')"
+
+if [ "$ext_active" -ge 1 ]; then
+  # Disable internal so its workspaces/windows get moved to the remaining output(s)
+  # (disable vs power: disable drops the output's workspaces; power keeps them)
+  swaymsg output "$LAPTOP" disable >/dev/null
+else
+  systemctl suspend
+fi
+
