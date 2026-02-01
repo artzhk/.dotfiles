@@ -177,6 +177,9 @@ exec swayidle -w \
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 	     bindsym $mod+minus scratchpad show
+	     bindsym $mod+Shift+p exec ~/.config/sway/rotate-focused-output
+	     bindswitch --reload --locked lid:on exec ~/.config/sway/lid-close
+	     bindswitch --reload --locked lid:off exec swaymsg output eDP-1 enable
 
 	     mode "display" {
 # Monitor management:
@@ -233,8 +236,8 @@ bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
 bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
 # Special keys to adjust brightness via brightnessctl
-bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym --locked XF86MonBrightnessDown exec light -U 5
+bindsym --locked XF86MonBrightnessUp exec light -A 5
 # Special key to take a screenshot with grim
 bindsym Print exec flameshot gui
 

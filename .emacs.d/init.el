@@ -1,5 +1,4 @@
 ;;(load-theme 'tango-dark t)
-;;(load-theme 'gruvbox-light-soft t)
 (load-theme 'tango t)
 ;; ~/.emacs.d/init.el or early in config
 (add-to-list 'default-frame-alist '(undecorated . nil))   ;; ensure WM draws borders/buttons
