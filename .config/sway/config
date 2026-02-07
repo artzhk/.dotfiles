@@ -18,6 +18,8 @@ input "type:touchpad" {
 
 set $QT_STYLE_OVERRIDE kvantum
 set $QT_QPA_PLATFORMTHEME qt5ct
+exec_always systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR SWAYSOCK
+exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR SWAYSOCK
 
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
