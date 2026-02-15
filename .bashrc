@@ -62,3 +62,7 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+if [ -f ~/.profile ]; then
+    source ~/.profile
+fi

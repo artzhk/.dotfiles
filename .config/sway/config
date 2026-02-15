@@ -51,7 +51,7 @@ set $opened rofi -show window
 # output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
 output * bg /home/art/.dotfiles/.local/wallpapers/Nordic-mountain-wallpaper.jpg fill
-output eDP-1 scale 1.5 enable 
+output eDP-1 scale 1.5 enable
 
 ### Idle configuration
 #
@@ -69,7 +69,6 @@ exec swayidle -w \
 ### Key bindings
 #
 # Basics:
-#
 	     bindsym $mod+space exec --no-startup-id $opened
 
 # Move panes between screens
@@ -102,7 +101,7 @@ exec swayidle -w \
 
 # Magnification
 # https://github.com/negrel/wooz
-	     bindsym $mod+y exec --no-startup-id ~/.local/bin/wooz
+	     bindsym $mod+y exec --no-startup-id wooz
 
 # Moving around:
 # Move your focus around
@@ -182,8 +181,6 @@ exec swayidle -w \
 	     bindsym $mod+Shift+p exec ~/.config/sway/rotate-focused-output
 	     bindswitch --reload --locked lid:on exec ~/.config/sway/lid-close
 	     bindswitch --reload --locked lid:off exec swaymsg output eDP-1 enable
-
-	     bindsym $mod+Shift+d mode "display"
 
 # Resizing containers:
 	     mode "resize" {
