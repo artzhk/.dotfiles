@@ -16,6 +16,7 @@ declare -A BLACKLIST=(
 	[containers]=1
 	[.git]=1
 	[.install]=1
+	[.emacs.d]=1
 	[packages-lists]=1
 	[vim]=1
 	[X11]=1
