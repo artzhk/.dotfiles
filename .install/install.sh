@@ -12,13 +12,13 @@ declare -A BLACKLIST=(
 	[Makefile]=1
 	[.config]=1
 	[.local]=1
-	[.bash]=1
+	[bash]=1
 	[containers]=1
 	[.git]=1
 	[.install]=1
-	[.packages-lists]=1
-	[.vim]=1
-	[.X11]=1
+	[packages-lists]=1
+	[vim]=1
+	[X11]=1
 )
 
 install() {
