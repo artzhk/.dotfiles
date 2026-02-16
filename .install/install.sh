@@ -7,6 +7,20 @@ BOLD="\e[1m"
 BLUE="\e[34m"
 NC="\e[0m" # No color
 
+declare -A BLACKLIST=(
+	[install.sh]=1
+	[Makefile]=1
+	[.config]=1
+	[.local]=1
+	[.bash]=1
+	[containers]=1
+	[.git]=1
+	[.install]=1
+	[.packages-lists]=1
+	[.vim]=1
+	[.X11]=1
+)
+
 install() {
         local src_folder="${1:-}"
         local target_folder="${2:-}"
@@ -31,7 +45,7 @@ install() {
 
         for f in "$src_folder"/* "$src_folder"/.*; do
                 local i="$(basename "$f")"
-                [[ "$i" == "." || "$i" == ".." || "$i" == "install.sh" || "$i" == "Makefile" ]] && continue
+                [[ "$i" == "." || "$i" == ".." || ${BLACKLIST[$i]+x} ]] && continue
                 if [[ "$mode" == "cp" ]]; then
                         cp -vr "$src_folder/$i" "$target_folder/$i"
                 elif [[ "$mode" == "ln" ]]; then
