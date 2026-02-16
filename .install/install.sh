@@ -20,6 +20,7 @@ declare -A BLACKLIST=(
 	[packages-lists]=1
 	[vim]=1
 	[X11]=1
+	[etc]=1
 )
 
 install() {

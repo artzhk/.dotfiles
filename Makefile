@@ -83,6 +83,8 @@ link-local:
 link-emacs:
 	@bash "$(INSTALL_SH)" "$(SRC)/.emacs.d" "$(DST)/.emacs.d" "$(MODE)"
 
+#TODO: add root required installation for X11 .conf files
+
 build-vim:
 	@set -euo pipefail; \
 	os="$$(. /etc/os-release 2>/dev/null; echo "$${ID:-}")"; \
