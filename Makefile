@@ -9,7 +9,7 @@ TPM_DIR := $(DST)/.tmux/plugins/tpm
 VIM_PLUG := $(DST)/.vim/autoload/plug.vim
 INSTALL_SH := $(SRC)/.install/install.sh
 
-.PHONY: help install install-default vim-dirs tmux-plugins vim-plug link-root link-configs build-vim
+.PHONY: help install install-default vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs build-vim
 
 help:
 	@echo "usage:"
@@ -32,6 +32,9 @@ help:
 	@echo "  link-root       run .install/install.sh for SRC -> DST (root-level dotfiles)"
 	@echo "  link-configs    for each entry in \$$SRC/.config starting with [A-Za-z],"
 	@echo "                  run .install/install.sh SRC/.config/<name> -> DST/.config/<name> using MODE"
+	@echo "  link-local      for each entry in \$$SRC/.local starting with [A-Za-z],"
+	@echo "                  run .install/install.sh SRC/.local/<name> -> DST/.local/<name> using MODE"
+	@echo "  link-emacs      run .install/install.sh for SRC/.emacs.d -> DST/.emacs.d using MODE"
 	@echo "  build-vim       Arch Linux x86_64 only: build vim in ./containers/arch-amd64 then"
 	@echo "                  copy vim -> /usr/local/vim and runtime -> /usr/local/share/vim/"
 	@echo ""
@@ -41,7 +44,7 @@ help:
 	@echo "  make install SRC=$$PWD DST=$$HOME MODE=cp"
 	@echo "  make build-vim"
 
-install: vim-dirs tmux-plugins vim-plug link-root link-configs
+install: vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs
 	@echo "dotfiles installed: SRC=$(SRC) DST=$(DST) MODE=$(MODE)"
 
 install-default:
@@ -49,6 +52,7 @@ install-default:
 
 vim-dirs:
 	@mkdir -p "$(DST)/.vim/undo" "$(DST)/.vim/backup" "$(DST)/.vim/swap"
+	@touch $(HOME)/.profile.vim
 
 tmux-plugins:
 	@test -d "$(TPM_DIR)" || git clone https://github.com/tmux-plugins/tpm "$(TPM_DIR)"
@@ -67,6 +71,17 @@ link-configs:
 		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
 		bash "$(INSTALL_SH)" "$(SRC)/.config/$$n" "$(DST)/.config/$$n" "$(MODE)"; \
 		done
+
+link-local:
+	@shopt -s nullglob; \
+		for p in "$(SRC)/.local"/*; do \
+		n="$$(basename "$$p")"; \
+		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
+		bash "$(INSTALL_SH)" "$(SRC)/.local/$$n" "$(DST)/.local/$$n" "$(MODE)"; \
+		done
+
+link-emacs:
+	@bash "$(INSTALL_SH)" "$(SRC)/.emacs.d" "$(DST)/.emacs.d" "$(MODE)"
 
 build-vim:
 	@set -euo pipefail; \
