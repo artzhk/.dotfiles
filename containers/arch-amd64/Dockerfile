@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 WORKDIR /work
 
 COPY ./pacman-explicit.txt /work/
-COPY ../build.sh /work/
+COPY ./build.sh /work/
 
 RUN pacman -Syu --noconfirm --needed \
 	    && xargs -a /work/pacman-explicit.txt pacman -S --noconfirm --needed \

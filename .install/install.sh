@@ -12,6 +12,7 @@ declare -A BLACKLIST=(
 	[Makefile]=1
 	[.config]=1
 	[.local]=1
+	[.gitignore]=1
 	[bash]=1
 	[containers]=1
 	[.git]=1
