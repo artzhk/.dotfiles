@@ -1,0 +1,17 @@
+base
+base-devel
+gcc
+git
+libx11
+libxkbcommon
+lua
+make
+pkgconf
+python
+ruby
+tcl
+vim
+perl
+wayland
+wayland-protocols
+wayland-utils

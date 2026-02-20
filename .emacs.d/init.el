@@ -1,5 +1,4 @@
 ;;(load-theme 'tango-dark t)
-;;(load-theme 'gruvbox-light-soft t)
 (load-theme 'tango t)
 ;; ~/.emacs.d/init.el or early in config
 (add-to-list 'default-frame-alist '(undecorated . nil))   ;; ensure WM draws borders/buttons
@@ -26,8 +25,14 @@
 (unless (package-installed-p 'evil)
   (package-install 'evil))
 
+
 ;; Enable Evil
 ;; Vim mode
+(with-eval-after-load 'evil
+  (define-key evil-insert-state-map (kbd "ESC") #'evil-force-normal-state)
+  ;; optional: also in visual/replace if you want
+  ;; (define-key evil-visual-state-map (kbd "<C-bracketleft>") #'evil-normal-state)
+  )
 (setq evil-mode t)
 (setq evil-undo-system 'undo-redo)
 (setq evil-want-C-u-scroll t)

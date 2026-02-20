@@ -1,0 +1,125 @@
+SHELL := /usr/bin/env bash
+.SHELLFLAGS := -euo pipefail -c
+
+SRC ?= $(HOME)/.dotfiles
+DST ?= $(HOME)
+MODE ?= ln
+
+TPM_DIR := $(DST)/.tmux/plugins/tpm
+VIM_PLUG := $(DST)/.vim/autoload/plug.vim
+INSTALL_SH := $(SRC)/.install/install.sh
+
+.PHONY: help install install-default vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs build-vim
+
+help:
+	@echo "usage:"
+	@echo "  make <target> [SRC=...] [DST=...] [MODE=ln|cp]"
+	@echo ""
+	@echo "variables:"
+	@echo "  SRC   dotfiles source dir (default: $(HOME)/.dotfiles)"
+	@echo "  DST   destination home dir to install into (default: $(HOME))"
+	@echo "  MODE  how .config entries are installed via .install/install.sh (default: ln)"
+	@echo "        ln = symlink   cp = copy"
+	@echo ""
+	@echo "targets:"
+	@echo "  help            show this help"
+	@echo "  install         full install: vim dirs, tmux tpm, vim-plug, link root, link .config/*"
+	@echo "                  uses SRC/DST/MODE"
+	@echo "  install-default same as 'install' with SRC=$(HOME)/.dotfiles DST=$(HOME) MODE=ln"
+	@echo "  vim-dirs        create \$$DST/.vim/{undo,backup,swap}"
+	@echo "  tmux-plugins    install tmux tpm into \$$DST/.tmux/plugins/tpm if missing"
+	@echo "  vim-plug        install vim-plug into \$$DST/.vim/autoload/plug.vim"
+	@echo "  link-root       run .install/install.sh for SRC -> DST (root-level dotfiles)"
+	@echo "  link-configs    for each entry in \$$SRC/.config starting with [A-Za-z],"
+	@echo "                  run .install/install.sh SRC/.config/<name> -> DST/.config/<name> using MODE"
+	@echo "  link-local      for each entry in \$$SRC/.local starting with [A-Za-z],"
+	@echo "                  run .install/install.sh SRC/.local/<name> -> DST/.local/<name> using MODE"
+	@echo "  link-emacs      run .install/install.sh for SRC/.emacs.d -> DST/.emacs.d using MODE"
+	@echo "  build-vim       Arch Linux x86_64 only: build vim in ./containers/arch-amd64 then"
+	@echo "                  copy vim -> /usr/local/vim and runtime -> /usr/local/share/vim/"
+	@echo ""
+	@echo "examples:"
+	@echo "  make install"
+	@echo "  make install DST=/tmp/home"
+	@echo "  make install SRC=$$PWD DST=$$HOME MODE=cp"
+	@echo "  make build-vim"
+
+install: vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs
+	@echo "dotfiles installed: SRC=$(SRC) DST=$(DST) MODE=$(MODE)"
+
+install-default:
+	@$(MAKE) install SRC="$(HOME)/.dotfiles" DST="$(HOME)" MODE="ln"
+
+vim-dirs:
+	@mkdir -p "$(DST)/.vim/undo" "$(DST)/.vim/backup" "$(DST)/.vim/swap"
+	@touch $(HOME)/.profile.vim
+
+tmux-plugins:
+	@test -d "$(TPM_DIR)" || git clone https://github.com/tmux-plugins/tpm "$(TPM_DIR)"
+
+vim-plug:
+	@curl -fsSL -o "$(VIM_PLUG)" --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+link-root:
+	@bash "$(INSTALL_SH)" "$(SRC)" "$(DST)"
+
+link-configs:
+	@shopt -s nullglob; \
+		for p in "$(SRC)/.config"/*; do \
+		n="$$(basename "$$p")"; \
+		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
+		bash "$(INSTALL_SH)" "$(SRC)/.config/$$n" "$(DST)/.config/$$n" "$(MODE)"; \
+		done
+
+link-local:
+	@shopt -s nullglob; \
+		for p in "$(SRC)/.local"/*; do \
+		n="$$(basename "$$p")"; \
+		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
+		bash "$(INSTALL_SH)" "$(SRC)/.local/$$n" "$(DST)/.local/$$n" "$(MODE)"; \
+		done
+
+link-emacs:
+	@bash "$(INSTALL_SH)" "$(SRC)/.emacs.d" "$(DST)/.emacs.d" "$(MODE)"
+
+#TODO: add root required installation for X11 .conf files
+
+
+build-vim: build-vim-clean
+	@set -euo pipefail; \
+	os="$$(. /etc/os-release 2>/dev/null; echo "$${ID:-}")"; \
+	arch="$$(uname -m)"; \
+	if [[ "$$os" != "arch" ]]; then \
+		echo "ERROR: build-vim requires Arch Linux (ID=arch), got '$$os'" >&2; \
+		exit 1; \
+	fi; \
+	if [[ "$$arch" != "x86_64" ]]; then \
+		echo "ERROR: build-vim requires host arch x86_64, got $$arch" >&2; \
+		exit 1; \
+	fi; \
+	cd ./containers; \
+	bash ./install.sh arch-amd64; \
+	echo "==> Sudo access required to install vim to /usr/local/"; \
+	sudo -v; \
+	echo "==> Copying vim binary to /usr/local/vim..."; \
+	if sudo cp -v ./arch-amd64/build/vim /usr/local/vim; then \
+		echo "==> [OK] vim binary installed to /usr/local/vim"; \
+	else \
+		echo "ERROR: Failed to copy vim binary" >&2; exit 1; \
+	fi; \
+	sudo mkdir -p /usr/local/share/vim/; \
+	echo "==> Copying vim runtime files to /usr/local/share/vim/vim91..."; \
+	if sudo cp -vr ./arch-amd64/build/vimdir/* /usr/local/share/vim/; then \
+		echo "==> [OK] vim runtime files installed to /usr/local/share/vim/vim91"; \
+	else \
+		echo "ERROR: Failed to copy vim runtime files" >&2; exit 1; \
+	fi; \
+	echo "==> Build and install complete."
+
+build-vim-clean: 
+	@set -euo pipefail; \
+	cd ./containers; \
+	rm -r ./containers/arch-amd64/build; \
+	docker rm vim_build
+	
