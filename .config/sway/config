@@ -1,8 +1,9 @@
 input "type:keyboard" {
-	xkb_layout "us,ru"
+	xkb_layout "us,ua"
 		xkb_variant "dvp,"
 		xkb_options "grp:rwin_toggle"
 		xkb_options "grp:alt_shift_toggle"
+		xkb_options "caps:ctrl_modifier"
 }
 
 input "type:tablet_tool" {
@@ -97,7 +98,7 @@ exec swayidle -w \
 	     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 # Screenshot
-	     bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
+	     bindsym $mod+Shift+s exec flameshot gui
 
 # Magnification
 # https://github.com/negrel/wooz

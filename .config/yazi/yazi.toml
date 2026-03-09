@@ -8,7 +8,7 @@ open = [
 ]
 
 edit = [
-    { run = 'nvim "$@"', block = true, desc = "Edit" },
+    { run = 'vim "$@"', block = true, desc = "Edit" },
     { run = 'sudoedit "$0"', block = true, desc = "Sudo edit"}, 
 ]
 
