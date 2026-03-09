@@ -175,6 +175,7 @@ same directory as the org-buffer and insert a link to this file."
 ;; Org-mode and basic LaTeX/PDF support
 (require 'org)
 (require 'ox-latex)
+(require 'ox-md)
 (setq org-startup-with-latex-preview nil) ;; auto preview LaTeX
 
 ;; Optional: LaTeX class customization for styling
