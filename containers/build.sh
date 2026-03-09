@@ -7,7 +7,6 @@ cd /work/vim/src
 ./configure \
 	--with-wayland \
        	--enable-python3interp=yes \
-       	--enable-pythoninterp=yes \
        	--enable-fail-if-missing \
        	--disable-darwin \
        	--enable-luainterp=yes \

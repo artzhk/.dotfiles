@@ -86,7 +86,7 @@ link-emacs:
 #TODO: add root required installation for X11 .conf files
 
 
-build-vim: build-vim-clean
+build-vim: | build-vim-clean
 	@set -euo pipefail; \
 	os="$$(. /etc/os-release 2>/dev/null; echo "$${ID:-}")"; \
 	arch="$$(uname -m)"; \
@@ -102,14 +102,13 @@ build-vim: build-vim-clean
 	bash ./install.sh arch-amd64; \
 	echo "==> Sudo access required to install vim to /usr/local/"; \
 	sudo -v; \
-	echo "==> Copying vim binary to /usr/local/vim..."; \
-	if sudo cp -v ./arch-amd64/build/vim /usr/local/vim; then \
-		echo "==> [OK] vim binary installed to /usr/local/vim"; \
+	echo "==> Copying vim binary file to /usr/bin/vim..."; \
+	if sudo cp -v ./arch-amd64/build/vim /usr/bin/vim; then \
+		echo "==> [OK] vim binary installed to /usr/bin/vim"; \
 	else \
-		echo "ERROR: Failed to copy vim binary" >&2; exit 1; \
+		echo "ERROR: Failed to copy vim runtime files" >&2; exit 1; \
 	fi; \
 	sudo mkdir -p /usr/local/share/vim/; \
-	echo "==> Copying vim runtime files to /usr/local/share/vim/vim91..."; \
 	if sudo cp -vr ./arch-amd64/build/vimdir/* /usr/local/share/vim/; then \
 		echo "==> [OK] vim runtime files installed to /usr/local/share/vim/vim91"; \
 	else \
@@ -120,6 +119,5 @@ build-vim: build-vim-clean
 build-vim-clean: 
 	@set -euo pipefail; \
 	cd ./containers; \
-	rm -r ./containers/arch-amd64/build; \
-	docker rm vim_build
-	
+	[ -d arch-amd64/build ] && rm -rf arch-amd64/build || true; \
+	docker rm -f vim_build >/dev/null 2>&1 || true	
