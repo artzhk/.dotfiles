@@ -1,5 +1,4 @@
 (load-theme 'modus-operandi t)
-;; ~/.emacs.d/init.el or early in config
 (add-to-list 'default-frame-alist '(undecorated . nil))   ;; ensure WM draws borders/buttons
 (setq frame-title-format '("%b — Emacs"))                ;; show buffer name in title
 (setq-default frame-resize-pixelwise t)                  ;; avoids odd sizing with CSD

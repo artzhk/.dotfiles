@@ -99,11 +99,6 @@ alias gwarb="ggr | xargs -n3 sh -c 'git worktree add -f ~/repos/wt/\$1 -b \$1' s
 alias glga="git log --graph --color=always --full-history --all --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 alias glg="git log --graph --color=always --full-history --pretty=format:\"%C(auto)%h | %cn | %ah | %d%x20%s\""
 
-# vvim
-alias v="NVIM_APPNAME=nvim nvim"
-alias vs="NVIM_APPNAME=nvim nvim -S Session.vim"
-alias vdev="NVIM_APPNAME=nvim_dev nvim"
-
 # Docker
 alias dd="docker"
 alias ddrmi="docker rmi"

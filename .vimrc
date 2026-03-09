@@ -154,7 +154,6 @@ function s:komment()
 	let char = "#"
 
 	for [prefix, exts] in items(by_style_exts)
-		" if (ext != '' && index(exts, ext) != -1) || index(exts, root) != -1
 		if index(exts, filename) != -1 || (ext != '' && index(exts, ext) != -1) || index(exts, root) != -1
 			let char = prefix
 			break
@@ -285,7 +284,7 @@ Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'github/copilot.vim'
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 call plug#end()
