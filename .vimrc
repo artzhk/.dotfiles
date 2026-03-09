@@ -171,7 +171,7 @@ vnoremap <silent><leader>K :norm _xx<CR>
 " ======== External stuff integration ========
 " rg search no brackets to qflist
 " ripgrep to qflist instead of fancy stupid plugins
-set grepprg=rg\ --vimgrep
+set grepprg=rg\ --vimgrep\ -e
 set grepformat^=%f:%l:%c:%m
 
 " usage :Rgq <pattern> <folder>
@@ -203,7 +203,7 @@ function! s:build_quickfix_list(lines)
 	cc
 endfunction
 let g:fzf_vim = {}
-let g:fzf_vim.preview_window = ['hidden,down,70%', 'ctrl-/']
+let g:fzf_vim.preview_window = ['hidden,down,70%']
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 1, 'xoffset': 1, 'border': 'sharp' } }
 let g:fzf_action = {
 			\ 'ctrl-s': function('s:build_quickfix_list'),
@@ -285,6 +285,8 @@ Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'github/copilot.vim'
+" Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
