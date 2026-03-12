@@ -1,5 +1,5 @@
 general.import = [
-     "~/.config/alacritty/colorscheme",
+     "~/.dotfiles/.config/alacritty/colorscheme.toml",
 ]
 
 [env]

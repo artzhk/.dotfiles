@@ -37,6 +37,7 @@ help:
 	@echo "  link-emacs      run .install/install.sh for SRC/.emacs.d -> DST/.emacs.d using MODE"
 	@echo "  build-vim       Arch Linux x86_64 only: build vim in ./containers/arch-amd64 then"
 	@echo "                  copy vim -> /usr/local/vim and runtime -> /usr/local/share/vim/"
+	@echo "  tty-keymap      dvorak-programmer keyboard with escape instead of ctrl linked to /usr/share/kbd/keymaps/i386/dvorak/custom.map"
 	@echo ""
 	@echo "examples:"
 	@echo "  make install"
@@ -49,6 +50,15 @@ install: vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-e
 
 install-default:
 	@$(MAKE) install SRC="$(HOME)/.dotfiles" DST="$(HOME)" MODE="ln"
+
+#https://unix.stackexchange.com/questions/709302/how-to-remap-ctrl-to-caps-lock-in-a-tty
+tty-keymap: 
+	@echo "==> Sudo access reqired to link dvorak-programmer custom keymap to /usr/share/kbd/keymaps/i386/dvorak/custom.map"
+	sudo -v; \
+	sudo ln -s $(SRC)/.local/dvorak-programmer.map /usr/share/kbd/keymaps/i386/dvorak/custom.map
+	@echo "==> Sudo access reqired to sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf"
+	sudo -v; \
+	sudo sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf 
 
 vim-dirs:
 	@mkdir -p "$(DST)/.vim/undo" "$(DST)/.vim/backup" "$(DST)/.vim/swap"
