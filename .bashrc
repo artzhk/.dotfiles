@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.dotfiles/bash/.aliases
+source ~/.dotfiles/bash/aliases.sh
 
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/go/bin:$PATH

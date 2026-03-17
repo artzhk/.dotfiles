@@ -3,7 +3,5 @@
 export SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs
 export DOCKER_HOST=unix:////wsl/shared-docker/docker.sock
 
-alias esla="eslint --fix \$(git status -s | grep -v '^ D' | cut -c 4-)"
-alias preta="prettier -c \$(git status -s | grep -v '^ D' | cut -c 4-) -w"
 
 

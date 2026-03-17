@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-alias ll='ls -l'
+alias ll='ls -larth'
 alias grep='grep --color=auto'
 
 alias grE=grep_exclude
@@ -18,20 +18,14 @@ mkcd() {
 	mkdir -p $1 && cd $1
 }
 
+# pretier eslint on staged/unstaged fies
+alias esla="eslint --fix \$(git status --untracked-files -s | grep -e '^.[??|M| M|UU].*ts\w*$' | cut -c 4-)"
+alias preta="prettier -c \$(git status --untracked-files -s | grep -e '^.[??|M| M|UU].*ts\w*$' | cut -c 4-) -w"
+
 # grep directory
-alias dg='ls -a | grep'
 alias tmKISS='tmux kill-server'
-alias tmns='tmux-session'
-alias cpcr='cpp-c-r'
 alias brc='source ~/.bash_profile'
-alias t='tree'
 alias lg="lazygit"
-alias math="genius"
-alias s1="i3-resurrect save -w 1"
-alias s2="i3-resurrect save -w 2"
-alias w1="i3-resurrect restore -w 1"
-alias w2="i3-resurrect restore -w 2"
-alias vv="select_vim"
 
 # git basics
 alias g="git"
@@ -39,7 +33,6 @@ alias guc="git push -u origin \$(git branch --show-current)"
 alias gp="git pull"
 alias gP="git push"
 alias gs="git status"
-alias gaa="git add ."
 alias ga="git add"
 alias gap="git add --patch"
 
@@ -64,10 +57,6 @@ alias gds="git diff --staged"
 
 # git diff interactive
 alias gdi="git status -s | cut -d \" \" -f 3 | fzf --preview=\"git diff --color {}\" "
-
-# git status
-## all edited existed files 
-alias gS="git status -s | grep -v '^ D' | grep -v '.swp$' | cut -c 4-"
 
 # git diff head to selected commit for file [git diff current -> commit]
 alias gdcc="git diff \$(git log --pretty=format:\"%H %cI %d%x20%s\" | fzf | cut -d \" \" -f 1) HEAD"
@@ -101,16 +90,11 @@ alias glg="git log --graph --color=always --full-history --pretty=format:\"%C(au
 
 # Docker
 alias dd="docker"
-alias ddrmi="docker rmi"
-alias ddi="docker images"
 # Remove inactive images
 alias ddrmii="docker rmi \$(docker images -q)"
 alias dda="docker ps -a"
 # Docker remove all inactive containers
 alias ddrmci="docker rm \$(docker ps -a -q)"
-alias ddr="docker run"
-# Docker compose
-alias ddc="docker compose"
 
 # NM cli 
 # Select and connect

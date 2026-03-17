@@ -10,7 +10,7 @@
 
 (add-to-list 'load-path "~/repos/img2orgtable-emacs")
 (require 'img2orgtable)
-(setq img2orgtable--screenshot-cmd "flameshot gui -r > %s")
+(setq img2orgtable--screenshot-cmd "grim -g \"$(slurp)\" -t png %s")
 
 ;; Set up package.el to work with MELPA
 (require 'package)
