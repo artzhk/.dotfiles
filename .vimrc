@@ -68,11 +68,11 @@ vnoremap J :m '>+1<CR>gv=gv
 
 " emacs-like compile
 let s:exec_cmd = '0read !%s | col -b'
-command -nargs=* CompileHelp new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
-command -nargs=* CompileQf new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
+command -nargs=* -complete=shellcmd CompileHelp new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
+command -nargs=* -complete=shellcmd CompileQf new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
 
 function! s:compile(compile_mode)
-	let s:i = input('[compile]: ')
+	let s:i = input('[compile]: ', '', 'shellcmd')
 	if s:i != ''
 		execute a:compile_mode . ' ' . s:i
 	endif 
@@ -80,8 +80,12 @@ endfunc
 
 " man pages on hovered word
 nnoremap <silent><leader>hh :CompileHelp man <C-R><C-W><CR>
+" if vim version < 7.0 just do :CompileHelp, but no fancy command prepend sry
 nnoremap <silent><leader>cc :call <SID>compile('CompileHelp')<CR>
 nnoremap <silent><leader>cq :call <SID>compile('CompileQf')<CR>
+
+" emacs-compile like buffer
+command -nargs=* Com new | 0read !<args> | col -b
 
 " current file helpers
 function! s:copy_filepath()
@@ -303,4 +307,4 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " Additional per machine customizations
-" source ~/.profile.vim
+source ~/.profile.vim
