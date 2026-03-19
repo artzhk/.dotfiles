@@ -65,20 +65,33 @@ augroup END
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
-" man pages
-" TODO: open the buf to be readonly
-command -nargs=* Man new | 0read !man <args> | col -b
-nnoremap <silent><leader>h :Man <C-R><C-W><CR>
+
+" emacs-like compile
+let s:exec_cmd = '0read !%s | col -b'
+command -nargs=* CompileHelp new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
+command -nargs=* CompileQf new | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=wipe nobuflisted noswapfile readonly nomodifiable
+
+function! s:compile(compile_mode)
+	let s:i = input('[compile]: ')
+	if s:i != ''
+		execute a:compile_mode . ' ' . s:i
+	endif 
+endfunc
+
+" man pages on hovered word
+nnoremap <silent><leader>hh :CompileHelp man <C-R><C-W><CR>
+nnoremap <silent><leader>cc :call <SID>compile('CompileHelp')<CR>
+nnoremap <silent><leader>cq :call <SID>compile('CompileQf')<CR>
 
 " current file helpers
-function s:copy_filepath()
+function! s:copy_filepath()
 	let file = expand('%:p')
 	let @" = file
 	let @+ = file
 	echo 'Copied filepath: ' . file
 endfunction
 
-function s:copy_filename()
+function! s:copy_filename()
 	let file = expand('%:t')
 	" write to the tmp/buffer.txt file
 	" write to the register
