@@ -30,7 +30,7 @@ keycode   1 = Escape
 ! --------------------------------------------------------------------------
 keycode  41 = dollar         asciitilde
 keycode   2 = ampersand      percent
-keycode   3 = bracketleft    seven
+keycode   3 = bracketleft    seven 		Escape 		Escape
 keycode   4 = braceleft      five
 keycode   5 = braceright     three
 keycode   6 = parenleft      one
