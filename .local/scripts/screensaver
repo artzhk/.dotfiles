@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# Idle screensaver: ASCII globe (globe-cli) + clock (termdown)
+#
+# Display layout logic:
+#   eDP active               → globe (left 65%) + clock (right 35%) on laptop screen
+#   eDP off, 1 vertical out  → clock fullscreen on that display
+#   eDP off, 2 vertical out  → clock on first, globe on second
+#
+# Dependencies:
+#   pacman: termdown jq foot
+#   aur:    globe-cli
+#
+# Usage (called by swayidle):
+#   screensaver start   — detect displays, launch
+#   screensaver stop    — kill all screensaver windows
+
+set -euo pipefail
+
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/bin:$PATH"
+
+TSESS="idle-screensaver"
+GLOBE_CMD="globe --screensaver -g 3 -r 5"
+CLOCK_CMD="termdown -z"
+
+# ---------------------------------------------------------------------------
+_stop() {
+    tmux kill-session -t "$TSESS" 2>/dev/null || true
+    pkill -f "screensaver-clock" 2>/dev/null || true
+    pkill -f "screensaver-globe" 2>/dev/null || true
+    pkill -f "screensaver-main"  2>/dev/null || true
+}
+
+# foot sends the fullscreen request via xdg-toplevel before the window maps,
+# so sway honors it immediately — no sleep + IPC dance needed.
+# $1 = sway output name, $2 = window title, $3 = command string (word-split intentional)
+_open_on() {
+    local out="$1" title="$2" cmd="$3"
+    swaymsg "focus output $out"
+    # shellcheck disable=SC2086
+    foot --title "$title" --fullscreen $cmd &
+}
+
+# ---------------------------------------------------------------------------
+# eDP is active: horizontal tmux split on the laptop screen
+#   left  pane — globe (65 %)
+#   right pane — clock (35 %)
+_start_laptop() {
+    local edp="$1"
+
+    tmux new-session -d -s "$TSESS" -x 200 -y 50
+    tmux send-keys    -t "${TSESS}:0.0" "$GLOBE_CMD" Enter
+    tmux split-window -h -t "$TSESS" -p 35
+    tmux send-keys    -t "${TSESS}:0.1" "$CLOCK_CMD" Enter
+    tmux select-pane  -t "${TSESS}:0.0"
+
+    swaymsg "focus output $edp"
+    foot --title screensaver-main --fullscreen tmux attach -t "$TSESS" &
+}
+
+# ---------------------------------------------------------------------------
+# eDP off, single vertical display: clock fullscreen
+_start_single_vertical() {
+    _open_on "$1" screensaver-clock "$CLOCK_CMD"
+}
+
+# ---------------------------------------------------------------------------
+# eDP off, two vertical displays: clock on first, globe on second
+_start_dual_vertical() {
+    _open_on "$1" screensaver-clock "$CLOCK_CMD"
+    sleep 0.3
+    _open_on "$2" screensaver-globe "$GLOBE_CMD"
+}
+
+# ---------------------------------------------------------------------------
+_start() {
+    _stop
+
+    local outputs
+    outputs=$(swaymsg -t get_outputs | jq '[.[] | select(.active == true and .power == true)]')
+
+    # --- case 1: laptop display on ---
+    local edp
+    edp=$(printf '%s' "$outputs" | jq -r '
+        [.[] | select(.name | startswith("eDP"))] | .[0].name // ""
+    ')
+
+    if [[ -n "$edp" ]]; then
+        _start_laptop "$edp"
+        return
+    fi
+
+    # --- eDP is off: work with vertical (portrait) external displays ---
+    # rect dimensions are post-transform + post-scale, so correct for rotated monitors
+    local verticals
+    verticals=$(printf '%s' "$outputs" | jq -r '[.[] | select(.rect.height > .rect.width) | .name]')
+    local vcount
+    vcount=$(printf '%s' "$verticals" | jq 'length')
+
+    if [[ "$vcount" -ge 2 ]]; then
+        _start_dual_vertical \
+            "$(printf '%s' "$verticals" | jq -r '.[0]')" \
+            "$(printf '%s' "$verticals" | jq -r '.[1]')"
+    elif [[ "$vcount" -eq 1 ]]; then
+        _start_single_vertical "$(printf '%s' "$verticals" | jq -r '.[0]')"
+    else
+        # Fallback: no vertical displays — clock on first active output
+        _open_on "$(printf '%s' "$outputs" | jq -r '.[0].name')" screensaver-clock "$CLOCK_CMD"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+case "${1:-start}" in
+    start) _start ;;
+    stop)  _stop  ;;
+    *)     printf 'usage: screensaver [start|stop]\n' >&2; exit 1 ;;
+esac

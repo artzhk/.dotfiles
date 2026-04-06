@@ -126,6 +126,24 @@ build-vim: | build-vim-clean
 	fi; \
 	echo "==> Build and install complete."
 
+# If vim runtime is already compiled and must only be copied
+build-vim-copy: 
+	[ -f $(SRC)/containers/arch-amd64/build/vim && -d $(SRC)/containers/arch-amd64/build/vimdir ] && \
+	sudo -v; \
+	echo "==> Copying vim binary file to /usr/bin/vim..."; \
+	if sudo cp -v $(SRC)/containers/arch-amd64/build/vim /usr/bin/vim; then \
+		echo "==> [OK] vim binary installed to /usr/bin/vim"; \
+	else \
+		echo "ERROR: Failed to copy vim runtime files" >&2; exit 1; \
+	fi; \
+	sudo mkdir -p /usr/local/share/vim/; \
+	if sudo cp -vr $(SRC)/containers/arch-amd64/build/vimdir/* /usr/local/share/vim/; then \
+		echo "==> [OK] vim runtime files installed to /usr/local/share/vim/vim91"; \
+	else \
+		echo "ERROR: Failed to copy vim runtime files" >&2; exit 1; \
+	fi; \
+	echo "==> Build and install complete."
+
 build-vim-clean: 
 	@set -euo pipefail; \
 	cd ./containers; \

@@ -1,5 +1,5 @@
 general.import = [
-     "~/.dotfiles/.config/alacritty/colorscheme.toml",
+	"~/.dotfiles/.config/alacritty/colorscheme",
 ]
 
 [env]
@@ -14,7 +14,7 @@ size = 12
 
 [window]
 decorations = "None"
-startup_mode = "SimpleFullscreen"
+# startup_mode = "SimpleFullscreen"
 
 [selection]
 save_to_clipboard = true
