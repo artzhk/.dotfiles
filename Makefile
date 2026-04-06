@@ -58,7 +58,7 @@ tty-keymap:
 	sudo ln -s $(SRC)/.local/dvorak-programmer.map /usr/share/kbd/keymaps/i386/dvorak/custom.map
 	@echo "==> Sudo access reqired to sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf"
 	sudo -v; \
-	sudo sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf 
+	sudo sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf | sudo tee /etc/vconsole.conf
 
 vim-dirs:
 	@mkdir -p "$(DST)/.vim/undo" "$(DST)/.vim/backup" "$(DST)/.vim/swap"
