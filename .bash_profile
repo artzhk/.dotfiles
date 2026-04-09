@@ -40,3 +40,4 @@ if [[ -f /home/art/.config/broot/launcher/bash/br ]]; then
 	source /home/art/.config/broot/launcher/bash/br
 fi
 
+. "$HOME/.cargo/env"

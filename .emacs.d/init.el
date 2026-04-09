@@ -114,10 +114,7 @@
  '(custom-safe-themes
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
      default))
- '(org-agenda-files
-   '("~/org-space/vaults/main/Uni/PCaIOT/PCaIOT.org"
-     "/home/art/org-space/vaults/main/Uni/NLP/NLP.org"
-     "/home/art/org-space/vaults/main/Uni/MLaNN/MLaNN.org"))
+ '(org-agenda-files nil)
  '(package-selected-packages
    '(## compat copilot copilot-chat dash ein eink-theme evil helm
 	helm-bibtex html2org latex-table-wizard lsp-mode magit
@@ -312,7 +309,7 @@ same directory as the org-buffer and insert a link to this file."
 (assoc "cv" org-latex-classes)
 
 (setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 2.0))
+      (plist-put org-format-latex-options :scale 1.0))
 
 (use-package pdf-tools
   :ensure t
@@ -325,7 +322,7 @@ same directory as the org-buffer and insert a link to this file."
             :message "Install TeX (latex) and dvisvgm."
             :image-input-type "dvi"
             :image-output-type "svg"
-            :image-size-adjust (1.5 . 1.5)
+            :image-size-adjust (1.0 . 1.0)
             :latex-compiler ("latex -interaction=nonstopmode -output-directory %o %f")
             :image-converter ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
 (with-eval-after-load 'org
@@ -359,7 +356,7 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; Enable image display in org-mode
 (setq org-startup-with-inline-images t)
-(setq org-image-actual-width '(800)) ;; limit image width
+(setq org-image-actual-width '(500)) ;; limit image width
 
 ;; Allow pasting images (if you already have a script)
 ;; Just make sure org-download is installed if needed:

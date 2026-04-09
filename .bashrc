@@ -16,6 +16,7 @@ export BAT_THEME="ansi"
 export EDITOR="vim"
 export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=kvantum
+export PUB_CACHE=$PWD/.pub-cache
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -50,3 +51,4 @@ PS1="\[\e[0m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e[0m
 
 
 [[ -f $HOME/.profile ]] && source $HOME/.profile
+. "$HOME/.cargo/env"
