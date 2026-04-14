@@ -22,6 +22,9 @@ set $QT_QPA_PLATFORMTHEME qt5ct
 exec_always systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR SWAYSOCK
 exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR SWAYSOCK
 
+# cliphist 
+exec wl-paste --watch cliphist store
+
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
 #
@@ -55,18 +58,10 @@ output * bg /home/art/.dotfiles/.local/wallpapers/Nordic-mountain-wallpaper.jpg 
 output eDP-1 scale 1.5 enable
 
 ### Idle configuration
-#
-# Example configuration:
-#
-exec swayidle -w \
+exec_always swayidle -w \
 	     timeout 120 'screensaver start' resume 'screensaver stop' \
-	     timeout 600 'screensaver stop; swaylock -f -c 000000' \
-	     timeout 900 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-	     before-sleep 'screensaver stop; swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
+	     timeout 3600 'systemctl suspend-then-hibernate' \
+	     before-sleep 'screensaver stop; swaylock -f 000000' 
 
 ### Key bindings
 #

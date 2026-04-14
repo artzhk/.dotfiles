@@ -12,6 +12,6 @@ if [ "$ext_active" -ge 1 ]; then
   # (disable vs power: disable drops the output's workspaces; power keeps them)
   swaymsg output "$LAPTOP" disable >/dev/null
 else
-  systemctl suspend
+  systemctl suspend-then-hibernate
 fi
 

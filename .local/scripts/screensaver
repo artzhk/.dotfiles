@@ -19,8 +19,8 @@ set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/bin:$PATH"
 
 TSESS="idle-screensaver"
-GLOBE_CMD="globe --screensaver -g 3 -r 5"
-CLOCK_CMD="termdown -z"
+GLOBE_CMD="globe -sc1 -g10"
+CLOCK_CMD="termdown -z -s"
 
 # ---------------------------------------------------------------------------
 _stop() {
@@ -52,6 +52,9 @@ _start_laptop() {
     tmux split-window -h -t "$TSESS" -p 35
     tmux send-keys    -t "${TSESS}:0.1" "$CLOCK_CMD" Enter
     tmux select-pane  -t "${TSESS}:0.0"
+    tmux set-option status off
+    tmux set -g pane-active-border-style 'fg=default,bg=default'
+    tmux set -g pane-border-style 'fg=default,bg=default'
 
     swaymsg "focus output $edp"
     foot --title screensaver-main --fullscreen tmux attach -t "$TSESS" &

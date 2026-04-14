@@ -48,6 +48,9 @@ nnoremap <silent><leader>nr :set rnu!<CR>
 nnoremap <silent><leader>tn :tabn<CR>
 nnoremap <silent><leader>tp :tabp<CR>
 
+" prev buf [uncomment if terminal silents ctrl+^]
+nnoremap <silent><C-S-@> :b#<CR>
+
 " qflist navigation
 nnoremap <silent><C-h> :cp<CR>
 nnoremap <silent><C-s> :cn<CR>
@@ -69,13 +72,13 @@ let s:exec_cmd = '0read !%s | col -b'
 
 function! s:reuse_or_new_buf(name)
 	let l:n = bufnr(a:name)
-	if l:n < 0 | new | silent execute 'file' a:name | return | endif
+	if l:n < 0 | new | silent execute 'file' fnameescape(a:name) | return | endif
 	execute (bufwinnr(l:n) > 0 ? bufwinnr(l:n).'wincmd w' : 'sbuffer '.l:n)
 	setlocal modifiable noreadonly | silent %delete _
 endfunction
 
-command -nargs=* -complete=shellcmd CompileHelp call s:reuse_or_new_buf("[Help]") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
-command -nargs=* -complete=shellcmd CompileQf call s:reuse_or_new_buf("[Qf List]") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
+command -nargs=* -complete=shellcmd CompileHelp call s:reuse_or_new_buf("(Compile)") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
+command -nargs=* -complete=shellcmd CompileQf call s:reuse_or_new_buf("(Qf List)") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
 
 function! s:compile(compile_mode)
 	let s:i = input('[compile]: ', '', 'shellcmd')
