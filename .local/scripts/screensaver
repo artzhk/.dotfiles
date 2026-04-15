@@ -48,13 +48,14 @@ _start_laptop() {
     local edp="$1"
 
     tmux new-session -d -s "$TSESS" -x 200 -y 50
-    tmux send-keys    -t "${TSESS}:0.0" "$GLOBE_CMD" Enter
-    tmux split-window -h -t "$TSESS" -p 35
-    tmux send-keys    -t "${TSESS}:0.1" "$CLOCK_CMD" Enter
+    tmux send-keys    -t "${TSESS}:0.0" "$CLOCK_CMD" Enter
+    tmux split-window -h -t "$TSESS" -p 50
+    tmux send-keys    -t "${TSESS}:0.1" "$GLOBE_CMD" Enter
     tmux select-pane  -t "${TSESS}:0.0"
     tmux set-option status off
     tmux set -g pane-active-border-style 'fg=default,bg=default'
     tmux set -g pane-border-style 'fg=default,bg=default'
+
 
     swaymsg "focus output $edp"
     foot --title screensaver-main --fullscreen tmux attach -t "$TSESS" &
