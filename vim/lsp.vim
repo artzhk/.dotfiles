@@ -45,6 +45,14 @@ if executable('rust-analyzer')
 				\ })
 endif
 
+if executable('codebook-lsp')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'codebook-lsp',
+				\ 'cmd': {server_info->['codebook-lsp', 'serve']},
+				\ 'allowlist': ['rs', 'rust'],
+				\ })
+endif
+
 if executable('ruff')
 	au User lsp_setup call lsp#register_server({
 				\ 'name': 'ruff',
