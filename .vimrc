@@ -46,7 +46,7 @@ nnoremap <silent><leader>nr :set rnu!<CR>
 
 " tabs
 nnoremap <silent><leader>tn :tabn<CR>
-nnoremap <silent><leader>tp :tabp<CR>
+"" gT - prev tab by default
 
 " prev buf [uncomment if terminal silents ctrl+^]
 nnoremap <silent><C-S-@> :b#<CR>
@@ -65,7 +65,6 @@ augroup END
 " moving visual selection
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
-
 
 " emacs-like compile
 let s:exec_cmd = '0read !%s | col -b'
@@ -196,8 +195,20 @@ vnoremap <silent><leader>K :norm _xx<CR>
 " ======== External stuff integration ========
 " rg search no brackets to qflist
 " ripgrep to qflist instead of fancy stupid plugins
-set grepprg=rg\ --vimgrep\ -e
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 set grepformat^=%f:%l:%c:%m
+
+packadd cfilter
+augroup auto_qf
+	autocmd!
+	autocmd QuickFixCmdPost [^l]* cwindow
+	autocmd QuickFixCmdPost l* lwindow
+augroup END
+
+nnoremap <leader>co :<C-u>execute v:count1 . 'colder'<CR>
+nnoremap <leader>cn :<C-u>execute v:count1 . 'cnewer'<CR>
+nnoremap <leader>lo :<C-u>execute v:count1 . 'lolder'<CR>
+nnoremap <leader>ln :<C-u>execute v:count1 . 'lnewer'<CR>
 
 " usage :Rgq <pattern> <folder>
 command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
@@ -231,7 +242,7 @@ let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['hidden,down,70%']
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 1, 'xoffset': 1, 'border': 'sharp' } }
 let g:fzf_action = {
-			\ 'ctrl-s': function('s:build_quickfix_list'),
+			\ 'ctrl-q': function('s:build_quickfix_list'),
 			\}
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files', {'window': { 'width': 0.5, 'height': 1, 'xoffset': 2 }})
 
@@ -274,7 +285,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer> [d <plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]d <plug>(lsp-next-diagnostic)
 	nmap <buffer>K <plug>(lsp-hover)
-	nmap <buffer> dq <plug>(lsp-document-diagnostics)
+	nmap <buffer> dq :LspDocumentDiagnostics<CR>:sleep 200m<CR>:call setloclist(0, filter(getloclist(0), 'v:val.type ==# "E"'))<CR>
 	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-k> lsp#scroll(-4)
 
@@ -283,8 +294,6 @@ function! s:on_lsp_buffer_enabled() abort
 	let g:lsp_hover_ui = 'preview'
 	let g:lsp_diagnostics_virtual_text_align = "right"
 	let g:lsp_diagnostics_virtual_text_wrap = "truncate"
-
-	autocmd! BufWritePre *.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install

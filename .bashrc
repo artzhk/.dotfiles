@@ -5,6 +5,7 @@ source ~/.dotfiles/bash/aliases.sh
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/go/bin:$PATH
 export PATH=/usr/local/bin:$PATH
+export PATH=/usr/sbin:$PATH
 export PATH=~/.local/bin:$PATH
 export PATH=~/.local/scripts:$PATH
 export PATH=~/.local/watches:$PATH
