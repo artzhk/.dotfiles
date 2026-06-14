@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-ln -sfn ~/.dotfiles/.config/alacritty/colorscheme.toml ~/.dotfiles/.config/alacritty/colorscheme
+ln -sfn /usr/share/foot/themes/electrophoretic ~/.config/foot/colorscheme
+ln -sfn ~/.dotfiles/vim/light.vim ~/.vim/colorscheme.vim
+
+pgrep -x qutebrowser > /dev/null && \
+	qutebrowser ':set colors.webpage.darkmode.enabled false' 2>/dev/null || true
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc'
+
+emacsclient --eval '(load-theme (quote modus-operandi) t)' 2>/dev/null || true

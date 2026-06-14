@@ -61,11 +61,11 @@ if executable('ruff')
 				\ })
 endif
 
-if executable('pyright-langserver')
+if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({
-				\ 'name': 'pyright-langserver',
-				\ 'cmd': {server_info->['pyright-langserver', '--stdio']},
+				\ 'name': 'python-lsp-server',
+				\ 'cmd': {server_info->['pylsp']},
 				\ 'allowlist': ['python', 'py'],
 				\ })
 endif
@@ -76,6 +76,15 @@ if executable('pylsp')
 				\ 'name': 'pylsp',
 				\ 'cmd': {server_info->['pylsp']},
 				\ 'allowlist': ['python', 'py'],
+				\ })
+endif
+
+if executable('gopls')
+	" npm install -g @vlabo/cspell-lsp
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'gopls',
+				\ 'cmd': {server_info->['gopls']},
+				\ 'allowlist': ['go'],
 				\ })
 endif
 

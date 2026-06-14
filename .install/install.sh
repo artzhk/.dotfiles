@@ -9,6 +9,7 @@ NC="\e[0m" # No color
 
 declare -A BLACKLIST=(
 	[install.sh]=1
+	[README.md]=1
 	[Makefile]=1
 	[.config]=1
 	[.local]=1

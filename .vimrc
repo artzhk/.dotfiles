@@ -192,7 +192,7 @@ vnoremap <silent><leader>k :call <SID>komment()<CR>
 nnoremap <silent><leader>K :norm _xx<CR>
 vnoremap <silent><leader>K :norm _xx<CR>
 
-" ======== External stuff integration ========
+" ======== External and GUI stuff integration ========
 " rg search no brackets to qflist
 " ripgrep to qflist instead of fancy stupid plugins
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow
@@ -209,6 +209,9 @@ nnoremap <leader>co :<C-u>execute v:count1 . 'colder'<CR>
 nnoremap <leader>cn :<C-u>execute v:count1 . 'cnewer'<CR>
 nnoremap <leader>lo :<C-u>execute v:count1 . 'lolder'<CR>
 nnoremap <leader>ln :<C-u>execute v:count1 . 'lnewer'<CR>
+
+" colorscheme hot reload
+autocmd FocusGained * if filereadable(expand('~/.vim/colorscheme.vim')) | source ~/.vim/colorscheme.vim | endif
 
 " usage :Rgq <pattern> <folder>
 command! -nargs=* Rgq execute 'grep! ' . join([<f-args>])
@@ -252,20 +255,15 @@ nnoremap <silent><leader>u :UndotreeToggle<CR>
 "" autoformat
 nnoremap <leader>f :Autoformat<CR>
 
-"" copilot
-imap <silent><script><expr> <C-E> copilot#Accept("\<CR>")
-let g:copilot_no_tab_map = v:true
-let g:copilot_enabled = v:false
-
-" vim Go
-let g:go_def_mode="gopls"
-let g:go_info_mode="gopls"
-let g:go_fmt_command = "goimports"
-let g:go_fmt_autosave = 1
-let g:go_fmt_fail_silently = 1
-let g:go_list_type = "quickfix"
-command GLB GoBuild
-
+" " vim Go
+" let g:go_def_mode="gopls"
+" let g:go_info_mode="gopls"
+" let g:go_fmt_command = "goimports"
+" let g:go_fmt_autosave = 1
+" let g:go_fmt_fail_silently = 1
+" let g:go_list_type = "quickfix"
+" command GLB GoBuild
+" 
 " lsp setup
 source ~/.dotfiles/vim/lsp.vim
 
@@ -296,6 +294,11 @@ function! s:on_lsp_buffer_enabled() abort
 	let g:lsp_diagnostics_virtual_text_wrap = "truncate"
 endfunction
 
+augroup preview_buffer
+	au! 
+	autocmd BufNew LspHoverPreview set wrap
+augroup END
+
 augroup lsp_install
 	au!
 	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
@@ -313,12 +316,11 @@ call plug#begin()
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'options':  '',}
 Plug 'junegunn/fzf.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'rust-lang/rust.vim'
 Plug 'mbbill/undotree'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'vim-autoformat/vim-autoformat'
-Plug 'github/copilot.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 

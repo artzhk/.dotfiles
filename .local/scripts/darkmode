@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-ln -sfn /dev/null ~/.dotfiles/.config/alacritty/colorscheme
+ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme
+ln -sfn ~/.dotfiles/vim/dark.vim ~/.vim/colorscheme.vim
+
+# qutebrowser
+pgrep -x qutebrowser > /dev/null && \
+	qutebrowser ':set colors.webpage.darkmode.enabled true' 2>/dev/null || true
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
+
+emacsclient --eval '(load-theme (quote tango-dark) t)' 2>/dev/null || true
 
