@@ -13,8 +13,8 @@ set shiftwidth=8 tabstop=8 softtabstop=0 noexpandtab smartindent
 set showmode
 set laststatus=2
 set statusline=%<%F\ %h%w%m%r%=%-14.(%l,%c%V%)\ %P
-set colorcolumn=120
-set textwidth=120
+set colorcolumn=80
+set textwidth=80
 set number
 set scrolloff=8
 set nowrap
@@ -254,16 +254,11 @@ nnoremap <silent><leader>u :UndotreeToggle<CR>
 
 "" autoformat
 nnoremap <leader>f :Autoformat<CR>
+let g:formatters_go=['gofmt', 'golines']
+let g:formatdef_golines='"golines -m 80 --tab-len=8"'
+let g:formatdef_gofmt='"gofmt"'
+let g:run_all_formatters_go=1
 
-" " vim Go
-" let g:go_def_mode="gopls"
-" let g:go_info_mode="gopls"
-" let g:go_fmt_command = "goimports"
-" let g:go_fmt_autosave = 1
-" let g:go_fmt_fail_silently = 1
-" let g:go_list_type = "quickfix"
-" command GLB GoBuild
-" 
 " lsp setup
 source ~/.dotfiles/vim/lsp.vim
 

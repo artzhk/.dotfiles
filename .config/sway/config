@@ -62,9 +62,9 @@ exec_always swayidle -w \
 	     before-sleep 'screensaver stop; swaylock -f 000000' 
 
 ### Key bindings
-#
 # Basics:
 	     bindsym $mod+space exec --no-startup-id $opened
+	     bindsym $mod+Shift+b sticky toggle
 
 # Move panes between screens
 	     bindsym $mod+p move workspace to output right
@@ -198,6 +198,7 @@ bindsym $mod+i exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 # Return to default mode
 			     bindsym Return mode "default"
 			     bindsym Escape mode "default"
+			     bindsym $mod+r mode "default"
 	     }
 
 bindsym $mod+r mode "resize"

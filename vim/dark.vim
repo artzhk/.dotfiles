@@ -1,2 +1,2 @@
 set background=dark
-hi Normal None
+hi Normal none

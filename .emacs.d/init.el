@@ -11,11 +11,16 @@
 (global-visual-line-mode t)
 (set-frame-font "IosevkaTerm Nerd Font Mono 14" nil)
 
-
 ;;; Packages -------------------------------------------------------------------
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)
+      (scheme . t)
+      (your-other-langs . t)))
 
 
 ;;; Evil (vim keybindings) -----------------------------------------------------
@@ -359,9 +364,9 @@
  '(package-selected-packages
    '(## compat copilot copilot-chat dash dotnet ein eink-theme evil helm
 	helm-bibtex html2org latex-table-wizard lsp-mode magit
-	markdown-mode markdown-preview-mode org-fragtog org-modern
-	org-noter org-ref org-roam org-roam-bibtex ox-latex-subfigure
-	pdf-tools)))
+	markdown-mode markdown-preview-mode mermaid-mode org-fragtog
+	org-modern org-noter org-ref org-roam org-roam-bibtex
+	ox-latex-subfigure pdf-tools)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
