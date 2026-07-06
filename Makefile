@@ -72,7 +72,7 @@ vim-plug:
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 link-root:
-	@bash "$(INSTALL_SH)" "$(SRC)" "$(DST)"
+	@bash $(INSTALL_SH) $(SRC) $(DST)
 
 link-configs:
 	@shopt -s nullglob; \
