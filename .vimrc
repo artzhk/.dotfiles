@@ -80,20 +80,20 @@ function! s:reuse_or_new_buf(name)
 endfunction
 
 command -nargs=* -complete=shellcmd CompileHelp call s:reuse_or_new_buf("(Compile)") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=nofile bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
-command -nargs=* -complete=shellcmd CompileQf call s:reuse_or_new_buf("(Qf List)") | execute printf(s:exec_cmd, <q-args>) | setlocal buftype=quickfix bufhidden=hide nobuflisted noswapfile readonly nomodifiable wrap
 
 function! s:compile(compile_mode)
 	let s:i = input('[compile]: ', '', 'shellcmd')
 	if s:i != ''
 		execute a:compile_mode . ' ' . s:i
-	endif 
+	endif
 endfunc
 
 " man pages on hovered word
 nnoremap <silent><leader>hh :CompileHelp man <C-R><C-W><CR>
 " if vim version < 7.0 just do :CompileHelp, but no fancy command prepend sry
 nnoremap <silent><leader>cc :call <SID>compile('CompileHelp')<CR>
-nnoremap <silent><leader>cq :call <SID>compile('CompileQf')<CR>
+" Prompt for command, store in makeprg, run it
+nnoremap <silent><leader>cq :execute 'setlocal makeprg=' . escape(input('[qf-compile]: ', &makeprg), ' \\') <Bar> make<CR>
 
 " emacs-compile like buffer
 command -nargs=* Com new | 0read !<args> | col -b
