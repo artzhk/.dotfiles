@@ -25,6 +25,9 @@ set undoreload=10000
 set completeopt-=popup
 set completeopt+=menu,menuone,preview
 
+" interactive shell, i do need my aliases
+set shellcmdflag=-ic
+
 " https://stackoverflow.com/questions/821902/disabling-swap-file-creation-in-vim
 set undodir=~/.vim/undo//
 set backupdir=~/.vim/backup//

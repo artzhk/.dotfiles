@@ -35,7 +35,7 @@ history -r ~/.bash_history
 shopt -s histappend
 
 # FZF 
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!.{git,venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
+export FZF_DEFAULT_COMMAND='rg --smart-case --files --hidden --follow -g "!.{git,venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'
 export FZF_DEFAULT_OPTS='--preview "cat {}" --preview-window=right:50%:hidden --bind=ctrl-/:toggle-preview,alt-a:select-all,alt-d:deselect-all --tiebreak=end,pathname,chunk'
 
 # command line appearance

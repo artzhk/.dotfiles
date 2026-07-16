@@ -19,11 +19,21 @@ endif
 
 " Ruby (ruby-lsp via mise)
 if executable('mise') && filereadable(expand('~/lib/ruby-lsp/exe/ruby-lsp')) && filereadable(expand('./.ruby-version'))
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'ruby-lsp',
-        \ 'cmd': {server_info->['mise', 'x', '--', expand('~/lib/ruby-lsp/exe/ruby-lsp')]},
-        \ 'allowlist': ['ruby', 'rb'],
-        \ })
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'ruby-lsp',
+				\ 'cmd': {server_info->['mise', 'x', '--', expand('~/lib/ruby-lsp/exe/ruby-lsp')]},
+				\ 'allowlist': ['ruby', 'rb'],
+				\ })
+endif
+
+if executable('oxlint')
+	" npm i -g typescript-language-server
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'oxlint',
+				\ 'cmd': {server_info->['oxlint', '--lsp']},
+				\ 'allowlist': ['ts', 'js', 'javascriptreact', 'typescriptreact', 'typescript', 'javascript', 'jsx', 'tsx'],
+				\ })
+
 endif
 
 if executable('typescript-language-server')
@@ -45,13 +55,13 @@ if executable('rust-analyzer')
 				\ })
 endif
 
-if executable('codebook-lsp')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'codebook-lsp',
-				\ 'cmd': {server_info->['codebook-lsp', 'serve']},
-				\ 'allowlist': ['rs', 'rust'],
-				\ })
-endif
+" if executable('codebook-lsp')
+" 	au User lsp_setup call lsp#register_server({
+" 				\ 'name': 'codebook-lsp',
+" 				\ 'cmd': {server_info->['codebook-lsp', 'serve']},
+" 				\ 'allowlist': ['javascriptreact', 'typescriptreact', 'tsx', 'jsx', 'typescript', 'javascript', 'python', 'rust', 'go', 'c', 'cpp', 'h', 'hpp', 'cs', 'csharp', 'html', 'css', 'json', 'yaml', 'yml', 'md', 'markdown'],
+" 				\ })
+" endif
 
 if executable('ruff')
 	au User lsp_setup call lsp#register_server({
