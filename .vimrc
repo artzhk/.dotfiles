@@ -89,9 +89,13 @@ function! s:compile(compile_mode)
 endfunc
 
 " man pages on hovered word
-nnoremap <silent><leader>hh :CompileHelp man <C-R><C-W><CR>
+" nnoremap <silent><leader>hh :CompileHelp man <C-R><C-W><CR> " if vim compiled
+" without terminal
+nnoremap <silent><leader>hh :term man <C-R><C-W><CR>
 " if vim version < 7.0 just do :CompileHelp, but no fancy command prepend sry
-nnoremap <silent><leader>cc :call <SID>compile('CompileHelp')<CR>
+" if vim compiled without terminal support
+nnoremap <silent><leader>cC :call <SID>compile('CompileHelp')<CR>
+nnoremap <silent><leader>cc :execute 'terminal ' . input('[compile]: ', '', 'shellcmd')<CR>
 " Prompt for command, store in makeprg, run it
 nnoremap <silent><leader>cq :execute 'setlocal makeprg=' . escape(input('[qf-compile]: ', &makeprg), ' \\') <Bar> make<CR>
 
@@ -250,7 +254,7 @@ let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 1, 'xoffset': 1, 'borde
 let g:fzf_action = {
 			\ 'ctrl-q': function('s:build_quickfix_list'),
 			\}
-inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files', {'window': { 'width': 0.5, 'height': 1, 'xoffset': 2 }})
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files --smart-case', {'window': { 'width': 0.5, 'height': 1, 'xoffset': 2 }})
 
 "" undotree
 nnoremap <silent><leader>u :UndotreeToggle<CR>
@@ -270,6 +274,7 @@ function! s:on_lsp_buffer_enabled() abort
 	setlocal signcolumn=yes
 	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 	nmap <buffer>gd <plug>(lsp-definition)
+	nmap <buffer><leader>gs <plug>(lsp-document-symbol)
 	nmap <buffer>gs <plug>(lsp-document-symbol-search)
 	nmap <buffer>gS <plug>(lsp-workspace-symbol-search)
 	nmap <buffer>gr <plug>(lsp-references)
@@ -282,6 +287,7 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <buffer> ]d <plug>(lsp-next-diagnostic)
 	nmap <buffer>K <plug>(lsp-hover)
 	nmap <buffer> dq :LspDocumentDiagnostics<CR>:sleep 200m<CR>:call setloclist(0, filter(getloclist(0), 'v:val.type ==# "E"'))<CR>
+	nmap <buffer><leader>dq :LspDocumentDiagnostics<CR>
 	nnoremap <buffer> <expr><c-j> lsp#scroll(+4)
 	nnoremap <buffer> <expr><c-k> lsp#scroll(-4)
 
@@ -293,7 +299,7 @@ function! s:on_lsp_buffer_enabled() abort
 endfunction
 
 augroup preview_buffer
-	au! 
+	au!
 	autocmd BufNew LspHoverPreview set wrap
 augroup END
 
