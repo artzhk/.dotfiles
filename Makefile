@@ -53,6 +53,13 @@ install-default:
 
 #https://unix.stackexchange.com/questions/709302/how-to-remap-ctrl-to-caps-lock-in-a-tty
 tty-keymap: 
+	@echo "==> checking kernel version"
+	@set -euo pipefail; \
+	if [[ "$$(uname -v)" == *"Debian"* ]] || [[ "$$(uname -v)" == *"Ubuntu"* ]]; then \
+		echo "    Detected $$(uname -v)"; \
+		echo "    See keyboard(5) to modify console language settings" >&2; \
+		exit 1; \
+	fi;
 	@echo "==> Sudo access reqired to link dvorak-programmer custom keymap to /usr/share/kbd/keymaps/i386/dvorak/custom.map"
 	sudo -v; \
 	sudo ln -s $(SRC)/.local/dvorak-programmer.map /usr/share/kbd/keymaps/i386/dvorak/custom.map
