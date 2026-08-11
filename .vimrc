@@ -199,6 +199,13 @@ vnoremap <silent><leader>k :call <SID>komment()<CR>
 nnoremap <silent><leader>K :norm _xx<CR>
 vnoremap <silent><leader>K :norm _xx<CR>
 
+nnoremap <silent>z{ f{zf%<CR>
+nnoremap <silent>z} f}zf%<CR>
+nnoremap <silent>z( f(zf%<CR>
+nnoremap <silent>z) f)zf%<CR>
+nnoremap <silent>z[ f[zf%<CR>
+nnoremap <silent>z] f]zf%<CR>
+
 " ======== External and GUI stuff integration ========
 " rg search no brackets to qflist
 " ripgrep to qflist instead of fancy stupid plugins

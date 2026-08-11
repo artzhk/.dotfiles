@@ -96,6 +96,13 @@ link-local:
 		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
 		bash "$(INSTALL_SH)" "$(SRC)/.local/$$n" "$(DST)/.local/$$n" "$(MODE)"; \
 		done
+link-irssi:
+	@shopt -s nullglob; \
+		for p in "$(SRC)/.irssi"/*; do \
+		n="$$(basename "$$p")"; \
+		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
+		bash "$(INSTALL_SH)" "$(SRC)/.irssi/$$n" "$(DST)/.irssi/$$n" "$(MODE)"; \
+		done
 
 link-emacs:
 	@bash "$(INSTALL_SH)" "$(SRC)/.emacs.d" "$(DST)/.emacs.d" "$(MODE)"

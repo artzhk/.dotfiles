@@ -64,7 +64,12 @@ alias gddcc="git difftool \$(git log --pretty=format:\"%H %cI %d%x20%s\" | fzf |
 alias gdccf=commits_per_file
 alias gddccf=difftool_commits_per_file
 commits_per_file() {
-	git diff $(git log --pretty=format:"%H %cI %d%x20%s" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
+  local f=$1 c
+  c=$(git log --color=always --pretty=format:'%h %cI%d %s %an' --follow -- "$f" |
+      fzf --ansi --no-sort \
+          --preview="git diff --color=always {1} HEAD -- $(printf '%q' "$f")" |
+      cut -d' ' -f1)
+  [ -n "$c" ] && git diff "$c" HEAD -- "$f"
 }
 difftool_commits_per_file() {
 	git difftool $(git log --pretty=format:"%H %cI %d%x20%s" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
