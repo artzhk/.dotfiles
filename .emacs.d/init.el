@@ -1,6 +1,11 @@
-;;; UI -------------------------------------------------------------------------
+;;; Tmp / backup files ---------------------------------------------------------
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
+(setq auto-save-default nil)
 
-(load-theme 'leuven t)
+
+;;; UI -------------------------------------------------------------------------
+(load-theme 'modus-operandi t)
 (add-to-list 'default-frame-alist '(undecorated . nil))
 (setq frame-title-format '("%b — Emacs"))
 (setq-default frame-resize-pixelwise t)
@@ -8,57 +13,59 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
-(global-visual-line-mode t)
-(set-frame-font "IosevkaTerm Nerd Font Mono 14" nil)
+(global-visual-line-mode -1)
+(set-frame-font "IosevkaTerm Nerd Font Mono 14" nil t)
+
 
 ;;; Packages -------------------------------------------------------------------
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-(org-babel-do-load-languages
-    'org-babel-load-languages
-    '((mermaid . t)
-      (scheme . t)
-      (your-other-langs . t)))
+(defun ensure-package (package)
+  (unless (package-installed-p package)
+    (unless package-archive-contents
+      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+      (package-initialize)
+      (package-refresh-contents))
+    (package-install package))
+  (require package))
 
 
 ;;; Evil (vim keybindings) -----------------------------------------------------
 
-;; These must be set before (require 'evil)
-(setq evil-undo-system     'undo-redo
-      evil-want-C-u-scroll t
+;; These must be set before (require 'evil) / (evil-mode 1)
+(setq evil-want-C-u-scroll t
       evil-want-C-a-scroll t
-      evil-want-C-w-delete t)
+      evil-want-C-w-delete t
+      evil-undo-system 'undo-redo)
 
-(unless (package-installed-p 'evil)
-  (package-install 'evil))
-(require 'evil)
-(evil-mode 1)
+(ensure-package 'evil)
+(evil-mode 0)
 
 (with-eval-after-load 'evil
   (define-key evil-insert-state-map (kbd "ESC") #'evil-force-normal-state))
 
 
-;;; Shell PATH (needed for Magit and external tools) ---------------------------
+;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 
-(require 'exec-path-from-shell)
+(ensure-package 'exec-path-from-shell)
+(exec-path-from-shell-initialize)              ; copies PATH → exec-path
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 
 ;;; Org — core settings --------------------------------------------------------
 
-(require 'org)
-(require 'ox-latex)
-(require 'ox-md)
+(ensure-package 'org)
 
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c C-l") #'org-store-link)
+(global-set-key (kbd "C-c C-a") #'org-agenda)
+(global-set-key (kbd "C-c C-c") #'org-capture)
 
-(setq org-startup-indented            t
-      org-startup-with-inline-images  t
-      org-startup-with-latex-preview  nil
-      org-image-actual-width          '(800))
+(setq org-startup-indented           t
+      org-startup-with-inline-images t
+      org-startup-with-latex-preview nil
+      org-image-actual-width         '(800))
+
+(add-hook 'org-babel-after-execute-hook #'org-display-inline-images)
 
 
 ;;; Org — TODO keywords & faces ------------------------------------------------
@@ -77,7 +84,10 @@
 
 ;;; Org — agenda views ---------------------------------------------------------
 
-(setq org-agenda-files '("~/org-space/" "\\.org$"))
+;; Auto-discover all .org files — no hardcoded paths, works on any machine.
+;; Custom will not override this because org-agenda-files is absent from
+;; custom-set-variables below.
+(setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
 
 (setq org-agenda-custom-commands
       '(("n" "Next actions" todo "NEXT"
@@ -163,171 +173,26 @@
       (insert (concat "[[" filename "]]"))
       (org-display-inline-images))))
 
-(add-to-list 'load-path "~/repos/img2orgtable-emacs")
-(require 'img2orgtable)
-(setq img2orgtable--screenshot-cmd "grim -g \"$(slurp)\" -t png %s")
 
-(add-hook 'org-babel-after-execute-hook #'org-display-inline-images)
+;;; LaTeX — inline preview (org math fragments) --------------------------------
 
-
-;;; LaTeX — export classes -----------------------------------------------------
-
-(add-to-list 'org-latex-classes
-             '("article"
-               "\\documentclass[11pt]{article}
-\\usepackage{amsmath}
-\\usepackage{amssymb}
-\\usepackage{graphicx}
-\\usepackage{tikz}
-\\usepackage{hyperref}
-\\usepackage{float}
-\\usepackage{booktabs}
-\\usepackage{color}
-\\usepackage{geometry}
-\\geometry{margin=1in}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")))
-
-(add-to-list 'org-latex-classes
-             '("cv"
-               "\\documentclass[8pt,letterpaper]{article}
-% tighter side margins
-\\usepackage[ignoreheadfoot,margin=1.5cm,footskip=0.8cm]{geometry}
-
-\\usepackage{titlesec}
-\\usepackage[dvipsnames]{xcolor}
-\\definecolor{primaryColor}{RGB}{0,0,0}
-\\usepackage{enumitem}
-\\usepackage[unicode,colorlinks=true,urlcolor=primaryColor]{hyperref}
-\\usepackage{changepage}
-\\usepackage{paracol}
-\\usepackage{needspace}
-\\usepackage[T1]{fontenc}
-\\usepackage[utf8]{inputenc}
-\\usepackage{lmodern}
-
-\\raggedright
-\\pagestyle{empty}
-\\setcounter{secnumdepth}{0}
-\\setlength{\\parindent}{0pt}
-\\setlength{\\topskip}{0pt}
-\\setlength{\\columnsep}{0.15cm}
-
-% compact section headings
-\\titleformat{\\section}{\\needspace{0\\baselineskip}\\bfseries\\large}{}{0pt}{}[\\vspace{1pt}\\titlerule]
-\\titlespacing*{\\section}{-1pt}{0.25cm}{0.15cm}
-
-% global compact lists
-\\setlist[itemize]{topsep=0.15ex,itemsep=0.15ex,parsep=0pt,partopsep=0pt,leftmargin=1.2em}
-\\setlist[enumerate]{topsep=0.15ex,itemsep=0.15ex,parsep=0pt,partopsep=0pt,leftmargin=1.5em}
-
-\\renewcommand\\labelitemi{$\\vcenter{\\hbox{\\small$\\bullet$}}$}
-
-% specific CV list envs, even tighter
-\\newenvironment{highlights}{%
-  \\begin{itemize}[topsep=0.1ex,parsep=0pt,partopsep=0pt,itemsep=0pt,leftmargin=0.8em]%
-}{%
-  \\end{itemize}%
-}
-
-\\newenvironment{highlightsforbulletentries}{%
-  \\begin{itemize}[topsep=0.1ex,parsep=0pt,partopsep=0pt,itemsep=0pt,leftmargin=0.8em]%
-}{%
-  \\end{itemize}%
-}
-
-\\newenvironment{onecolentry}{%
-  \\begin{adjustwidth}{0cm}{0cm}%
-}{%
-  \\end{adjustwidth}%
-}
-
-\\newenvironment{twocolentry}[2][]{%
-  \\onecolentry
-  \\def\\secondColumn{#2}%
-  \\setcolumnwidth{\\fill,4.2cm}%
-  \\begin{paracol}{2}%
-}{%
-  \\switchcolumn \\raggedleft \\secondColumn%
-  \\end{paracol}%
-  \\endonecolentry
-}
-
-\\newenvironment{threecolentry}[3][]{%
-  \\onecolentry
-  \\def\\thirdColumn{#3}%
-  \\setcolumnwidth{,\\fill,4.2cm}%
-  \\begin{paracol}{3}%
-  {\\raggedright #2}\\switchcolumn%
-}{%
-  \\switchcolumn \\raggedleft \\thirdColumn%
-  \\end{paracol}%
-  \\endonecolentry
-}
-
-% Big, tight CV title using only \\@title (no author/date)
-\\makeatletter
-\\renewcommand\\maketitle{%
-  \\begin{center}
-    \\vspace*{-0.4cm}%
-    {\\bfseries\\LARGE \\@title\\par}%
-    \\vspace{0.15cm}%
-  \\end{center}
-}
-\\makeatother
-"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-(add-to-list 'org-latex-classes
-             '("apa6"
-               "\\documentclass[a4paper,man]{apa6}
-\\usepackage[nodoi]{apacite}
-\\usepackage[T1]{fontenc}
-\\usepackage{fancyhdr}
-\\usepackage{lastpage}
-\\pagestyle{fancy}
-\\fancyfoot[C]{%
-  Page \\thepage\\ of \\pageref*{LastPage}%
-}
-\\usepackage{graphicx}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-
-;;; LaTeX — PDF export ---------------------------------------------------------
-
-(setq org-latex-compiler  "pdflatex"
-      org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
-                               "pdflatex -interaction nonstopmode -output-directory %o %f"))
-
-
-;;; LaTeX — inline preview via dvisvgm -----------------------------------------
-
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 1.7))
-
-(with-eval-after-load 'org
-  (let ((dvisvgm-conf '(dvisvgm
-                        :programs         ("latex" "dvisvgm")
-                        :description      "dvi → svg"
-                        :message          "Install TeX (latex) and dvisvgm."
-                        :image-input-type  "dvi"
-                        :image-output-type "svg"
-                        :image-size-adjust (1.7 . 1.7)
-                        :latex-compiler   ("latex -interaction=nonstopmode -output-directory %o %f")
-                        :image-converter  ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
-    (setq org-preview-latex-process-alist
-          (cons dvisvgm-conf
-                (assoc-delete-all 'dvisvgm org-preview-latex-process-alist)))
-    (setq org-preview-latex-default-process
-          (if (executable-find "dvisvgm") 'dvisvgm 'imagemagick))))
+(when (and (executable-find "latex") (executable-find "dvisvgm"))
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 1.7))
+  (with-eval-after-load 'org
+    (let ((dvisvgm-conf '(dvisvgm
+                          :programs         ("latex" "dvisvgm")
+                          :description      "dvi → svg"
+                          :message          "Install TeX (latex) and dvisvgm."
+                          :image-input-type  "dvi"
+                          :image-output-type "svg"
+                          :image-size-adjust (1.7 . 1.7)
+                          :latex-compiler   ("latex -interaction=nonstopmode -output-directory %o %f")
+                          :image-converter  ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
+      (setq org-preview-latex-process-alist
+            (cons dvisvgm-conf
+                  (assoc-delete-all 'dvisvgm org-preview-latex-process-alist)))
+      (setq org-preview-latex-default-process 'dvisvgm))))
 
 
 ;;; HTML — MathJax scaling -----------------------------------------------------
@@ -338,14 +203,93 @@
               (assq-delete-all 'scale org-html-mathjax-options))))
 
 
+;;; Compile -------------------------------------------------------------------
+
+;; No default global keys exist for these; everything else (g=recompile,
+;; M-n/M-p=next/prev error, M-.=jump-to-error) works out of the box.
+(global-set-key (kbd "C-c c") #'compile)         ; prompt & run
+(global-set-key (kbd "C-c p") #'project-compile) ; from project root
+
+
+;;; LSP — eglot & flymake keybindings -----------------------------------------
+
+(global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
+(global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
+(global-set-key (kbd "C-c C-n") #'flymake-goto-next-error)
+(global-set-key (kbd "C-c C-p") #'flymake-goto-prev-error)
+
+;;; LSP — eglot ----------------------------------------------------------------
+
+(with-eval-after-load 'eglot
+  ;; TypeScript / JavaScript — tsserver + oxlint simultaneously when both present.
+  ;; A vector of specs runs all servers; a plain list runs one.
+  (let* ((ts-modes '(typescript-mode js-mode tsx-ts-mode typescript-ts-mode js-ts-mode))
+         (ts-servers (delq nil
+                           (list (when (executable-find "typescript-language-server")
+                                   '("typescript-language-server" "--stdio"))
+                                 (when (executable-find "oxlint")
+                                   '("oxlint" "--lsp"))))))
+    (when ts-servers
+      (add-to-list 'eglot-server-programs
+                   `(,ts-modes . ,(if (cdr ts-servers)
+                                      (vconcat ts-servers)
+                                    (car ts-servers))))))
+
+  (when (executable-find "clangd")
+    (add-to-list 'eglot-server-programs
+                 '((c-mode c++-mode c-ts-mode c++-ts-mode)
+                   "clangd" "--background-index" "--clang-tidy")))
+  (when (executable-find "rust-analyzer")
+    (add-to-list 'eglot-server-programs
+                 '((rust-mode rust-ts-mode) "rust-analyzer")))
+  (when (executable-find "gopls")
+    (add-to-list 'eglot-server-programs
+                 '((go-mode go-ts-mode) "gopls")))
+  (when (executable-find "pylsp")
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) "pylsp")))
+  (when (and (executable-find "ruff") (not (executable-find "pylsp")))
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) "ruff" "server")))
+  (when (executable-find "ruby-lsp")
+    (add-to-list 'eglot-server-programs
+                 '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+  (when (executable-find "sql-language-server")
+    (add-to-list 'eglot-server-programs
+                 '(sql-mode "sql-language-server" "up" "--method" "stdio")))
+  (when (executable-find "csharp-ls")
+    (add-to-list 'eglot-server-programs
+                 '(csharp-mode "csharp-ls"))))
+
+(dolist (hook '(c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook
+                rust-mode-hook rust-ts-mode-hook
+                go-mode-hook go-ts-mode-hook
+                python-mode-hook python-ts-mode-hook
+                typescript-mode-hook typescript-ts-mode-hook
+                js-mode-hook js-ts-mode-hook tsx-ts-mode-hook
+                ruby-mode-hook ruby-ts-mode-hook
+                csharp-mode-hook))
+  (add-hook hook #'eglot-ensure))
+
+
 ;;; pdf-tools ------------------------------------------------------------------
 
-(use-package pdf-tools
-  :ensure t
-  :config (pdf-tools-install))
+(when (executable-find "epdfinfo")
+  (unless (package-installed-p 'pdf-tools)
+    (package-install 'pdf-tools))
+  (add-hook 'after-init-hook (lambda () (pdf-tools-install t))))
 
 
-;;; Emacs Custom (do not edit manually) ----------------------------------------
+;;; Magit ----------------------------------------------------------------------
+
+(ensure-package 'magit)
+
+
+;;; Copilot --------------------------------------------------------------------
+
+(ensure-package 'copilot)
+(global-set-key (kbd "C-c C-p") #'copilot-accept-completion)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -355,18 +299,13 @@
  '(custom-safe-themes
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
      default))
- '(org-agenda-files
-   '("~/org-space/Uni/final/diplom-project-overview.org"
-     "/home/art/org-space/Personal/daily.org"
-     "/home/art/org-space/Uni/DADT/DADT.org"
-     "/home/art/org-space/Uni/AWD/AWD.org"
-     "/home/art/org-space/Uni/3D/3D.org"))
  '(package-selected-packages
-   '(## compat copilot copilot-chat dash dotnet ein eink-theme evil helm
+   '(## compat copilot copilot-chat dash ein eink-theme evil helm
 	helm-bibtex html2org latex-table-wizard lsp-mode magit
-	markdown-mode markdown-preview-mode mermaid-mode org-fragtog
-	org-modern org-noter org-ref org-roam org-roam-bibtex
-	ox-latex-subfigure pdf-tools)))
+	markdown-mode markdown-preview-mode org-fragtog org-modern
+	org-noter org-ref org-roam org-roam-bibtex ox-latex-subfigure
+	pdf-tools))
+ '(send-mail-function 'mailclient-send-it))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

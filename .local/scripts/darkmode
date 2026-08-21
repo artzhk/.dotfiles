@@ -10,5 +10,5 @@ pgrep -x qutebrowser > /dev/null && \
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
 
-emacsclient --eval '(load-theme (quote tango-dark) t)' 2>/dev/null || true
+emacsclient --eval '(load-theme (quote modus-vivendi) t)' 2>/dev/null || true
 
