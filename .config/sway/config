@@ -52,7 +52,7 @@ set $opened rofi -show window
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
-output * bg /home/art/.dotfiles/.local/wallpapers/Nordic-mountain-wallpaper.jpg fill
+output * bg /home/art/.dotfiles/.local/wallpapers/wlp fill
 output eDP-1 scale 1.5 enable
 
 ### Idle configuration

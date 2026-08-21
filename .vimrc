@@ -339,3 +339,4 @@ call plug#end()
 
 " Additional per machine customizations
 source ~/.profile.vim
+source ~/.vim/colorscheme.vim

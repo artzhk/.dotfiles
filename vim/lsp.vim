@@ -116,3 +116,5 @@ if executable('csharp-ls')
 endif
 
 au FileType c3 setlocal errorformat=(%f:%l:%c)\ %m
+au FileType html setlocal shiftwidth=2 tabstop=2
+autocmd BufNewFile,BufRead *.gohtml setlocal filetype=html

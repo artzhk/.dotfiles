@@ -2,6 +2,7 @@
 
 ln -sfn /usr/share/foot/themes/electrophoretic ~/.config/foot/colorscheme
 ln -sfn ~/.dotfiles/vim/light.vim ~/.vim/colorscheme.vim
+ln -sfn ~/.dotfiles/.local/wallpapers/vinyl-light.png ~/.dotfiles/.local/wallpapers/wlp
 
 pgrep -x qutebrowser > /dev/null && \
 	qutebrowser ':set colors.webpage.darkmode.enabled false' 2>/dev/null || true

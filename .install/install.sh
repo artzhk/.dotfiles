@@ -8,6 +8,7 @@ BLUE="\e[34m"
 NC="\e[0m" # No color
 
 declare -A BLACKLIST=(
+	[vps]=1
 	[install.sh]=1
 	[README.md]=1
 	[Makefile]=1

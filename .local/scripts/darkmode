@@ -2,6 +2,7 @@
 
 ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme
 ln -sfn ~/.dotfiles/vim/dark.vim ~/.vim/colorscheme.vim
+ln -sfn ~/.dotfiles/.local/wallpapers/dark.png ~/.dotfiles/.local/wallpapers/wlp
 
 # qutebrowser
 pgrep -x qutebrowser > /dev/null && \
