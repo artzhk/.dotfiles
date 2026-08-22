@@ -47,6 +47,9 @@ nnoremap * :keepjumps normal! mi*`i<CR>
 " line numbers switch
 nnoremap <silent><leader>nr :set rnu!<CR>
 
+" reopen buf
+nnoremap <silent><leader>e :e<CR>
+
 " tabs
 nnoremap <silent><leader>tn :tabn<CR>
 "" gT - prev tab by default

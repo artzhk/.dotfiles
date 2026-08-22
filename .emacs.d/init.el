@@ -3,22 +3,22 @@
 (setq create-lockfiles nil)
 (setq auto-save-default nil)
 
-
 ;;; UI -------------------------------------------------------------------------
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi-tinted t)
 (add-to-list 'default-frame-alist '(undecorated . nil))
-(setq frame-title-format '("%b — Emacs"))
+(setq frame-title-format '("%p - %b — Emacs"))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
-(global-visual-line-mode -1)
-(set-frame-font "IosevkaTerm Nerd Font Mono 14" nil t)
-
+(global-visual-line-mode 1)
+(set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
+(setq-default fill-column 80)
+(setq truncate-lines t)
+(global-display-fill-column-indicator-mode 1)
 
 ;;; Packages -------------------------------------------------------------------
-
 (defun ensure-package (package)
   (unless (package-installed-p package)
     (unless package-archive-contents
@@ -27,22 +27,6 @@
       (package-refresh-contents))
     (package-install package))
   (require package))
-
-
-;;; Evil (vim keybindings) -----------------------------------------------------
-
-;; These must be set before (require 'evil) / (evil-mode 1)
-(setq evil-want-C-u-scroll t
-      evil-want-C-a-scroll t
-      evil-want-C-w-delete t
-      evil-undo-system 'undo-redo)
-
-(ensure-package 'evil)
-(evil-mode 0)
-
-(with-eval-after-load 'evil
-  (define-key evil-insert-state-map (kbd "ESC") #'evil-force-normal-state))
-
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 
@@ -56,9 +40,9 @@
 
 (ensure-package 'org)
 
-(global-set-key (kbd "C-c C-l") #'org-store-link)
-(global-set-key (kbd "C-c C-a") #'org-agenda)
-(global-set-key (kbd "C-c C-c") #'org-capture)
+(global-set-key (kbd "C-c o l") #'org-store-link)
+(global-set-key (kbd "C-c o a") #'org-agenda)
+(global-set-key (kbd "C-c o c") #'org-capture)
 
 (setq org-startup-indented           t
       org-startup-with-inline-images t
@@ -210,31 +194,20 @@
 (global-set-key (kbd "C-c c") #'compile)         ; prompt & run
 (global-set-key (kbd "C-c p") #'project-compile) ; from project root
 
-
 ;;; LSP — eglot & flymake keybindings -----------------------------------------
 
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
 (global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
 (global-set-key (kbd "C-c C-n") #'flymake-goto-next-error)
 (global-set-key (kbd "C-c C-p") #'flymake-goto-prev-error)
+(global-set-key (kbd "C-c f") #'eglot-format-buffer)
+(global-set-key (kbd "C-c a") #'eglot-code-actions)
 
 ;;; LSP — eglot ----------------------------------------------------------------
 
 (with-eval-after-load 'eglot
   ;; TypeScript / JavaScript — tsserver + oxlint simultaneously when both present.
   ;; A vector of specs runs all servers; a plain list runs one.
-  (let* ((ts-modes '(typescript-mode js-mode tsx-ts-mode typescript-ts-mode js-ts-mode))
-         (ts-servers (delq nil
-                           (list (when (executable-find "typescript-language-server")
-                                   '("typescript-language-server" "--stdio"))
-                                 (when (executable-find "oxlint")
-                                   '("oxlint" "--lsp"))))))
-    (when ts-servers
-      (add-to-list 'eglot-server-programs
-                   `(,ts-modes . ,(if (cdr ts-servers)
-                                      (vconcat ts-servers)
-                                    (car ts-servers))))))
-
   (when (executable-find "clangd")
     (add-to-list 'eglot-server-programs
                  '((c-mode c++-mode c-ts-mode c++-ts-mode)
@@ -283,7 +256,6 @@
 ;;; Magit ----------------------------------------------------------------------
 
 (ensure-package 'magit)
-
 
 ;;; Copilot --------------------------------------------------------------------
 
