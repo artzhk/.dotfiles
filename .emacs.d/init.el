@@ -3,8 +3,14 @@
 (setq create-lockfiles nil)
 (setq auto-save-default nil)
 
+;;; Session persistence ---------------------------------------------------------
+(save-place-mode 1)              ; reopen a file at the last point you were on
+(savehist-mode 1)                ; persist minibuffer history...
+(add-to-list 'savehist-additional-variables 'register-alist) ; ...and registers
+(desktop-save-mode 1)            ; save/restore open buffers & window layout
+
 ;;; UI -------------------------------------------------------------------------
-(load-theme 'modus-vivendi-tinted t)
+(load-theme 'modus-operandi t)
 (add-to-list 'default-frame-alist '(undecorated . nil))
 (setq frame-title-format '("%p - %b — Emacs"))
 (setq-default frame-resize-pixelwise t)
@@ -12,11 +18,15 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
-(global-visual-line-mode 1)
+(global-visual-line-mode 0)
 (set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
 (setq-default fill-column 80)
-(setq truncate-lines t)
+(setq-default truncate-lines t)
 (global-display-fill-column-indicator-mode 1)
+
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 ;;; Packages -------------------------------------------------------------------
 (defun ensure-package (package)
@@ -36,7 +46,12 @@
 (exec-path-from-shell-initialize)              ; copies PATH → exec-path
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")
 (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-
+(ensure-package 'orderless)
+(use-package orderless
+  :init
+  (setq completion-styles '(basic))
+  (setq completion-category-overrides
+        '((file (styles orderless)))))
 
 ;;; Org — core settings --------------------------------------------------------
 
@@ -199,20 +214,25 @@
 ;;; LSP — eglot & flymake keybindings -----------------------------------------
 
 (ensure-package 'tree-sitter)
-
+(global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
 (global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
-(global-set-key (kbd "C-c C-n") #'flymake-goto-next-error)
-(global-set-key (kbd "C-c C-p") #'flymake-goto-prev-error) 
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
+(global-set-key (kbd "C-c i") #'eglot-find-implementation)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
+(global-set-key (kbd "C-M-;") #'uncomment-region)
+(with-eval-after-load 'flymake
+  (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+  (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
 ;;; LSP — eglot ----------------------------------------------------------------
 
+;; TypeScript / JavaScript — tree-sitter grammar + dual typescript-language-server
+;; + oxlint setup lives in frontend.el.
+(load (expand-file-name "frontend.el" user-emacs-directory))
+
 (with-eval-after-load 'eglot
-  ;; TypeScript / JavaScript — tsserver + oxlint simultaneously when both present.
-  ;; A vector of specs runs all servers; a plain list runs one.
   (when (executable-find "clangd")
     (add-to-list 'eglot-server-programs
                  '((c-mode c++-mode c-ts-mode c++-ts-mode)
@@ -249,6 +269,30 @@
                 csharp-mode-hook))
   (add-hook hook #'eglot-ensure))
 
+;;; Debugging — dape (netcoredbg for dotnet) ------------------------------------
+
+(when (executable-find "netcoredbg")
+  (ensure-package 'dape)
+  ;; PBD.Core.Web — dotnet run --project ./src/PBD.Core.Web/... -lp https -c Development
+  ;; Paths are relative to the project root (via dape-cwd), so this works from
+  ;; the main checkout or any worktree copy, not just one hardcoded location.
+  (unless (assq 'pbd-web dape-configs)
+    (push
+     `(pbd-web
+       modes (csharp-mode csharp-ts-mode)
+       ensure dape-ensure-command
+       command "netcoredbg"
+       command-args ["--interpreter=vscode"]
+       :request "launch"
+       :cwd (expand-file-name "src/PBD.Core.Web" (dape-cwd))
+       :program (car (file-expand-wildcards
+                      (expand-file-name "src/PBD.Core.Web/bin/Development/*/PBD.Core.Web.dll"
+                                         (dape-cwd))))
+       :env (:ASPNETCORE_ENVIRONMENT "Development"
+             :ASPNETCORE_URLS "https://pbd-core-web.dev.localhost:44337;http://localhost:51100")
+       :stopAtEntry nil)
+     dape-configs)))
+
 
 ;;; pdf-tools ------------------------------------------------------------------
 
@@ -265,7 +309,7 @@
 ;;; Copilot --------------------------------------------------------------------
 
 (ensure-package 'copilot)
-(global-set-key (kbd "C-c C-p") #'copilot-accept-completion)
+(global-set-key (kbd "C-c e") #'copilot-accept-completion)
 
 
 (custom-set-variables
@@ -276,10 +320,8 @@
  '(custom-safe-themes
    '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960" default))
  '(package-selected-packages
-   '(## compat copilot copilot-chat dash ein eink-theme evil helm helm-bibtex
-	html2org latex-table-wizard lsp-mode magit markdown-mode
-	markdown-preview-mode org-fragtog org-modern org-noter org-ref org-roam
-	org-roam-bibtex ox-latex-subfigure pdf-tools tree-sitter xterm-color))
+   '(copilot dape eglot-inactive-regions evil exec-path-from-shell magit orderless
+	     ox-mdx-deck pdf-tools tree-sitter))
  '(send-mail-function 'mailclient-send-it))
 
 (custom-set-faces
