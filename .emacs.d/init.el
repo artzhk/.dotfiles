@@ -29,6 +29,8 @@
   (require package))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
+(ensure-package 'ansi-color)
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 (ensure-package 'exec-path-from-shell)
 (exec-path-from-shell-initialize)              ; copies PATH → exec-path
@@ -196,12 +198,15 @@
 
 ;;; LSP — eglot & flymake keybindings -----------------------------------------
 
+(ensure-package 'tree-sitter)
+
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
 (global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
 (global-set-key (kbd "C-c C-n") #'flymake-goto-next-error)
-(global-set-key (kbd "C-c C-p") #'flymake-goto-prev-error)
+(global-set-key (kbd "C-c C-p") #'flymake-goto-prev-error) 
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
+(global-set-key (kbd "C-c C-r") #'eglot-rename)
 
 ;;; LSP — eglot ----------------------------------------------------------------
 
@@ -269,14 +274,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960"
-     default))
+   '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960" default))
  '(package-selected-packages
-   '(## compat copilot copilot-chat dash ein eink-theme evil helm
-	helm-bibtex html2org latex-table-wizard lsp-mode magit
-	markdown-mode markdown-preview-mode org-fragtog org-modern
-	org-noter org-ref org-roam org-roam-bibtex ox-latex-subfigure
-	pdf-tools))
+   '(## compat copilot copilot-chat dash ein eink-theme evil helm helm-bibtex
+	html2org latex-table-wizard lsp-mode magit markdown-mode
+	markdown-preview-mode org-fragtog org-modern org-noter org-ref org-roam
+	org-roam-bibtex ox-latex-subfigure pdf-tools tree-sitter xterm-color))
  '(send-mail-function 'mailclient-send-it))
 
 (custom-set-faces
