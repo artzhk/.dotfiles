@@ -26,7 +26,15 @@
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
-        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+;; emacs windows ---------------------------------------------------------------
+
+(windmove-default-keybindings 'shift)
+(global-set-key (kbd "C-c w n") 'windmove-down)   
+(global-set-key (kbd "C-c w p") 'windmove-up)     
+(global-set-key (kbd "C-c w f") 'windmove-right)  
+(global-set-key (kbd "C-c w b") 'windmove-left)   
 
 ;;; Packages -------------------------------------------------------------------
 (defun ensure-package (package)
@@ -215,6 +223,7 @@
 
 (ensure-package 'tree-sitter)
 (global-set-key (kbd "C-c b") 'previous-buffer)
+(global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
 (global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
