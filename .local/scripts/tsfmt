@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+oxfmt $(git status --untracked-files -s | grep -e '^.[??|M| M|UU].*ts\w*$' | cut -c 4-)

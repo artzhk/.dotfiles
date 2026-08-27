@@ -18,15 +18,25 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
-(global-visual-line-mode 0)
+(global-visual-line-mode -1)
 (set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
 (setq-default fill-column 80)
-(setq-default truncate-lines t)
+(setq-default truncate-lines nil)   ; wrap everywhere by default
+(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
 (global-display-fill-column-indicator-mode 1)
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+;; Header line — file path pinned to the top of the buffer's own window
+;; (project-relative when in a project, full path otherwise).
+(defun my-header-line-file-path ()
+  (when buffer-file-name
+    (if-let* ((proj (project-current)))
+        (file-relative-name buffer-file-name (project-root proj))
+      (abbreviate-file-name buffer-file-name))))
+(setq-default header-line-format '(:eval (my-header-line-file-path)))
 
 ;; emacs windows ---------------------------------------------------------------
 
@@ -47,6 +57,7 @@
   (require package))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
+;; (ensure-package 'ansi-color :ensure)
 (ensure-package 'ansi-color)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
@@ -54,12 +65,30 @@
 (exec-path-from-shell-initialize)              ; copies PATH → exec-path
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")
 (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-(ensure-package 'orderless)
-(use-package orderless
-  :init
-  (setq completion-styles '(basic))
-  (setq completion-category-overrides
-        '((file (styles orderless)))))
+;; Vanilla completion, everywhere (M-x, buffer switching, etc.): built-in
+;; `flex' style = closest/subsequence match, case-insensitive. No package.
+(setq completion-styles '(basic partial-completion flex))
+(setq completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+
+;; https://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer#3669681
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
+
+;; (ensure-package 'orderless)
+;; (use-package orderless
+;;   :init
+;;   ;; flex = subsequence match (fzf-style), not just literal substring —
+;;   ;; needed for e.g. "todocontroller" to match "ToDosController.cs"
+;;   (setq orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp))
+;;   (setq completion-category-overrides
+;;         '((file (styles orderless))
+;;           ;; project-find-file tags its completion table 'project-file, not
+;;           ;; 'file, so it needs its own entry to actually use orderless.
+;;           (project-file (styles orderless)))))
 
 ;;; Org — core settings --------------------------------------------------------
 
@@ -230,10 +259,35 @@
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
-(global-set-key (kbd "C-M-;") #'uncomment-region)
+
+(ensure-package 'git-gutter)
+(ensure-package 'git-gutter-fringe)
+
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
+
+;;; Completions — C-h . shows full LSP doc for candidate at point -------------
+
+;; completion-extra-properties is only let-bound while *Completions* is being
+;; built, not while you're later browsing it — so capture it once at that
+;; point into a buffer-local var instead of reading the (by-then-reverted)
+;; global later.
+(defvar-local my-completion-extra-properties nil)
+(add-hook 'completion-list-mode-hook
+          (lambda () (setq my-completion-extra-properties completion-extra-properties)))
+
+(defun my-completion-show-doc ()
+  "Show full LSP doc for the completion candidate at point."
+  (interactive)
+  (if-let* ((str (get-text-property (point) 'completion--string))
+            (doc-fn (or (plist-get my-completion-extra-properties :company-doc-buffer)
+                        (plist-get my-completion-extra-properties :company-docsig)))
+            (doc (funcall doc-fn str)))
+      (message "%s" (if (bufferp doc) (with-current-buffer doc (buffer-string)) doc))
+    (message "No local help at point")))
+
+(keymap-set completion-list-mode-map "C-h ." #'my-completion-show-doc)
 
 ;;; LSP — eglot ----------------------------------------------------------------
 
