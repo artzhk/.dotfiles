@@ -18,29 +18,16 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode t)
+
 (global-visual-line-mode -1)
-(set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
+(set-frame-font "MononokiNerdFont Mono 18" nil t)
 (setq-default fill-column 80)
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
 (global-display-fill-column-indicator-mode 1)
 
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-;; Header line — file path pinned to the top of the buffer's own window
-;; (project-relative when in a project, full path otherwise).
-(defun my-header-line-file-path ()
-  (when buffer-file-name
-    (if-let* ((proj (project-current)))
-        (file-relative-name buffer-file-name (project-root proj))
-      (abbreviate-file-name buffer-file-name))))
-(setq-default header-line-format '(:eval (my-header-line-file-path)))
-
 ;; emacs windows ---------------------------------------------------------------
 
-(windmove-default-keybindings 'shift)
 (global-set-key (kbd "C-c w n") 'windmove-down)   
 (global-set-key (kbd "C-c w p") 'windmove-up)     
 (global-set-key (kbd "C-c w f") 'windmove-right)  
@@ -71,12 +58,6 @@
 (setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
-
-;; https://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer#3669681
-(defun show-file-name ()
-  "Show the full path file name in the minibuffer."
-  (interactive)
-  (message (buffer-file-name)))
 
 ;; (ensure-package 'orderless)
 ;; (use-package orderless
@@ -119,14 +100,10 @@
         ("IDEA"        . (:foreground "grey"   :slant italic))
         ("DROPPED"     . (:foreground "grey"   :strike-through t))))
 
-
-;;; Org — agenda views ---------------------------------------------------------
-
 ;; Auto-discover all .org files — no hardcoded paths, works on any machine.
 ;; Custom will not override this because org-agenda-files is absent from
 ;; custom-set-variables below.
 (setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
-
 (setq org-agenda-custom-commands
       '(("n" "Next actions" todo "NEXT"
          ((org-agenda-prefix-format    "  %-12:c")
@@ -138,108 +115,6 @@
          ((org-agenda-prefix-format "  %-12:c ")))
         ("i" "Ideas backlog" todo "IDEA"
          ((org-agenda-prefix-format "  %-12:c")))))
-
-
-;;; Org-space — mirror new org files as symlinks under ~/org-space/ ------------
-
-(defun org-space--ensure-symlink (file-path)
-  "If FILE-PATH is outside ~/org-space/, replace it with a symlink into ~/org-space/."
-  (let* ((home      (expand-file-name "~/"))
-         (org-space (expand-file-name "~/org-space/")))
-    (unless (string-prefix-p org-space (file-truename file-path))
-      (let* ((rel    (file-relative-name file-path home))
-             (target (expand-file-name rel org-space)))
-        (make-directory (file-name-directory target) t)
-        (if (file-exists-p target)
-            (message "Warning: target already exists in ~/org-space/: %s" target)
-          (write-region "" nil target))
-        (when (file-exists-p file-path)
-          (delete-file file-path))
-        (make-symbolic-link target file-path t)))))
-
-(defun org-space-maybe-mirror-new-file ()
-  (when (and (derived-mode-p 'org-mode)
-             (not (file-exists-p (buffer-file-name))))
-    (org-space--ensure-symlink (buffer-file-name))))
-
-(add-hook 'find-file-hook #'org-space-maybe-mirror-new-file)
-
-
-;;; Org — utilities ------------------------------------------------------------
-
-(defun merge-org-to-mobile-export (dir)
-  "Merge all .org files in DIR into a single file under ~/org-space/exports/."
-  (interactive "DDirectory: ")
-  (let* ((export-dir  "~/org-space/exports/")
-         (files       (directory-files dir t "\\.org$"))
-         (folder-name (file-name-nondirectory (directory-file-name dir)))
-         (output      (expand-file-name (concat folder-name ".org") export-dir)))
-    (make-directory export-dir t)
-    (with-temp-file output
-      (dolist (file files)
-        (insert (format "#+TITLE: From %s\n\n" (file-name-nondirectory file)))
-        (insert-file-contents file)
-        (insert "\n\n")))
-    (message "Merged %d files into %s" (length files) output)))
-
-(defun paste-screenshot ()
-  "Capture a screenshot and insert an org link to it in the current buffer."
-  (interactive)
-  (if (eq system-type 'darwin)
-      (let* ((base-dir (or (and buffer-file-name (file-name-directory buffer-file-name))
-                           default-directory))
-             (dir      (expand-file-name "Cache" base-dir))
-             (_        (make-directory dir t))
-             (filename (expand-file-name
-                        (format "%s_%s.png"
-                                (format-time-string "%Y%m%d_%H%M%S")
-                                (substring (md5 (format "%s%s" (user-uid) (float-time))) 0 6))
-                        dir))
-             (status   (call-process "screencapture" nil nil nil "-i" filename)))
-        (if (and (numberp status) (zerop status)
-                 (file-exists-p filename)
-                 (> (nth 7 (file-attributes filename)) 0))
-            (progn
-              (insert (concat "[[./" (file-relative-name filename base-dir) "]]"))
-              (when (derived-mode-p 'org-mode) (org-display-inline-images)))
-          (when (file-exists-p filename) (delete-file filename))
-          (user-error "Screenshot canceled or failed; nothing inserted")))
-    (let* ((dir      "./Cache/")
-           (_        (make-directory dir t))
-           (filename (concat dir (format-time-string "%Y%m%d_%H%M%S_") (make-temp-name "") ".png")))
-      (call-process-shell-command (format "grim -g \"$(slurp)\" -t png %s" (shell-quote-argument filename)))
-      (insert (concat "[[" filename "]]"))
-      (org-display-inline-images))))
-
-
-;;; LaTeX — inline preview (org math fragments) --------------------------------
-
-(when (and (executable-find "latex") (executable-find "dvisvgm"))
-  (setq org-format-latex-options
-        (plist-put org-format-latex-options :scale 1.7))
-  (with-eval-after-load 'org
-    (let ((dvisvgm-conf '(dvisvgm
-                          :programs         ("latex" "dvisvgm")
-                          :description      "dvi → svg"
-                          :message          "Install TeX (latex) and dvisvgm."
-                          :image-input-type  "dvi"
-                          :image-output-type "svg"
-                          :image-size-adjust (1.7 . 1.7)
-                          :latex-compiler   ("latex -interaction=nonstopmode -output-directory %o %f")
-                          :image-converter  ("dvisvgm --no-fonts --exact-bbox -o %O %f"))))
-      (setq org-preview-latex-process-alist
-            (cons dvisvgm-conf
-                  (assoc-delete-all 'dvisvgm org-preview-latex-process-alist)))
-      (setq org-preview-latex-default-process 'dvisvgm))))
-
-
-;;; HTML — MathJax scaling -----------------------------------------------------
-
-(with-eval-after-load 'ox-html
-  (setq org-html-mathjax-options
-        (cons '(scale . "200")
-              (assq-delete-all 'scale org-html-mathjax-options))))
-
 
 ;;; Compile -------------------------------------------------------------------
 
@@ -260,120 +135,29 @@
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
 
-(ensure-package 'git-gutter)
-(ensure-package 'git-gutter-fringe)
-
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
-;;; Completions — C-h . shows full LSP doc for candidate at point -------------
-
-;; completion-extra-properties is only let-bound while *Completions* is being
-;; built, not while you're later browsing it — so capture it once at that
-;; point into a buffer-local var instead of reading the (by-then-reverted)
-;; global later.
-(defvar-local my-completion-extra-properties nil)
-(add-hook 'completion-list-mode-hook
-          (lambda () (setq my-completion-extra-properties completion-extra-properties)))
-
-(defun my-completion-show-doc ()
-  "Show full LSP doc for the completion candidate at point."
-  (interactive)
-  (if-let* ((str (get-text-property (point) 'completion--string))
-            (doc-fn (or (plist-get my-completion-extra-properties :company-doc-buffer)
-                        (plist-get my-completion-extra-properties :company-docsig)))
-            (doc (funcall doc-fn str)))
-      (message "%s" (if (bufferp doc) (with-current-buffer doc (buffer-string)) doc))
-    (message "No local help at point")))
-
-(keymap-set completion-list-mode-map "C-h ." #'my-completion-show-doc)
-
 ;;; LSP — eglot ----------------------------------------------------------------
+(load (expand-file-name "lsp.el" user-emacs-directory))
 
-;; TypeScript / JavaScript — tree-sitter grammar + dual typescript-language-server
-;; + oxlint setup lives in frontend.el.
-(load (expand-file-name "frontend.el" user-emacs-directory))
-
-(with-eval-after-load 'eglot
-  (when (executable-find "clangd")
-    (add-to-list 'eglot-server-programs
-                 '((c-mode c++-mode c-ts-mode c++-ts-mode)
-                   "clangd" "--background-index" "--clang-tidy")))
-  (when (executable-find "rust-analyzer")
-    (add-to-list 'eglot-server-programs
-                 '((rust-mode rust-ts-mode) "rust-analyzer")))
-  (when (executable-find "gopls")
-    (add-to-list 'eglot-server-programs
-                 '((go-mode go-ts-mode) "gopls")))
-  (when (executable-find "pylsp")
-    (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode) "pylsp")))
-  (when (and (executable-find "ruff") (not (executable-find "pylsp")))
-    (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode) "ruff" "server")))
-  (when (executable-find "ruby-lsp")
-    (add-to-list 'eglot-server-programs
-                 '((ruby-mode ruby-ts-mode) "ruby-lsp")))
-  (when (executable-find "sql-language-server")
-    (add-to-list 'eglot-server-programs
-                 '(sql-mode "sql-language-server" "up" "--method" "stdio")))
-  (when (executable-find "csharp-ls")
-    (add-to-list 'eglot-server-programs
-                 '(csharp-mode "csharp-ls"))))
-
-(dolist (hook '(c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook
-                rust-mode-hook rust-ts-mode-hook
-                go-mode-hook go-ts-mode-hook
-                python-mode-hook python-ts-mode-hook
-                typescript-mode-hook typescript-ts-mode-hook
-                js-mode-hook js-ts-mode-hook tsx-ts-mode-hook
-                ruby-mode-hook ruby-ts-mode-hook
-                csharp-mode-hook))
-  (add-hook hook #'eglot-ensure))
-
-;;; Debugging — dape (netcoredbg for dotnet) ------------------------------------
-
-(when (executable-find "netcoredbg")
-  (ensure-package 'dape)
-  ;; PBD.Core.Web — dotnet run --project ./src/PBD.Core.Web/... -lp https -c Development
-  ;; Paths are relative to the project root (via dape-cwd), so this works from
-  ;; the main checkout or any worktree copy, not just one hardcoded location.
-  (unless (assq 'pbd-web dape-configs)
-    (push
-     `(pbd-web
-       modes (csharp-mode csharp-ts-mode)
-       ensure dape-ensure-command
-       command "netcoredbg"
-       command-args ["--interpreter=vscode"]
-       :request "launch"
-       :cwd (expand-file-name "src/PBD.Core.Web" (dape-cwd))
-       :program (car (file-expand-wildcards
-                      (expand-file-name "src/PBD.Core.Web/bin/Development/*/PBD.Core.Web.dll"
-                                         (dape-cwd))))
-       :env (:ASPNETCORE_ENVIRONMENT "Development"
-             :ASPNETCORE_URLS "https://pbd-core-web.dev.localhost:44337;http://localhost:51100")
-       :stopAtEntry nil)
-     dape-configs)))
-
-
-;;; pdf-tools ------------------------------------------------------------------
-
-(when (executable-find "epdfinfo")
-  (unless (package-installed-p 'pdf-tools)
-    (package-install 'pdf-tools))
-  (add-hook 'after-init-hook (lambda () (pdf-tools-install t))))
-
+;;; Optional external stuff ----------------------------------------------------
+(load (expand-file-name "latex.el" user-emacs-directory))
+;; (load (expand-file-name "dotnet.el" user-emacs-directory))
+;; (load (expand-file-name "frontend.el" user-emacs-directory))
 
 ;;; Magit ----------------------------------------------------------------------
 
 (ensure-package 'magit)
+(ensure-package 'git-gutter)
+(ensure-package 'git-gutter-fringe)
+(git-gutter-mode 1)
 
 ;;; Copilot --------------------------------------------------------------------
 
 (ensure-package 'copilot)
 (global-set-key (kbd "C-c e") #'copilot-accept-completion)
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -387,9 +171,4 @@
 	     ox-mdx-deck pdf-tools tree-sitter))
  '(send-mail-function 'mailclient-send-it))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-faces)
