@@ -20,18 +20,30 @@
 (global-display-line-numbers-mode t)
 
 (global-visual-line-mode -1)
-(set-frame-font "MononokiNerdFont Mono 18" nil t)
+(set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
 (setq-default fill-column 80)
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
+(add-hook 'term-mode-hook (lambda () (setq truncate-lines t)))
 (global-display-fill-column-indicator-mode 1)
+(ffap-bindings)
+(goto-address-mode 1)
+
+
+;; TODO: where that must go?
+
+(defun my/cp-file-path()
+  (interactive)
+  (kill-new (buffer-file-name)))
+
+(global-set-key (kbd "C-c k f") 'my/cp-file-path)
 
 ;; emacs windows ---------------------------------------------------------------
 
-(global-set-key (kbd "C-c w n") 'windmove-down)   
-(global-set-key (kbd "C-c w p") 'windmove-up)     
-(global-set-key (kbd "C-c w f") 'windmove-right)  
-(global-set-key (kbd "C-c w b") 'windmove-left)   
+(global-set-key (kbd "C-c w n") 'windmove-down)
+(global-set-key (kbd "C-c w p") 'windmove-up)
+(global-set-key (kbd "C-c w f") 'windmove-right)
+(global-set-key (kbd "C-c w b") 'windmove-left)
 
 ;;; Packages -------------------------------------------------------------------
 (defun ensure-package (package)
