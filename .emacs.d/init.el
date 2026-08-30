@@ -10,25 +10,28 @@
 (desktop-save-mode 1)            ; save/restore open buffers & window layout
 
 ;;; UI -------------------------------------------------------------------------
-(load-theme 'modus-operandi t)
+(blink-cursor-mode 0)
+;; (load-theme 'the-moment t)
 (add-to-list 'default-frame-alist '(undecorated . nil))
+(add-to-list 'custom-theme-load-path "~/.dotfiles/.emacs.d/")
+(load-theme 'the-moment)
 (setq frame-title-format '("%p - %b — Emacs"))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(tab-bar-mode -1)
 (global-display-line-numbers-mode t)
-
 (global-visual-line-mode -1)
-(set-frame-font "IosevkaTerm Nerd Font Mono 18" nil t)
+(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil t )
 (setq-default fill-column 80)
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
 (add-hook 'term-mode-hook (lambda () (setq truncate-lines t)))
+
 (global-display-fill-column-indicator-mode 1)
 (ffap-bindings)
 (goto-address-mode 1)
-
 
 ;; TODO: where that must go?
 
@@ -138,6 +141,7 @@
 ;;; LSP — eglot & flymake keybindings -----------------------------------------
 
 (ensure-package 'tree-sitter)
+(ensure-package 'tree-sitter-langs)
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
@@ -146,6 +150,9 @@
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
+(global-set-key (kbd "C-c h") #'eglot-inlay-hints-mode)
+(setq eglot-inlay-hints-mode 0)
+(global-set-key (kbd "C-c h") #'eglot-inlay-hints-mode)
 
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
@@ -177,10 +184,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("019184a760d9747744783826fcdb1572f9efefc5c19ed43b6243e66638fb9960" default))
+   '("f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
  '(package-selected-packages
    '(copilot dape eglot-inactive-regions evil exec-path-from-shell magit orderless
 	     ox-mdx-deck pdf-tools tree-sitter))
  '(send-mail-function 'mailclient-send-it))
 
-(custom-set-faces)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
