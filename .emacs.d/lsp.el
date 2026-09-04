@@ -34,3 +34,12 @@
                 ruby-mode-hook ruby-ts-mode-hook
                 csharp-mode-hook))
   (add-hook hook #'eglot-ensure))
+
+(defun go-format-buffer ()
+  (when (eq major-mode 'go-ts-mode)
+    (let ((p (point)))
+      (call-process-region (point-min) (point-max) "gofmt" t '(t nil) t)
+      (call-process-region (point-min) (point-max) "golines" t '(t nil) t "-m" "80" "--tab-len=8")
+      (goto-char p))))
+
+(global-set-key (kbd "C-c f") #'go-format-buffer)

@@ -9,7 +9,7 @@ TPM_DIR := $(DST)/.tmux/plugins/tpm
 VIM_PLUG := $(DST)/.vim/autoload/plug.vim
 INSTALL_SH := $(SRC)/.install/install.sh
 
-.PHONY: help install install-default vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs build-vim
+.PHONY: help install install-default vim-dirs tmux-plugins vim-plug link-root link-configs link-local link-emacs build-vim profile-wayland profile-x11 profile-x11-tiling xorg-conf
 
 help:
 	@echo "usage:"
@@ -38,6 +38,12 @@ help:
 	@echo "  build-vim       Arch Linux x86_64 only: build vim in ./containers/arch-amd64 then"
 	@echo "                  copy vim -> /usr/local/vim and runtime -> /usr/local/share/vim/"
 	@echo "  tty-keymap      dvorak-programmer keyboard with escape instead of ctrl linked to /usr/share/kbd/keymaps/i386/dvorak/custom.map"
+	@echo "  profile-wayland session profile: sway (+waybar). removes \$$DST/.xinitrc"
+	@echo "  profile-x11     session profile: openbox (+tint2). links .Xresources and .xinitrc"
+	@echo "  profile-x11-tiling"
+	@echo "                  session profile: i3. links .Xresources and .xinitrc"
+	@echo "  xorg-conf       sudo-install X11/xorg.conf to /etc/X11/xorg.conf (shared by both"
+	@echo "                  x11 profiles, nvidia+intel specific to that laptop, so opt-in)"
 	@echo ""
 	@echo "examples:"
 	@echo "  make install"
@@ -67,6 +73,30 @@ tty-keymap:
 	sudo -v; \
 	sudo sed s/KEYMAP=.*/KEYMAP=custom/ /etc/vconsole.conf | sudo tee /etc/vconsole.conf
 
+# ---- session profiles ------------------------------------------------------
+# a profile is just which WM $(DST)/.xinitrc execs; `ls -l ~/.xinitrc` tells you
+# which one is active. sway/waybar/openbox/i3/tint2 configs are all linked by
+# link-configs regardless, these targets only pick the session.
+
+profile-wayland:
+	@rm -f "$(DST)/.xinitrc"
+	@echo "==> [OK] wayland profile: run 'exec sway' from the tty (configs via make link-configs)"
+
+profile-x11:
+	@ln -vsfn "$(SRC)/X11/.Xresources" "$(DST)/.Xresources"
+	@ln -vsfn "$(SRC)/X11/xinitrc-openbox" "$(DST)/.xinitrc"
+	@echo "==> [OK] x11 profile: openbox. run 'startx'. needs: openbox tint2 feh picom rofi"
+
+profile-x11-tiling:
+	@ln -vsfn "$(SRC)/X11/.Xresources" "$(DST)/.Xresources"
+	@ln -vsfn "$(SRC)/X11/xinitrc-i3" "$(DST)/.xinitrc"
+	@echo "==> [OK] x11-tiling profile: i3. run 'startx'. needs: i3-wm i3status feh picom rofi"
+
+xorg-conf:
+	@echo "==> Sudo access required to install X11/xorg.conf to /etc/X11/xorg.conf"
+	sudo -v; \
+	sudo install -Dm644 "$(SRC)/X11/xorg.conf" /etc/X11/xorg.conf
+
 vim-dirs:
 	@mkdir -p "$(DST)/.vim/undo" "$(DST)/.vim/backup" "$(DST)/.vim/swap"
 	@touch $(HOME)/.profile.vim
@@ -79,7 +109,7 @@ vim-plug:
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 link-root:
-	@bash $(INSTALL_SH) $(SRC) $(DST)
+	@bash "$(INSTALL_SH)" "$(SRC)" "$(DST)"
 
 link-configs:
 	@shopt -s nullglob; \
@@ -95,13 +125,6 @@ link-local:
 		n="$$(basename "$$p")"; \
 		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
 		bash "$(INSTALL_SH)" "$(SRC)/.local/$$n" "$(DST)/.local/$$n" "$(MODE)"; \
-		done
-link-irssi:
-	@shopt -s nullglob; \
-		for p in "$(SRC)/.irssi"/*; do \
-		n="$$(basename "$$p")"; \
-		[[ "$$n" =~ ^[A-Za-z] ]] || continue; \
-		bash "$(INSTALL_SH)" "$(SRC)/.irssi/$$n" "$(DST)/.irssi/$$n" "$(MODE)"; \
 		done
 
 link-emacs:

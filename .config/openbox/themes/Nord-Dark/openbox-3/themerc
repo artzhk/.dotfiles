@@ -1,0 +1,78 @@
+# Nord-Dark -- Polar Night frames, Snow Storm text
+# nord0 #2e3440  nord1 #3b4252  nord2 #434c5e  nord3 #4c566a
+# nord4 #d8dee9  nord6 #eceff4  nord8 #88c0d0  nord11 #bf616a
+
+border.width: 2
+border.color: #4c566a
+padding.width: 6
+padding.height: 3
+window.handle.width: 0
+window.client.padding.width: 0
+window.client.padding.height: 0
+window.label.text.justify: left
+
+# active window
+window.active.title.bg: flat solid
+window.active.title.bg.color: #2e3440
+window.active.title.separator.color: #2e3440
+window.active.label.bg: parentrelative
+window.active.label.text.color: #eceff4
+window.active.border.color: #88c0d0
+window.active.client.color: #2e3440
+window.active.button.unpressed.bg: parentrelative
+window.active.button.unpressed.image.color: #d8dee9
+window.active.button.hover.bg: parentrelative
+window.active.button.hover.image.color: #88c0d0
+window.active.button.pressed.bg: parentrelative
+window.active.button.pressed.image.color: #5e81ac
+window.active.button.disabled.bg: parentrelative
+window.active.button.disabled.image.color: #4c566a
+window.active.button.toggled.unpressed.bg: parentrelative
+window.active.button.toggled.unpressed.image.color: #88c0d0
+
+# inactive window
+window.inactive.title.bg: flat solid
+window.inactive.title.bg.color: #3b4252
+window.inactive.title.separator.color: #3b4252
+window.inactive.label.bg: parentrelative
+window.inactive.label.text.color: #7b88a1
+window.inactive.border.color: #3b4252
+window.inactive.client.color: #3b4252
+window.inactive.button.unpressed.bg: parentrelative
+window.inactive.button.unpressed.image.color: #7b88a1
+window.inactive.button.hover.bg: parentrelative
+window.inactive.button.hover.image.color: #d8dee9
+window.inactive.button.disabled.bg: parentrelative
+window.inactive.button.disabled.image.color: #434c5e
+
+# menu
+menu.border.width: 2
+menu.border.color: #4c566a
+menu.overlap.x: 0
+menu.title.bg: flat solid
+menu.title.bg.color: #3b4252
+menu.title.text.color: #eceff4
+menu.title.text.justify: center
+menu.items.bg: flat solid
+menu.items.bg.color: #2e3440
+menu.items.text.color: #d8dee9
+menu.items.disabled.text.color: #4c566a
+menu.items.active.bg: flat solid
+menu.items.active.bg.color: #434c5e
+menu.items.active.text.color: #88c0d0
+menu.separator.color: #4c566a
+menu.separator.width: 1
+menu.separator.padding.width: 4
+menu.separator.padding.height: 2
+
+# osd (workspace popup, resize popup)
+osd.border.width: 2
+osd.border.color: #4c566a
+osd.bg: flat solid
+osd.bg.color: #2e3440
+osd.label.bg: parentrelative
+osd.label.text.color: #eceff4
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #88c0d0
+osd.unhilight.bg: flat solid
+osd.unhilight.bg.color: #3b4252

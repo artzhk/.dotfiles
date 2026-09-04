@@ -1,0 +1,16 @@
+#!/bin/sh
+# openbox autostart -- mirrors the exec lines in .config/i3/config
+
+# apply the saved colorscheme first: sets ~/.local/share/themes/Nord-Current
+# (the theme rc.xml names) and the gtk theme before anything paints
+THEME="$(get_system_theme 2>/dev/null)"
+[ -n "$THEME" ] || THEME=dark
+"$HOME/.local/scripts/${THEME}mode"
+
+feh --bg-fill "$HOME/.local/wallpapers/Nordic-mountain-wallpaper.jpg" &
+picom -b
+nm-applet &
+clipton watcher &
+tint2 -c "$HOME/.config/tint2/nord-${THEME}.tint2rc" &
+
+
