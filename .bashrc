@@ -12,7 +12,7 @@ export PATH=~/.local/watches:$PATH
 export PATH=~/dotnet/tools:$PATH
 
 # Env config
-export GTK_THEME="Arc"
+# export GTK_THEME="Arc"
 export BAT_THEME="ansi"
 export EDITOR="vim"
 export QT_STYLE_OVERRIDE=kvantum
@@ -49,3 +49,6 @@ PS1="\[\e[0m\]\u \[\e[1;34m\]\w \[\e[0;31m\]\$(git_branch)\n\[\e[1;34m\]$\[\e[0m
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 
+
+# opencode
+export PATH=/home/art/.opencode/bin:$PATH

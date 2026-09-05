@@ -1,0 +1,16 @@
+#!/bin/sh
+# labwc autostart -- mirrors .config/sway/config exec lines + the openbox theme bootstrap
+
+# apply the saved colorscheme first: points ~/.local/share/themes/Nord-Current at the
+# themerc labwc names in rc.xml, and picks the waybar stylesheet below
+THEME="$(get_system_theme 2>/dev/null)"
+[ -n "$THEME" ] || THEME=dark
+"$HOME/.local/scripts/${THEME}mode"
+
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
+
+swaybg -i "$HOME/.local/wallpapers/Nordic-mountain-wallpaper.jpg" -m fill &
+wl-paste --watch cliphist store &
+nm-applet &
+waybar -c "$HOME/.config/waybar/config-labwc.jsonc" -s "$HOME/.config/waybar/style-$THEME.css" &

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  labwc : wayland stacking WM, sibling of .config/openbox/rc.xml
+
+  Keys mirror openbox 1:1 except where labwc cannot:
+    * no key chains (labwc-config(5): "key-chains are not supported"), so the
+      openbox W-x chain is flattened onto W-o W-b W-minus W-equal W-q W-S-q
+    * no directional window focus (labwc#1433), so W-a/W-e move between OUTPUTS
+      and W-n/W-p walk the window stack
+  Theme: Nord-Current is the symlink darkmode/lightmode flip; labwc falls back to
+  <theme>/openbox-3/themerc, so it reuses .config/openbox/themes/ as-is.
+-->
+<labwc_config>
+  <magnifier>
+    <width>400</width>
+    <height>400</height>
+    <initScale>2</initScale>
+    <increment>0.5</increment>
+    <useFilter>true</useFilter>
+  </magnifier>
+  <core>
+    <decoration>server</decoration>
+    <gap>0</gap>
+    <adaptiveSync>no</adaptiveSync>
+  </core>
+  <windowSwitcher preview="yes" outlines="yes">
+    <osd show="yes" style="classic" output="all" thumbnailLabelFormat="%T" />
+    <fields>
+      <field content="icon" width="6%" />
+      <field content="workspace" width="10%" />
+      <field content="identifier" width="30%" />
+      <field content="title" width="54%" />
+    </fields>
+  </windowSwitcher>
+  <focus>
+    <followMouse>yes</followMouse>
+  </focus>
+  <theme>
+    <name>Nord-Current</name>
+    <cornerRadius>0</cornerRadius>
+    <titlebar>
+      <layout>icon:iconify,max,close</layout>
+      <showTitle>yes</showTitle>
+    </titlebar>
+    <font place="ActiveWindow" name="IosevkaTerm Nerd Font Mono" size="12" weight="bold" slant="normal" />
+    <font place="InactiveWindow" name="IosevkaTerm Nerd Font Mono" size="12" weight="normal" slant="normal" />
+    <font place="MenuItem" name="IosevkaTerm Nerd Font Mono" size="12" weight="normal" slant="normal" />
+    <font place="OnScreenDisplay" name="IosevkaTerm Nerd Font Mono" size="12" weight="normal" slant="normal" />
+  </theme>
+
+  <desktops number="5">
+    <names>
+      <name>1</name><name>2</name><name>3</name><name>4</name><name>5</name>
+    </names>
+    <popupTime>600</popupTime>
+  </desktops>
+
+  <keyboard layoutScope="window">
+     <keybind key="W-y"><action name="ToggleOmnipresent" /></keybind>
+     <keybind key="W-z"><action name="ToggleShowDesktop" /></keybind>
+
+    <!-- ===== workspaces ===== -->
+    <keybind key="W-h"><action name="GoToDesktop" to="1" /></keybind>
+    <keybind key="W-t"><action name="GoToDesktop" to="2" /></keybind>
+    <keybind key="W-g"><action name="GoToDesktop" to="3" /></keybind>
+    <keybind key="W-c"><action name="GoToDesktop" to="4" /></keybind>
+    <keybind key="W-m"><action name="GoToDesktop" to="5" /></keybind>
+
+    <keybind key="W-S-h"><action name="SendToDesktop" to="1" follow="yes" /></keybind>
+    <keybind key="W-S-t"><action name="SendToDesktop" to="2" follow="yes" /></keybind>
+    <keybind key="W-S-g"><action name="SendToDesktop" to="3" follow="yes" /></keybind>
+    <keybind key="W-S-c"><action name="SendToDesktop" to="4" follow="yes" /></keybind>
+    <keybind key="W-S-m"><action name="SendToDesktop" to="5" follow="yes" /></keybind>
+
+    <keybind key="W-e"><action name="SnapToEdge" combine="yes" direction="right" /></keybind>
+    <keybind key="W-a"><action name="SnapToEdge" combine="yes" direction="left" /></keybind>
+
+    <keybind key="W-n"><action name="NextWindowImmediate" /></keybind>
+    <keybind key="W-p"><action name="PreviousWindowImmediate" /></keybind>
+
+    <keybind key="W-S-f"><action name="ShrinkToEdge" direction="left" /></keybind>
+    <keybind key="W-S-b"><action name="ShrinkToEdge" direction="right" /></keybind>
+    <keybind key="W-S-p"><action name="SnapToEdge" combine="yes" direction="up" /></keybind>
+    <keybind key="W-S-n"><action name="SnapToEdge" combine="yes" direction="down" /></keybind>
+    
+    <keybind key="W-S-e"><action name="GrowToEdge" direction="right" /></keybind>
+    <keybind key="W-S-a"><action name="GrowToEdge" direction="left" /></keybind>
+   
+
+    <keybind key="W-o"><action name="NextWindow" /></keybind>                                    <!-- W-x o -->
+    <keybind key="W-b"><action name="ShowMenu" menu="client-list-combined-menu" /></keybind>     <!-- W-x b -->
+    <keybind key="W-minus"><action name="Iconify" /></keybind>                                   <!-- W-x i -->
+    <keybind key="W-equal"><action name="ToggleMaximize" /></keybind>                            <!-- W-x m -->
+
+    <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
+    <keybind key="W-d"><action name="Execute" command="rofi -show drun" /></keybind>
+    <keybind key="W-space"><action name="ShowMenu" menu="client-list-combined-menu" /></keybind>
+    <keybind key="W-i"><action name="Execute" command="sh -c 'cliphist list | rofi -dmenu -i -display-columns 2 | cliphist decode | wl-copy'" /></keybind>
+    <keybind key="W-q"><action name="Close" /></keybind>
+    <keybind key="W-f"><action name="ToggleFullscreen" /></keybind>
+    <keybind key="W-S-space"><action name="ToggleDecorations" /></keybind>
+    <keybind key="W-S-s">
+      <action name="Execute">
+	<command>sh -c 'grim -g "$(slurp)"' </command>
+      </action>
+    </keybind>
+    <keybind key="W-S-r"><action name="Reconfigure" /></keybind>
+    <keybind key="W-S-q"><action name="Exit" /></keybind>
+
+    <keybind key="XF86AudioRaiseVolume"><action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ +10%" /></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ -10%" /></keybind>
+    <keybind key="XF86AudioMute"><action name="Execute" command="pactl set-sink-mute @DEFAULT_SINK@ toggle" /></keybind>
+    <keybind key="XF86AudioMicMute"><action name="Execute" command="pactl set-source-mute @DEFAULT_SOURCE@ toggle" /></keybind>
+    <keybind key="XF86MonBrightnessUp"><action name="Execute" command="light -A 5" /></keybind>
+    <keybind key="XF86MonBrightnessDown"><action name="Execute" command="light -U 5" /></keybind>
+    <keybind key="Print"><action name="Execute" command="flameshot gui" /></keybind>
+
+  </keyboard>
+  <mouse>
+    <context name="All">
+      <mousebind direction="W-Up" action="Scroll">
+	<action name="ZoomIn"/>
+      </mousebind>
+      <mousebind direction="W-Down" action="Scroll">
+	<action name="ZoomOut"/>
+      </mousebind>
+    </context>
+
+
+    <context name="Iconify">
+      <mousebind button="Left" action="Click">
+	<action name="Iconify" />
+      </mousebind>
+    </context>
+    <context name="Maximize">
+      <mousebind button="Left" action="Click">
+	<action name="Maximize" />
+      </mousebind>
+    </context>
+    <context name="Close">
+      <mousebind button="Left" action="Click">
+	<action name="Close" />
+      </mousebind>
+    </context>
+    <context name="Frame">
+      <mousebind button="W-Left" action="Drag"><action name="Move" /></mousebind>
+      <mousebind button="W-Right" action="Drag"><action name="Resize" /></mousebind>
+    </context>
+    <context name="Title">
+      <mousebind button="Left" action="Drag"><action name="Move" /></mousebind>
+      <mousebind button="Left" action="DoubleClick"><action name="ToggleMaximize" /></mousebind>
+      <mousebind button="Right" action="Click"><action name="ShowMenu" menu="client-menu" /></mousebind>
+    </context>
+    <context name="Border">
+      <mousebind button="Left" action="Drag"><action name="Resize" /></mousebind>
+    </context>
+    <context name="Root">
+      <mousebind button="Right" action="Press"><action name="ShowMenu" menu="root-menu" /></mousebind>
+      <mousebind button="Middle" action="Press"><action name="ShowMenu" menu="client-list-combined-menu"
+      /></mousebind>
+      <mousebind direction="Up" action="Scroll"><action name="GoToDesktop" to="left" wrap="yes" /></mousebind>
+      <mousebind direction="Down" action="Scroll"><action name="GoToDesktop" to="right" wrap="yes"
+      /></mousebind>
+    </context>
+
+  </mouse>
+
+  <libinput>
+    <device category="touchpad">
+      <naturalScroll>yes</naturalScroll>
+      <tap>yes</tap>
+      <disableWhileTyping>yes</disableWhileTyping>
+      <middleEmulation>yes</middleEmulation>
+    </device>
+  </libinput>
+
+</labwc_config>

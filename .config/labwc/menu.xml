@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu>
+
+<menu id="root-menu" label="labwc">
+  <item label="Terminal"><action name="Execute" command="foot" /></item>
+  <item label="Launcher"><action name="Execute" command="fuzzel" /></item>
+  <item label="Browser"><action name="Execute" command="firefox" /></item>
+  <separator />
+  <item label="Dark mode"><action name="Execute" command="darkmode" /></item>
+  <item label="Light mode"><action name="Execute" command="lightmode" /></item>
+  <separator />
+  <item label="Reconfigure"><action name="Reconfigure" /></item>
+  <separator />
+  <item label="Exit"><action name="Exit" /></item>
+</menu>
+
+</openbox_menu>

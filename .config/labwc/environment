@@ -1,0 +1,10 @@
+# labwc reads this before autostart. The keyboard layout lives HERE, not in rc.xml.
+# Ported from .config/sway/config input "type:keyboard".
+XKB_DEFAULT_LAYOUT=us,ua
+XKB_DEFAULT_VARIANT=dvp,
+XKB_DEFAULT_OPTIONS=grp:alt_shift_toggle,caps:ctrl_modifier
+
+XDG_CURRENT_DESKTOP=labwc:wlroots
+QT_QPA_PLATFORMTHEME=qt5ct
+QT_STYLE_OVERRIDE=kvantum
+_JAVA_AWT_WM_NONREPARENTING=1
