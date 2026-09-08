@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  labwc : wayland stacking WM, sibling of .config/openbox/rc.xml
-
-  Keys mirror openbox 1:1 except where labwc cannot:
-    * no key chains (labwc-config(5): "key-chains are not supported"), so the
-      openbox W-x chain is flattened onto W-o W-b W-minus W-equal W-q W-S-q
-    * no directional window focus (labwc#1433), so W-a/W-e move between OUTPUTS
-      and W-n/W-p walk the window stack
-  Theme: Nord-Current is the symlink darkmode/lightmode flip; labwc falls back to
-  <theme>/openbox-3/themerc, so it reuses .config/openbox/themes/ as-is.
--->
 <labwc_config>
   <magnifier>
     <width>400</width>
@@ -20,6 +9,8 @@
   </magnifier>
   <core>
     <decoration>server</decoration>
+    <autoEnableOutputs>yes</autoEnableOutputs>
+    <reuseOutputMode>yes</reuseOutputMode>
     <gap>0</gap>
     <adaptiveSync>no</adaptiveSync>
   </core>
@@ -94,7 +85,7 @@
 
     <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
     <keybind key="W-d"><action name="Execute" command="rofi -show drun" /></keybind>
-    <keybind key="W-space"><action name="ShowMenu" menu="client-list-combined-menu" /></keybind>
+    <keybind key="W-space"><action name="Execute" command="rofi -show window" /></keybind>
     <keybind key="W-i"><action name="Execute" command="sh -c 'cliphist list | rofi -dmenu -i -display-columns 2 | cliphist decode | wl-copy'" /></keybind>
     <keybind key="W-q"><action name="Close" /></keybind>
     <keybind key="W-f"><action name="ToggleFullscreen" /></keybind>

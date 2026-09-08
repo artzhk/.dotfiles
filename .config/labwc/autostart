@@ -3,14 +3,16 @@
 
 # apply the saved colorscheme first: points ~/.local/share/themes/Nord-Current at the
 # themerc labwc names in rc.xml, and picks the waybar stylesheet below
-THEME="$(get_system_theme 2>/dev/null)"
-[ -n "$THEME" ] || THEME=dark
+THEME="$(gsettings get org.gnome.desktop.interface color-scheme)"
+[ "$THEME" == "prefer-dark" ] || THEME=dark
+[ "$THEME" == "prefer-light" ] || THEME=light
 "$HOME/.local/scripts/${THEME}mode"
 
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
 
-swaybg -i "$HOME/.local/wallpapers/Nordic-mountain-wallpaper.jpg" -m fill &
+swaybg -i "/home/art/.dotfiles/.local/wallpapers/wlp" -m fill &
 wl-paste --watch cliphist store &
 nm-applet &
-waybar -c "$HOME/.config/waybar/config-labwc.jsonc" -s "$HOME/.config/waybar/style-$THEME.css" &
+waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" &
+"$HOME"/.dotfiles/.config/labwc/lid-close &

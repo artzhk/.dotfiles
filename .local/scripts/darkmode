@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-ln -sfn /usr/share/foot/themes/alacritty ~/.config/foot/colorscheme
 ln -sfn ~/.dotfiles/vim/dark.vim ~/.vim/colorscheme.vim
 ln -sfn ~/.dotfiles/.local/wallpapers/dark.png ~/.dotfiles/.local/wallpapers/wlp
+ln -sfn ~/.config/waybar/style-dark.css ~/.config/waybar/style.css
 
 # qutebrowser
 pgrep -x qutebrowser > /dev/null && \
@@ -10,6 +10,9 @@ pgrep -x qutebrowser > /dev/null && \
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
+
+sed -i 's/^initial-color-theme=*/initial-color-theme=dark/' ~/.dotfiles/.config/foot/foot.ini 
+pkill -u "$USER" -USR1 '^foot(client)?$'
 
 emacsclient --eval '(load-theme (quote modus-vivendi) t)' 2>/dev/null || true
 

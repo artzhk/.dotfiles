@@ -27,7 +27,9 @@
 (setq-default fill-column 80)
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
-(add-hook 'term-mode-hook (lambda () (setq truncate-lines t)))
+
+(add-hook 'org-mode-hook (setq truncate-lines -1))
+(add-hook 'term-mode-hook (lambda () (setq truncate-lines -1)))
 
 (global-display-fill-column-indicator-mode 1)
 (ffap-bindings)
@@ -67,24 +69,16 @@
 (exec-path-from-shell-initialize)              ; copies PATH → exec-path
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")
 (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+
 ;; Vanilla completion, everywhere (M-x, buffer switching, etc.): built-in
 ;; `flex' style = closest/subsequence match, case-insensitive. No package.
-(setq completion-styles '(basic partial-completion flex))
+
+(fido-vertical-mode 1)
+(setq completion-styles '(basic flex))
 (setq completion-ignore-case t)
+(setq icomplete-in-buffer t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
-
-;; (ensure-package 'orderless)
-;; (use-package orderless
-;;   :init
-;;   ;; flex = subsequence match (fzf-style), not just literal substring —
-;;   ;; needed for e.g. "todocontroller" to match "ToDosController.cs"
-;;   (setq orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp))
-;;   (setq completion-category-overrides
-;;         '((file (styles orderless))
-;;           ;; project-find-file tags its completion table 'project-file, not
-;;           ;; 'file, so it needs its own entry to actually use orderless.
-;;           (project-file (styles orderless)))))
 
 ;;; Org — core settings --------------------------------------------------------
 
@@ -130,6 +124,9 @@
          ((org-agenda-prefix-format "  %-12:c ")))
         ("i" "Ideas backlog" todo "IDEA"
          ((org-agenda-prefix-format "  %-12:c")))))
+;;; Buffer --------------------------------------------------------------------
+
+(keymap-global-set "C-x C-b" #'ibuffer)
 
 ;;; Compile -------------------------------------------------------------------
 
@@ -142,6 +139,9 @@
 
 (ensure-package 'tree-sitter)
 (ensure-package 'tree-sitter-langs)
+(setq tree-sitter-load-path (list "/home/art/.emacs.d/elpa/tree-sitter-langs-20260729.1912/bin/"
+				  "/home/art/.tree-sitter/bin/" "/home/art/.emacs.d/tree-sitter/"))
+
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
