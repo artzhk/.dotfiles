@@ -41,10 +41,23 @@
   (interactive)
   (kill-new (buffer-file-name)))
 
-(global-set-key (kbd "C-c k f") 'my/cp-file-path)
+(defun my/find-file-here()
+  "Find file recurnsively under current dir."
+  (interactive)
+  (let* ((dir default-directory)
+       (pr (or (project-current nil dir )
+	       (cons 'transient dir))))
+       (project-find-file-in nil (list dir) pr)))
 
+
+(global-set-key (kbd "C-c k f") 'my/cp-file-path)
+(global-set-key (kbd "C-c d u") 'my/find-file-here)
+(global-set-key (kbd "C-c e") 'revert-buffer)
+
+(setq project-vc-extra-root-markers '(".project"))
 ;; emacs windows ---------------------------------------------------------------
 
+(global-set-key (kbd "C-c w w") 'delete-other-windows)
 (global-set-key (kbd "C-c w n") 'windmove-down)
 (global-set-key (kbd "C-c w p") 'windmove-up)
 (global-set-key (kbd "C-c w f") 'windmove-right)

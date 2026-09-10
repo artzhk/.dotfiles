@@ -79,7 +79,6 @@ tty-keymap:
 
 # ---- session profiles ------------------------------------------------------
 
-
 # a profile installs the configs that session needs (MODE=ln|cp, same as
 # link-configs) and, for X11, points $(DST)/.xinitrc at its WM -- so
 # `ls -l ~/.xinitrc` tells you which one is active.
