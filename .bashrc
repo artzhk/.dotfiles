@@ -14,8 +14,8 @@ export PATH=~/dotnet/tools:$PATH
 # Env config
 # export GTK_THEME="Arc"
 export BAT_THEME="ansi"
-export EDITOR="emacsclient -t"
-# export VISUAL="emacsclient"	
+export EDITOR="emacsclient -nw"
+export VISUAL="emacsclient"	
 export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=kvantum
 

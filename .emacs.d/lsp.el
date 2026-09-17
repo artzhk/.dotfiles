@@ -35,11 +35,15 @@
                 csharp-mode-hook))
   (add-hook hook #'eglot-ensure))
 
-(defun go-format-buffer ()
+(defun my/go-format-buffer ()
+  (interactive)
   (when (eq major-mode 'go-ts-mode)
-    (let ((p (point)))
-      (call-process-region (point-min) (point-max) "gofmt" t '(t nil) t)
-      (call-process-region (point-min) (point-max) "golines" t '(t nil) t "-m" "80" "--tab-len=8")
-      (goto-char p))))
+    (let ((out (generate-new-buffer " *golines*")))
+      (unwind-protect
+          (when (zerop (call-process-region nil nil "golines" nil out nil
+                                            "-m" "80" "--tab-len=8"))
+            (replace-buffer-contents out))
+	(kill-buffer out)))))
 
-(global-set-key (kbd "C-c f") #'go-format-buffer)
+(with-eval-after-load 'go-ts-mode
+  (keymap-set go-ts-mode-map "C-c f" #'go-format-buffer)

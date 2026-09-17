@@ -6,6 +6,7 @@ input "type:keyboard" {
 
 input "type:tablet_tool" {
 	tool_mode pen relative
+	left_handed enabled
 }
 
 input "type:touchpad" {
@@ -117,20 +118,12 @@ exec_always swayidle -w \
 	     bindsym $mod+g workspace number 3
 	     bindsym $mod+c workspace number 4
 	     bindsym $mod+m workspace number 5
-	     bindsym $mod+x workspace number 6
-	     bindsym $mod+z workspace number 7
-	     bindsym $mod+o workspace number 8
-	     bindsym $mod+u workspace number 9
 # Move focused container to workspace
 	     bindsym $mod+Shift+t move container to workspace number 1
 	     bindsym $mod+Shift+n move container to workspace number 2
 	     bindsym $mod+Shift+g move container to workspace number 3
 	     bindsym $mod+Shift+c move container to workspace number 4
 	     bindsym $mod+Shift+m move container to workspace number 5
-	     bindsym $mod+Shift+x move container to workspace number 6
-	     bindsym $mod+Shift+z move container to workspace number 7
-	     bindsym $mod+Shift+o move container to workspace number 8
-	     bindsym $mod+Shift+u move container to workspace number 9
 
 # Note: workspaces can have any name you want, not just numbers.
 # We just use 1-10 as the default.
@@ -156,7 +149,7 @@ bindsym $mod+i exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 	     bindsym $mod+Shift+space floating toggle
 
 # Swap focus between the tiling area and the floating area
-	     bindsym $mod+a focus mode_toggle
+	     bindsym $mod+o focus mode_toggle
 
 # Move focus to the parent container
 #bindsym $mod+a focus parent

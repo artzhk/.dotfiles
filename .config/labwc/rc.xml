@@ -14,7 +14,7 @@
     <gap>0</gap>
     <adaptiveSync>no</adaptiveSync>
   </core>
-  <windowSwitcher preview="yes" outlines="yes">
+  <windowSwitcher order="age" preview="yes" outlines="yes">
     <osd show="yes" style="classic" output="all" thumbnailLabelFormat="%T" />
     <fields>
       <field content="icon" width="6%" />
@@ -92,7 +92,7 @@
     <keybind key="W-S-space"><action name="ToggleDecorations" /></keybind>
     <keybind key="W-S-s">
       <action name="Execute">
-	<command>sh -c 'grim -g "$(slurp)"' </command>
+	<command>sh -c 'grim -g "$(slurp)" - | wl-copy' </command>
       </action>
     </keybind>
     <keybind key="W-S-r"><action name="Reconfigure" /></keybind>
@@ -164,5 +164,5 @@
       <middleEmulation>yes</middleEmulation>
     </device>
   </libinput>
-
+  <tabletTool motion="relative" />
 </labwc_config>

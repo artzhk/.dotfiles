@@ -10,7 +10,7 @@ pgrep -x qutebrowser > /dev/null && \
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 gsettings set org.gnome.desktop.interface gtk-theme 'Arc'
 
-sed -i 's/^initial-color-theme=*/initial-color-theme=light/' ~/.dotfiles/.config/foot/foot.ini 
+sed -i 's/^initial-color-theme=.*/initial-color-theme=light/' ~/.dotfiles/.config/foot/foot.ini 
 pkill -u "$USER" -USR2 '^foot(client)?$'
 
-emacsclient --eval '(load-theme (quote modus-operandi) t)' 2>/dev/null || true
+emacsclient --eval "(disable-theme 'gruber-darker)" "(load-theme 'the-moment t)" 2>/dev/null || true

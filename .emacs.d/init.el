@@ -25,10 +25,24 @@
 (global-visual-line-mode -1)
 (set-frame-font "IosevkaTerm Nerd Font Mono 20" nil t )
 (setq-default fill-column 80)
+(display-time)
+(display-battery-mode)
+;; mode line format
+(setq-default mode-line-format
+	      `("-"
+		mode-line-mule-info
+		(if (boundp project-mode-line-format) project-mode-line-format)
+		" %b "
+		which-func-format
+		" %I %p L%l %c | "
+		display-time-string
+		battery-mode-line-string
+		(vc-mode vc-mode)
+		mode-line-end-spaces))
+
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
-
-(add-hook 'org-mode-hook (setq truncate-lines -1))
+(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'term-mode-hook (lambda () (setq truncate-lines -1)))
 
 (global-display-fill-column-indicator-mode 1)
@@ -51,7 +65,7 @@
 
 
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
-(global-set-key (kbd "C-c d u") 'my/find-file-here)
+(global-set-key (kbd "C-c C-u") 'my/find-file-here)
 (global-set-key (kbd "C-c e") 'revert-buffer)
 
 (setq project-vc-extra-root-markers '(".project"))
@@ -137,11 +151,9 @@
          ((org-agenda-prefix-format "  %-12:c ")))
         ("i" "Ideas backlog" todo "IDEA"
          ((org-agenda-prefix-format "  %-12:c")))))
+
 ;;; Buffer --------------------------------------------------------------------
-
 (keymap-global-set "C-x C-b" #'ibuffer)
-
-;;; Compile -------------------------------------------------------------------
 
 ;; No default global keys exist for these; everything else (g=recompile,
 ;; M-n/M-p=next/prev error, M-.=jump-to-error) works out of the box.
@@ -149,7 +161,6 @@
 (global-set-key (kbd "C-c p") #'project-compile) ; from project root
 
 ;;; LSP — eglot & flymake keybindings -----------------------------------------
-
 (ensure-package 'tree-sitter)
 (ensure-package 'tree-sitter-langs)
 (setq tree-sitter-load-path (list "/home/art/.emacs.d/elpa/tree-sitter-langs-20260729.1912/bin/"
@@ -162,32 +173,33 @@
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
+(global-set-key (kbd "C-c d") #'eglot-find-typeDefinition)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
-(global-set-key (kbd "C-c h") #'eglot-inlay-hints-mode)
 (setq eglot-inlay-hints-mode 0)
-(global-set-key (kbd "C-c h") #'eglot-inlay-hints-mode)
+(global-set-key (kbd "C-c H") #'eglot-inlay-hints-mode)
 
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
-;;; LSP — eglot ----------------------------------------------------------------
-(load (expand-file-name "lsp.el" user-emacs-directory))
+;;; Magit ----------------------------------------------------------------------
+(ensure-package 'magit)
+(ensure-package 'git-gutter)
+(ensure-package 'git-gutter-fringe)
+(global-git-gutter-mode 1)
 
-;;; Optional external stuff ----------------------------------------------------
+(global-set-key (kbd "C-c C-h h") #'git-gutter:popup-diff)
+(global-set-key (kbd "C-c C-h n") #'git-gutter:next-diff)
+(global-set-key (kbd "C-c C-h p") #'git-gutter:previous-diff)
+
+;; External stuff import
+
+(load (expand-file-name "lsp.el" user-emacs-directory))
 (load (expand-file-name "latex.el" user-emacs-directory))
 ;; (load (expand-file-name "dotnet.el" user-emacs-directory))
 ;; (load (expand-file-name "frontend.el" user-emacs-directory))
 
-;;; Magit ----------------------------------------------------------------------
-
-(ensure-package 'magit)
-(ensure-package 'git-gutter)
-(ensure-package 'git-gutter-fringe)
-(git-gutter-mode 1)
-
 ;;; Copilot --------------------------------------------------------------------
-
 (ensure-package 'copilot)
 (global-set-key (kbd "C-c e") #'copilot-accept-completion)
 
@@ -199,8 +211,8 @@
  '(custom-safe-themes
    '("f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
  '(package-selected-packages
-   '(copilot dape eglot-inactive-regions evil exec-path-from-shell magit orderless
-	     ox-mdx-deck pdf-tools tree-sitter))
+   '(copilot dape eglot-inactive-regions evil exec-path-from-shell magit nano-theme
+	     orderless ox-mdx-deck pdf-tools tree-sitter))
  '(send-mail-function 'mailclient-send-it))
 
 (custom-set-faces
