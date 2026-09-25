@@ -11,7 +11,6 @@
 
 ;;; UI -------------------------------------------------------------------------
 (blink-cursor-mode 0)
-;; (load-theme 'the-moment t)
 (add-to-list 'default-frame-alist '(undecorated . nil))
 (add-to-list 'custom-theme-load-path "~/.dotfiles/.emacs.d/")
 (load-theme 'the-moment)
@@ -61,12 +60,24 @@
   (let* ((dir default-directory)
        (pr (or (project-current nil dir )
 	       (cons 'transient dir))))
-       (project-find-file-in nil (list dir) pr)))
+    (project-find-file-in nil (list dir) pr)))
 
+;; Thanks rexim
+(defun rc/duplicate-line ()
+  (interactive)
+  (let ((column (- (point) (point-at-bol)))
+	(line (let ((s (thing-at-point 'line t)))
+		(if s (string-remove-suffix "\n" s) ""))))
+    (move-end-of-line 1)
+    (newline)
+    (insert line)
+    (move-beginning-of-line 1)
+    (forward-char column)))
 
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
 (global-set-key (kbd "C-c C-u") 'my/find-file-here)
 (global-set-key (kbd "C-c e") 'revert-buffer)
+(global-set-key (kbd "C-,") 'rc/duplicate-line)
 
 (setq project-vc-extra-root-markers '(".project"))
 ;; emacs windows ---------------------------------------------------------------
@@ -99,7 +110,7 @@
 
 ;; Vanilla completion, everywhere (M-x, buffer switching, etc.): built-in
 ;; `flex' style = closest/subsequence match, case-insensitive. No package.
-
+(ido-mode 1)
 (fido-vertical-mode 1)
 (setq completion-styles '(basic flex))
 (setq completion-ignore-case t)
@@ -201,7 +212,7 @@
 
 ;;; Copilot --------------------------------------------------------------------
 (ensure-package 'copilot)
-(global-set-key (kbd "C-c e") #'copilot-accept-completion)
+(global-set-key (kbd "C-c C-e") #'copilot-accept-completion)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
