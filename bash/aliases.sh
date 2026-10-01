@@ -72,7 +72,7 @@ commits_per_file() {
   [ -n "$c" ] && git diff "$c" HEAD -- "$f"
 }
 difftool_commits_per_file() {
-	git difftool $(git log --pretty=format:"%H %cI %d%x20%s" --follow $1 | fzf | cut -d " " -f 1) HEAD $1
+	git difftool $(git log --pretty=format:"%h %cI %d%x20%s %an" --follow $1 | fzf --preview=\"git diff --color {}\" | cut -d " " -f 1) HEAD $1
 }
 
 # git diff file select
@@ -104,3 +104,15 @@ alias ddrmci="docker rm \$(docker ps -a -q)"
 # NM cli 
 # Select and connect
 alias nc="nmcli d wifi connect \$(nmcli d wifi list | awk 'BEGIN {FIELDWIDTHS = \"10 16 14\"} {print  \$2\"*\"\$3}' | fzf | cut -d \"*\" -f 2 | tr -d \" \")"
+
+gif() {
+    if [[ -f "$1" ]]; then
+        ffmpeg -i "$1" \
+            -vf "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=diff[p];[s1][p]paletteuse=dither=floyd_steinberg" \
+            "${1%.*}.gif"
+    else
+        ffmpeg -ss "$1" -to "$2" -i "$3" \
+            -vf "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=diff[p];[s1][p]paletteuse=dither=floyd_steinberg" \
+            "${3%.*}.gif"
+    fi
+}

@@ -1,21 +1,16 @@
-;;; frontend.el --- TypeScript/JS: tree-sitter grammar + dual-LSP setup -*- lexical-binding: t; -*-
+;;; frontend.el --- TypeScript/JS: tree-sitter grammar + dual-LSP 
 
-;;; TSX/TS tree-sitter grammar + mode routing
+;; Remove if nothing breakes
+;; (when (treesit-available-p)
+;;   (dolist (mapping '((tsx . "tsx/src") (typescript . "typescript/src")))
+;;     (add-to-list 'treesit-language-source-alist
+;;                  (list (car mapping) "https://github.com/tree-sitter/tree-sitter-typescript"
+;;                        nil (cdr mapping)))
+;;     (unless (treesit-language-available-p (car mapping))
+;;       (ignore-errors (treesit-install-language-grammar (car mapping)))))
+;;   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+;;   (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
 
-(when (treesit-available-p)
-  (dolist (mapping '((tsx . "tsx/src") (typescript . "typescript/src")))
-    (add-to-list 'treesit-language-source-alist
-                 (list (car mapping) "https://github.com/tree-sitter/tree-sitter-typescript"
-                       nil (cdr mapping)))
-    (unless (treesit-language-available-p (car mapping))
-      (ignore-errors (treesit-install-language-grammar (car mapping)))))
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
-
-;;; typescript-language-server + oxlint simultaneously, multiplexed onto one
-;;; connection via rass (pip install rassumfrassum:
-;;; https://github.com/joaotavora/rassumfrassum). Falls back to tsserver alone
-;;; if rass or oxlint isn't installed.
 
 (with-eval-after-load 'eglot
   (cond
@@ -30,24 +25,43 @@
                  '((typescript-mode typescript-ts-mode tsx-ts-mode js-mode js-ts-mode)
                    "typescript-language-server" "--stdio")))))
 
-;;; Format on save (tsfmt) + C-c l to lint (tslint) ---------------------------
-;; Both scripts live in .local/scripts/ and format/lint every ts file with
-;; unstaged git changes, not just the current buffer — matches how they're
-;; already used from the shell.
+(defun my/oxlint-git-changed ()
+  "Run oxlint --fix on all modified/untracked TS files per git status."
+  (interactive)
+  (compile
+   "oxlint --fix --format=unix $(git status --untracked-files -s | grep -e '^.[??|M| M|UU].*ts\\w*$' | cut -c 4-)"))
 
-(defun frontend-tsfmt-on-save ()
-  "Run tsfmt after saving, then reload this buffer to pick up any reformatting."
-  (when (and buffer-file-name (executable-find "tsfmt"))
-    (let ((buf (current-buffer)))
-      (call-process "tsfmt" nil nil nil)
-      (with-current-buffer buf
-        (revert-buffer t t t)))))
+(defun my/oxlint-current-file ()
+  "Run oxlint --fix on the file visited by the current buffer."
+  (interactive)
+  (when buffer-file-name
+    (save-buffer)
+    (compile (format "oxlint --fix --format=unix %s"
+                      (shell-quote-argument (expand-file-name buffer-file-name))))))
 
-(dolist (hook '(typescript-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook
-                js-mode-hook js-ts-mode-hook))
-  (add-hook hook (lambda () (add-hook 'after-save-hook #'frontend-tsfmt-on-save nil t))))
+(defun my/oxfmt-current-file ()
+  "Run fmt --fix on the file visited by the current buffer."
+  (interactive)
+  (when buffer-file-name
+    (save-buffer)
+    (compile (format "oxfmt %s"
+                     (shell-quote-argument (expand-file-name buffer-file-name))))))
 
-(when (executable-find "tslint")
-  (global-set-key (kbd "C-c l") (lambda () (interactive) (compile "tslint"))))
+(defvar-keymap my/ox-mode-map
+  "C-c L" #'my/oxlint-git-changed
+  "C-c l" #'my/oxlint-current-file
+  "C-c f" #'my/oxfmt-current-file)
+
+(define-minor-mode my/ox-mode
+  "Oxlint/oxfmt keys for JS/TS buffers."
+  :keymap my/ox-mode-map)
+
+(dolist (hook '(js-mode-hook          ; .js .jsx (classic)
+                js-ts-mode-hook       ; .js .jsx (tree-sitter)
+                typescript-ts-mode-hook ; .ts
+                tsx-ts-mode-hook))    ; .tsx
+  (add-hook hook #'my/ox-mode))
+
+
 
 (provide 'frontend)

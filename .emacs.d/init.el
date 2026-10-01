@@ -54,14 +54,6 @@
   (interactive)
   (kill-new (buffer-file-name)))
 
-(defun my/find-file-here()
-  "Find file recurnsively under current dir."
-  (interactive)
-  (let* ((dir default-directory)
-       (pr (or (project-current nil dir )
-	       (cons 'transient dir))))
-    (project-find-file-in nil (list dir) pr)))
-
 ;; Thanks rexim
 (defun rc/duplicate-line ()
   (interactive)
@@ -75,7 +67,6 @@
     (forward-char column)))
 
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
-(global-set-key (kbd "C-c C-u") 'my/find-file-here)
 (global-set-key (kbd "C-c e") 'revert-buffer)
 (global-set-key (kbd "C-,") 'rc/duplicate-line)
 
@@ -112,11 +103,28 @@
 ;; `flex' style = closest/subsequence match, case-insensitive. No package.
 (ido-mode 1)
 (fido-vertical-mode 1)
-(setq completion-styles '(basic flex))
+(setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
+(setq completion-styles '(basic substring))
 (setq completion-ignore-case t)
 (setq icomplete-in-buffer t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
+
+(use-package fzf
+  :bind
+  (keymap-global-set "C-c C-u" #'fzf)
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+        fzf/executable "fzf"
+        fzf/git-grep-args "-i --line-number %s"
+        ;; command used for `fzf-grep-*` functions
+        ;; example usage for ripgrep:
+        fzf/grep-command "rg --no-heading -nH"
+        ;; If nil, the fzf buffer will appear at the top of the window
+        fzf/position-bottom t
+        fzf/window-height 15))
+
+(keymap-global-set "C-x p f" #'fzf-git-files)   ; or fzf-async-f
 
 ;;; Org — core settings --------------------------------------------------------
 

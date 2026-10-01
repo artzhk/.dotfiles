@@ -1,4 +1,5 @@
 # dotfiles
+
 _THIS FILE IS GENERETED BY LLM, THUS IT MAY CONTAIN INCONSISTENCES_
 
 Personal dotfiles managed via `make`. Supports symlinking or copying config files into a home directory.
@@ -10,26 +11,26 @@ Personal dotfiles managed via `make`. Supports symlinking or copying config file
 
 ## Variables
 
-| Variable | Default            | Description                                      |
-|----------|--------------------|--------------------------------------------------|
-| `SRC`    | `~/.dotfiles`      | Dotfiles source directory                        |
-| `DST`    | `~`                | Destination home directory to install into       |
-| `MODE`   | `ln`               | Install mode for `.config` entries: `ln` (symlink) or `cp` (copy) |
+| Variable | Default       | Description                                                       |
+| -------- | ------------- | ----------------------------------------------------------------- |
+| `SRC`    | `~/.dotfiles` | Dotfiles source directory                                         |
+| `DST`    | `~`           | Destination home directory to install into                        |
+| `MODE`   | `ln`          | Install mode for `.config` entries: `ln` (symlink) or `cp` (copy) |
 
 ## Targets
 
-| Target            | Description                                                                 |
-|-------------------|-----------------------------------------------------------------------------|
-| `help`            | Show usage, variables, targets, and examples                                |
-| `install`         | Full install: vim dirs, tmux tpm, vim-plug, link root and `.config/*`       |
-| `install-default` | Same as `install` with `SRC=~/.dotfiles DST=~ MODE=ln`                     |
-| `vim-dirs`        | Create `$DST/.vim/{undo,backup,swap}`                                       |
-| `tmux-plugins`    | Install tmux TPM into `$DST/.tmux/plugins/tpm` if missing                  |
-| `vim-plug`        | Install vim-plug into `$DST/.vim/autoload/plug.vim`                        |
-| `link-root`       | Run `.install/install.sh` for `SRC → DST` (root-level dotfiles)            |
-| `link-configs`    | Link each `$SRC/.config/<name>` → `$DST/.config/<name>` using `MODE`       |
-| `link-local`      | Link each `$SRC/.local/<name>` → `$DST/.local/<name>` using `MODE`         |
-| `link-emacs`      | Link `$SRC/.emacs.d` → `$DST/.emacs.d` using `MODE`                        |
+| Target            | Description                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `help`            | Show usage, variables, targets, and examples                                                                                                 |
+| `install`         | Full install: vim dirs, tmux tpm, vim-plug, link root and `.config/*`                                                                        |
+| `install-default` | Same as `install` with `SRC=~/.dotfiles DST=~ MODE=ln`                                                                                       |
+| `vim-dirs`        | Create `$DST/.vim/{undo,backup,swap}`                                                                                                        |
+| `tmux-plugins`    | Install tmux TPM into `$DST/.tmux/plugins/tpm` if missing                                                                                    |
+| `vim-plug`        | Install vim-plug into `$DST/.vim/autoload/plug.vim`                                                                                          |
+| `link-root`       | Run `.install/install.sh` for `SRC → DST` (root-level dotfiles)                                                                              |
+| `link-configs`    | Link each `$SRC/.config/<name>` → `$DST/.config/<name>` using `MODE`                                                                         |
+| `link-local`      | Link each `$SRC/.local/<name>` → `$DST/.local/<name>` using `MODE`                                                                           |
+| `link-emacs`      | Link `$SRC/.emacs.d` → `$DST/.emacs.d` using `MODE`                                                                                          |
 | `build-vim`       | Arch Linux x86_64 only: build vim in `./containers/arch-amd64`, then install binary to `/usr/bin/vim` and runtime to `/usr/local/share/vim/` |
 
 ## Usage
