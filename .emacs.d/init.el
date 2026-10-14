@@ -106,6 +106,10 @@
 ;; (ensure-package 'ansi-color :ensure)
 (ensure-package 'ansi-color)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+;; nano maps `success' to salient (purple); give compilation Emacs' stock green
+(with-eval-after-load 'compile
+  (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
+  (set-face-attribute 'compilation-info nil :inherit 'unspecified))
 
 (ensure-package 'exec-path-from-shell)
 (exec-path-from-shell-initialize)              ; copies PATH → exec-path
