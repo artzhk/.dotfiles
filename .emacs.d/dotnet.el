@@ -51,7 +51,7 @@
       "Apply resolved roslyn ACTION's :edit, then recurse into its :command."
       (let ((edit (plist-get action :edit))
             (command (plist-get action :command)))
-        (when edit (eglot--apply-workspace-edit edit this-command))
+        (when edit (eglot--apply-workspace-edit server edit this-command))
         (when command (eglot-execute server command))))
 
     (defun dotnet--roslyn-fix-all (server command)

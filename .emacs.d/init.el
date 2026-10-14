@@ -1,43 +1,47 @@
-;;; Tmp / backup files ---------------------------------------------------------
+;;; Tmp / backup files
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
 (setq auto-save-default nil)
 
-;;; Session persistence ---------------------------------------------------------
+;;; Custom
+;; Keep Custom's output out of init.el so it can't silently override setq's
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file t)
+
+;;; Nano (optional)
+;; Customised nano (font, nano.el, light/dark colors) lives in nano-custom.el.
+;; Default Emacs is the fallback: start with `emacs -no-nano' to skip it, and
+;; if it is missing or fails to load, init continues with a warning.
+(add-to-list 'command-switch-alist '("-no-nano" . ignore))
+(let ((nano-custom (expand-file-name "nano-custom.el" user-emacs-directory)))
+  (when (and (file-exists-p nano-custom)
+             (not (member "-no-nano" command-line-args)))
+    (condition-case err
+        (load nano-custom)
+      (error (display-warning
+              'nano (format "nano-custom.el failed, using default Emacs: %S"
+                            err))))))
+
+;;; Session persistence
 (save-place-mode 1)              ; reopen a file at the last point you were on
 (savehist-mode 1)                ; persist minibuffer history...
 (add-to-list 'savehist-additional-variables 'register-alist) ; ...and registers
-(desktop-save-mode 1)            ; save/restore open buffers & window layout
+(desktop-save-mode 1)            ; save/restore open buffers & window layout((
 
-;;; UI -------------------------------------------------------------------------
+;;; Editing
+(setq-default delete-selection-mode t)
+
+;;; UI
 (blink-cursor-mode 0)
 (add-to-list 'default-frame-alist '(undecorated . nil))
-(add-to-list 'custom-theme-load-path "~/.dotfiles/.emacs.d/")
-(load-theme 'the-moment)
 (setq frame-title-format '("%p - %b — Emacs"))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(tab-bar-mode -1)
-(global-display-line-numbers-mode t)
-(global-visual-line-mode -1)
-(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil t )
 (setq-default fill-column 80)
-(display-time)
-(display-battery-mode)
-;; mode line format
-(setq-default mode-line-format
-	      `("-"
-		mode-line-mule-info
-		(if (boundp project-mode-line-format) project-mode-line-format)
-		" %b "
-		which-func-format
-		" %I %p L%l %c | "
-		display-time-string
-		battery-mode-line-string
-		(vc-mode vc-mode)
-		mode-line-end-spaces))
+(setq-default display-line-numbers t)
+
+;; With nano, the status line (project, which-func, %I %p L:C, time,
+;; battery) lives in nano's header line: see nano-modeline.el and nano.el
 
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
@@ -47,9 +51,13 @@
 (global-display-fill-column-indicator-mode 1)
 (ffap-bindings)
 (goto-address-mode 1)
+(global-subword-mode 1)
+
+(setq-default next-screen-context-lines 9)
+(setq-default scroll-preserve-screen-position t)
+(setq-default delete-selection-mode t)
 
 ;; TODO: where that must go?
-
 (defun my/cp-file-path()
   (interactive)
   (kill-new (buffer-file-name)))
@@ -69,6 +77,7 @@
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
 (global-set-key (kbd "C-c e") 'revert-buffer)
 (global-set-key (kbd "C-,") 'rc/duplicate-line)
+(global-set-key (kbd "C-x k") 'kill-current-buffer) ; no prompt (from nano-bindings)
 
 (setq project-vc-extra-root-markers '(".project"))
 ;; emacs windows ---------------------------------------------------------------
@@ -88,6 +97,10 @@
       (package-refresh-contents))
     (package-install package))
   (require package))
+
+(load (expand-file-name "lsp.el" user-emacs-directory))
+(load (expand-file-name "dotnet.el" user-emacs-directory))
+(load (expand-file-name "frontend.el" user-emacs-directory))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 ;; (ensure-package 'ansi-color :ensure)
@@ -111,8 +124,6 @@
 (setq read-buffer-completion-ignore-case t)
 
 (use-package fzf
-  :bind
-  (keymap-global-set "C-c C-u" #'fzf)
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
         fzf/executable "fzf"
@@ -124,7 +135,8 @@
         fzf/position-bottom t
         fzf/window-height 15))
 
-(keymap-global-set "C-x p f" #'fzf-git-files)   ; or fzf-async-f
+(keymap-global-set "C-c C-f" #'fzf-git)   ; or fzf-async-
+(keymap-global-set "C-c u" #'fzf)
 
 ;;; Org — core settings --------------------------------------------------------
 
@@ -155,10 +167,9 @@
         ("IDEA"        . (:foreground "grey"   :slant italic))
         ("DROPPED"     . (:foreground "grey"   :strike-through t))))
 
-;; Auto-discover all .org files — no hardcoded paths, works on any machine.
-;; Custom will not override this because org-agenda-files is absent from
-;; custom-set-variables below.
-(setq org-agenda-files (directory-files-recursively "~/org-space/" "\\.org$"))
+;; Agenda file list lives in agenda-files (one path or directory per line),
+;; like project.el's projects file. C-c [ / C-c ] add/remove the current file.
+(setq org-agenda-files (expand-file-name "agenda-files" user-emacs-directory))
 (setq org-agenda-custom-commands
       '(("n" "Next actions" todo "NEXT"
          ((org-agenda-prefix-format    "  %-12:c")
@@ -177,13 +188,13 @@
 ;; No default global keys exist for these; everything else (g=recompile,
 ;; M-n/M-p=next/prev error, M-.=jump-to-error) works out of the box.
 (global-set-key (kbd "C-c c") #'compile)         ; prompt & run
-(global-set-key (kbd "C-c p") #'project-compile) ; from project root
+(global-set-key (kbd "C-c p") #'project-compile) ; from project 
 
-;;; LSP — eglot & flymake keybindings -----------------------------------------
 (ensure-package 'tree-sitter)
 (ensure-package 'tree-sitter-langs)
-(setq tree-sitter-load-path (list "/home/art/.emacs.d/elpa/tree-sitter-langs-20260729.1912/bin/"
-				  "/home/art/.tree-sitter/bin/" "/home/art/.emacs.d/tree-sitter/"))
+(setq tree-sitter-load-path
+      (list (expand-file-name "bin" (file-name-directory (locate-library "tree-sitter-langs")))
+            (expand-file-name "tree-sitter" user-emacs-directory)))
 
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
@@ -211,32 +222,8 @@
 (global-set-key (kbd "C-c C-h n") #'git-gutter:next-diff)
 (global-set-key (kbd "C-c C-h p") #'git-gutter:previous-diff)
 
-;; External stuff import
-
-(load (expand-file-name "lsp.el" user-emacs-directory))
-(load (expand-file-name "latex.el" user-emacs-directory))
-;; (load (expand-file-name "dotnet.el" user-emacs-directory))
-;; (load (expand-file-name "frontend.el" user-emacs-directory))
 
 ;;; Copilot --------------------------------------------------------------------
 (ensure-package 'copilot)
 (global-set-key (kbd "C-c C-e") #'copilot-accept-completion)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
- '(package-selected-packages
-   '(copilot dape eglot-inactive-regions evil exec-path-from-shell magit nano-theme
-	     orderless ox-mdx-deck pdf-tools tree-sitter))
- '(send-mail-function 'mailclient-send-it))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(copilot-mode 1)

@@ -44,7 +44,7 @@
   (interactive)
   (when buffer-file-name
     (save-buffer)
-    (compile (format "oxfmt %s"
+    (compile (format "npx oxfmt %s"
                      (shell-quote-argument (expand-file-name buffer-file-name))))))
 
 (defvar-keymap my/ox-mode-map

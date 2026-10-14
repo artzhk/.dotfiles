@@ -1,6 +1,6 @@
 ;;; the-moment-theme.el --- light theme, storm-sky derived -*- lexical-binding: t; -*-
 (deftheme the-moment "The Moment")
-(let ((base00 "#EDEFEA") (base01 "#C9CFD3") (base02 "#8A96A0") (base03 "#868C82")
+(let ((base00 "#FFFFFF") (base01 "#C9CFD3") (base02 "#8A96A0") (base03 "#868C82")
       (base04 "#4A5560") (base05 "#2B3A2D") (base06 "#1B2A1C") (base07 "#141F16")
       (base08 "#6B5644") (base09 "#8B7355") (base0A "#8F8568") (base0B "#5F7F3A")
       (base0C "#5A8FA6") (base0D "#4A7FA6") (base0E "#4A6FA0") (base0F "#7A6552"))
