@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; That seems to do stuff...
 ;; keeps indenting
 (dolist (hook '(csharp-mode-hook csharp-ts-mode-hook))

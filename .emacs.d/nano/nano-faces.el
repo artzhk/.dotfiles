@@ -1,4 +1,4 @@
-;;; nano-faces --- Face settings for nano-emacs
+;;; nano-faces --- Face settings for nano-emacs  -*- lexical-binding: t; -*-
 ;;; License:
 ;; ---------------------------------------------------------------------
 ;; GNU Emacs / N Λ N O - Emacs made simple

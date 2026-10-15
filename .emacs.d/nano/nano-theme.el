@@ -1,4 +1,4 @@
-;;; nano-theme --- Face settings for nano-emacs
+;;; nano-theme --- Face settings for nano-emacs  -*- lexical-binding: t; -*-
 ;;; License:
 ;; ---------------------------------------------------------------------
 ;; GNU Emacs / N Λ N O - Emacs made simple
@@ -32,7 +32,7 @@
 
 (require 'nano-faces)
 
-(defcustom nano-theme-var nil
+(defcustom nano-theme-var "dark"
   "Variable which sets the default startup theme as light or dark.
 Also allows for toggling of the themes. Is set to 'light' by
 'nano-theme-light' and 'dark' by 'nano-theme-dark'.

@@ -1,4 +1,4 @@
-;; ---------------------------------------------------------------------
+;; ---------------------------------------------------------------------  -*- lexical-binding: t; -*-
 ;; GNU Emacs / N Λ N O - Emacs made simple
 ;; Copyright (C) 2020 - N Λ N O developers
 ;;
@@ -132,11 +132,11 @@
 (setq-default indent-tabs-mode nil)
 
 ;; Tab.space equivalence
-(setq-default tab-width 4)
+(setq-default tab-width 8)
 
 ;; Size of temporary buffers
 (temp-buffer-resize-mode)
-(setq temp-buffer-max-height 8)
+(setq temp-buffer-max-height 20)
 
 ;; Minimum window height
 (setq window-min-height 1)
@@ -151,16 +151,16 @@
 ;; Unique buffer names
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse
-      uniquify-separator " • "
+      uniquify-separator " // "
       uniquify-after-kill-buffer-p t
       uniquify-ignore-buffers-re "^\\*")
 
 ;; Default shell in term
 (unless
     (or (eq system-type 'windows-nt)
-        (not (file-exists-p "/bin/zsh")))
-  (setq-default shell-file-name "/bin/zsh")
-  (setq explicit-shell-file-name "/bin/zsh"))
+        (not (file-exists-p "/bin/bash")))
+  (setq-default shell-file-name "/bin/bash")
+  (setq explicit-shell-file-name "/bin/bash"))
 
 ;; Kill term buffer when exiting
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))

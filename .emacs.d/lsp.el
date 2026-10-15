@@ -1,3 +1,7 @@
+;; -*- lexical-binding: t; -*-
+(use-package glsl-mode :ensure t)
+
+(require 'eglot)
 (with-eval-after-load 'eglot
   (when (executable-find "clangd")
     (add-to-list 'eglot-server-programs
@@ -20,7 +24,17 @@
                  '((ruby-mode ruby-ts-mode) "ruby-lsp")))
   (when (executable-find "sql-language-server")
     (add-to-list 'eglot-server-programs
-                 '(sql-mode "sql-language-server" "up" "--method" "stdio"))))
+                 '(sql-mode "sql-language-server" "up" "--method" "stdio")))
+  (when (executable-find "csharp-ls")
+    (add-to-list 'eglot-server-programs
+                 '(csharp-mode "csharp-ls")))
+  (when (executable-find "dart-lsp")
+    (add-to-list 'eglot-server-programs
+                 '(dart-mode "~/Programming/thirdparty/dart language-server")))
+   (when (executable-find "glsl-lsp")
+    (add-to-list 'eglot-server-programs
+                 '(glsl-mode "glsl-lsp"))))
+
 
 (dolist (hook '(c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook
                 rust-mode-hook rust-ts-mode-hook
@@ -29,38 +43,5 @@
                 typescript-mode-hook typescript-ts-mode-hook
                 js-mode-hook js-ts-mode-hook tsx-ts-mode-hook
                 ruby-mode-hook ruby-ts-mode-hook
-                csharp-mode-hook))
+                csharp-mode-hook glsl-mode-hook dart-mode))
   (add-hook hook #'eglot-ensure))
-
-(defun my/go-format-buffer ()
-  (interactive)
-  (when (eq major-mode 'go-ts-mode)
-    (let ((out (generate-new-buffer " *golines*")))
-      (unwind-protect
-          (when (zerop (call-process-region nil nil "golines" nil out nil
-                                            "-m" "80" "--tab-len=8"))
-            (replace-buffer-contents out))
-	(kill-buffer out)))))
-
-(with-eval-after-load 'go-ts-mode
-  (keymap-set go-ts-mode-map "C-c f" #'my/go-format-buffer))
-
-;; Flymake: plain straight underline under the erroneous range instead of
-;; the wavy one, and no "!!"/"!" characters in the margin.
-;; To keep margin markers with other chars instead, set
-;; `flymake-indicator-type' to 'margins and e.g.:
-;;   (setq flymake-margin-indicators-string
-;;         '((error "●" compilation-error)
-;;           (warning "●" compilation-warning)
-;;           (note "·" compilation-info)))
-(setq flymake-indicator-type nil)
-(with-eval-after-load 'flymake
-  (set-face-attribute 'flymake-error nil
-                      :inherit 'unspecified
-                      :underline '(:style line :color "#f43841"))
-  (set-face-attribute 'flymake-warning nil
-                      :inherit 'unspecified
-                      :underline '(:style line :color "#cc8c3c"))
-  (set-face-attribute 'flymake-note nil
-                      :inherit 'unspecified
-                      :underline '(:style line :color "#73c936")))

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; TODO: I'm not sure if it does something though...
 (setq gc-cons-threshold (* 64 1024 1024)       ; tune by doubling, see note
       read-process-output-max (* 4 1024 1024)  ; bigger pipe reads (LSP, rg)
@@ -14,4 +16,3 @@
 (add-to-list 'package-archives 
     '("STABLE-MELPA" .
       "https://stable.melpa.org/packages/"))
-(package-initialize)

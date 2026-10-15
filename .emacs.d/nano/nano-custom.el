@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; Nano -----------------------------------------------------------------------
 ;; Font must be set before nano.el loads: every theme refresh (`nano-faces')
 ;; re-applies `nano-font-family-monospaced' (default "Roboto Mono", not
@@ -5,13 +6,9 @@
 (setq nano-font-family-monospaced
       (or (and (display-graphic-p)
                (seq-find (lambda (family) (find-font (font-spec :family family)))
-                         '("IosevkaTerm Nerd Font Mono" "IosevkaTerm Nerd Font Mono")))
-          "IosevkaTerm Nerd Font Mono"))
-(setq nano-font-size 20)
-
-;; Load via the real (dotfiles) path: nano.el adds its own directory to
-;; `load-path', and ~/.emacs.d itself there triggers a startup warning.
-(load (file-truename (expand-file-name "nano.el" user-emacs-directory)))
+                         '("MononokiNerdFont Mono 20" "MononokiNerdFont Mono")))
+          "MononokiNerdFont Mono"))
+(setq nano-font-size 25)
 
 ;; Light: nano background, region and header line + syntax colors
 ;; (strings, functions, keywords...) from the-moment theme.
@@ -79,6 +76,5 @@
 ;; nano.el already applied its theme: redo it with the palettes above
 (when (equal nano-theme-var "dark") (my/gruber-darker-palette))
 (nano-refresh-theme)
-
 
 (provide 'nano-custom)

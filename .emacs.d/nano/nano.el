@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; ---------------------------------------------------------------------
 ;; GNU Emacs / N Λ N O - Emacs made simple
 ;; Copyright (C) 2020 - N Λ N O developers
@@ -34,29 +36,17 @@
 (add-to-list 'command-switch-alist '("-compact" . (lambda (args))))
 
 
-;; Customize support for 'emacs -q' (Optional)
-;; You can enable customizations by creating the nano-custom.el file
-;; with e.g. `touch nano-custom.el` in the folder containing this file.
-(let* ((this-file  (or load-file-name (buffer-file-name)))
-       (this-dir  (file-name-directory this-file))
-       (custom-path  (concat this-dir "nano-custom.el")))
-  (when (and (eq nil user-init-file)
-             (eq nil custom-file)
-             (file-exists-p custom-path))
-    (setq user-init-file this-file)
-    (setq custom-file custom-path)
-    (load custom-file)))
-
 ;; Theme
 (require 'nano-faces)
 (require 'nano-theme)
-(require 'nano-theme-dark)
 (require 'nano-theme-light)
+(require 'nano-theme-dark)
 
 (cond
  ((member "-default" command-line-args) t)
  ((member "-dark" command-line-args) (nano-theme-set-dark))
- (t (nano-theme-set-light)))
+ (t (nano-theme-set-dark)))
+
 (call-interactively 'nano-refresh-theme)
 
 ;; Nano default settings (optional)
@@ -68,29 +58,13 @@
 ;; Nano header & mode lines (optional)
 (require 'nano-modeline)
 
-;; User status line items (ported from ~/.dotfiles/.emacs.d/init.el)
-(require 'project)
-(display-time-mode 1)
-(display-battery-mode 1)
-(which-function-mode 1)
-
 ;; Experimental stuff
-(require 'nano-command)
 (when (locate-library "ts")      ; nano-agenda needs the ts package
   (require 'nano-agenda))
 
 ;; Compact layout (need to be loaded after nano-modeline)
 (when (member "-compact" command-line-args)
   (require 'nano-compact))
-
-;; Nano counsel configuration (optional)
-;; Needs "counsel" package to be installed (M-x: package-install)
-;; (require 'nano-counsel)
-
-;; Welcome message (optional)
-(let ((inhibit-message t))
-  (message "Welcome to GNU Emacs / N Λ N O edition")
-  (message (format "Initialization time: %s" (emacs-init-time))))
 
 ;; Splash (optional)
 (unless (member "-no-splash" command-line-args)
