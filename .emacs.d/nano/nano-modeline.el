@@ -86,8 +86,8 @@
   "Compose a string with provided information"
   (let* ((char-width    (window-font-width nil 'header-line))
          (window        (get-buffer-window (current-buffer)))
-         (space-up       +0.15)
-         (space-down     -0.20)
+         (space-up       +0.25)
+         (space-down     -0.25)
 	 (prefix (cond ((string= status "RO")
 			        (propertize (if (window-dedicated-p)" -- " " RO ")
                                 'face 'nano-face-header-popout))

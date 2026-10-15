@@ -35,7 +35,6 @@
 (add-to-list 'command-switch-alist '("-no-help" . (lambda (args))))
 (add-to-list 'command-switch-alist '("-compact" . (lambda (args))))
 
-
 ;; Theme
 (require 'nano-faces)
 (require 'nano-theme)
@@ -69,9 +68,5 @@
 ;; Splash (optional)
 (unless (member "-no-splash" command-line-args)
   (require 'nano-splash))
-
-;; Help (optional)
-(unless (member "-no-help" command-line-args)
-  (require 'nano-help))
 
 (provide 'nano)

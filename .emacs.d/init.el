@@ -22,8 +22,6 @@
 (savehist-mode 1)
 ;; ...and registers
 (add-to-list 'savehist-additional-variables 'register-alist)
-;; save/restore open buffers & window layout((
-(desktop-save-mode 1)
 
 ;; User status line items (ported from ~/.dotfiles/.emacs.d/init.el)
 (require 'project)

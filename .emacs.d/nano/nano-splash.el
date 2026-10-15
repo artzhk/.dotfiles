@@ -150,5 +150,3 @@
 
 
 (provide 'nano-splash)
-
-
