@@ -23,10 +23,14 @@
                             err))))))
 
 ;;; Session persistence
-(save-place-mode 1)              ; reopen a file at the last point you were on
-(savehist-mode 1)                ; persist minibuffer history...
-(add-to-list 'savehist-additional-variables 'register-alist) ; ...and registers
-(desktop-save-mode 1)            ; save/restore open buffers & window layout((
+;; reopen a file at the last point you were 
+(save-place-mode 1)
+;; persist minibuffer history...
+(savehist-mode 1)
+;; ...and registers
+(add-to-list 'savehist-additional-variables 'register-alist)
+;; save/restore open buffers & window layout((
+(desktop-save-mode 1)
 
 ;;; Editing
 (setq-default delete-selection-mode t)
@@ -34,7 +38,6 @@
 ;;; UI
 (blink-cursor-mode 0)
 (add-to-list 'default-frame-alist '(undecorated . nil))
-(setq frame-title-format '("%p - %b — Emacs"))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
 (setq-default fill-column 80)
@@ -45,8 +48,6 @@
 
 (setq-default truncate-lines nil)   ; wrap everywhere by default
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
-(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
-(add-hook 'term-mode-hook (lambda () (setq truncate-lines -1)))
 
 (global-display-fill-column-indicator-mode 1)
 (ffap-bindings)
@@ -74,50 +75,22 @@
     (move-beginning-of-line 1)
     (forward-char column)))
 
+;; kill-ring file you know...
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
 (global-set-key (kbd "C-c e") 'revert-buffer)
 (global-set-key (kbd "C-,") 'rc/duplicate-line)
-(global-set-key (kbd "C-x k") 'kill-current-buffer) ; no prompt (from nano-bindings)
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
 
+;; to setup the project root where I need it...
 (setq project-vc-extra-root-markers '(".project"))
-;; emacs windows ---------------------------------------------------------------
 
+;; emacs windows ---------------------------------------------------------------
 (global-set-key (kbd "C-c w w") 'delete-other-windows)
 (global-set-key (kbd "C-c w n") 'windmove-down)
 (global-set-key (kbd "C-c w p") 'windmove-up)
 (global-set-key (kbd "C-c w f") 'windmove-right)
 (global-set-key (kbd "C-c w b") 'windmove-left)
 
-;;; Packages -------------------------------------------------------------------
-(defun ensure-package (package)
-  (unless (package-installed-p package)
-    (unless package-archive-contents
-      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-      (package-initialize)
-      (package-refresh-contents))
-    (package-install package))
-  (require package))
-
-(load (expand-file-name "lsp.el" user-emacs-directory))
-(load (expand-file-name "dotnet.el" user-emacs-directory))
-(load (expand-file-name "frontend.el" user-emacs-directory))
-
-;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
-;; (ensure-package 'ansi-color :ensure)
-(ensure-package 'ansi-color)
-(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
-;; nano maps `success' to salient (purple); give compilation Emacs' stock green
-(with-eval-after-load 'compile
-  (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
-  (set-face-attribute 'compilation-info nil :inherit 'unspecified))
-
-(ensure-package 'exec-path-from-shell)
-(exec-path-from-shell-initialize)              ; copies PATH → exec-path
-(exec-path-from-shell-copy-env "SSH_AGENT_PID")
-(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-
-;; Vanilla completion, everywhere (M-x, buffer switching, etc.): built-in
-;; `flex' style = closest/subsequence match, case-insensitive. No package.
 (ido-mode 1)
 (fido-vertical-mode 1)
 (setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
@@ -126,6 +99,45 @@
 (setq icomplete-in-buffer t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
+
+;;; Packages -------------------------------------------------------------------
+;; (defun ensure-package (package)
+;;   (unless (package-installed-p package)
+;;     (unless package-archive-contents
+;;       (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;;       (package-initialize)
+;;       (package-refresh-contents))
+;;     (package-install package))
+;;   (require package))
+
+(load (expand-file-name "lsp.el" user-emacs-directory))
+(load (expand-file-name "dotnet.el" user-emacs-directory))
+(load (expand-file-name "frontend.el" user-emacs-directory))
+
+;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
+;; (ensure-package 'ansi-color :ensure)
+;; (ensure-package 'ansi-color)
+(use-package 'ansi-color
+  :hook (compilation-filter . ansi-color-compilation-filter)
+  :require t)
+;; (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+;; nano maps `success' to salient (purple); give compilation Emacs' stock green
+(with-eval-after-load 'compile
+  (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
+  (set-face-attribute 'compilation-info nil :inherit 'unspecified))
+
+(use-package 'exec-path-from-shell
+  :config ((exec-path-from-shell-initialize)
+             (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+             (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+  :ensure t)
+
+;; (ensure-package 'exec-path-from-shell)
+
+;; (exec-path-from-shell-initialize)              ; copies PATH → exec-path
+;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+
 
 (use-package fzf
   :config
