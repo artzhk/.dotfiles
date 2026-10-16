@@ -1,4 +1,10 @@
 ;; -*- lexical-binding: t; -*-
+;; Built-in eglot (1.17) lacks pull diagnostics, which Roslyn needs (dotnet.el)
+;; `:ensure' counts the built-in as installed, so require a minimum version
+(setq package-install-upgrade-built-in t)
+(unless (package-installed-p 'eglot '(1 20))
+  (package-refresh-contents)
+  (package-install 'eglot))
 (use-package glsl-mode :ensure t)
 
 (require 'eglot)
@@ -25,9 +31,6 @@
   (when (executable-find "sql-language-server")
     (add-to-list 'eglot-server-programs
                  '(sql-mode "sql-language-server" "up" "--method" "stdio")))
-  (when (executable-find "csharp-ls")
-    (add-to-list 'eglot-server-programs
-                 '(csharp-mode "csharp-ls")))
   (when (executable-find "dart-lsp")
     (add-to-list 'eglot-server-programs
                  '(dart-mode "~/Programming/thirdparty/dart language-server")))
@@ -43,5 +46,5 @@
                 typescript-mode-hook typescript-ts-mode-hook
                 js-mode-hook js-ts-mode-hook tsx-ts-mode-hook
                 ruby-mode-hook ruby-ts-mode-hook
-                csharp-mode-hook glsl-mode-hook dart-mode))
+                glsl-mode-hook dart-mode))
   (add-hook hook #'eglot-ensure))

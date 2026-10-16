@@ -7,13 +7,121 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t)
 
-
 (defconst my/config-dir
   (file-name-directory
    (file-truename (or load-file-name buffer-file-name))))
 
-(load (expand-file-name "nano/nano.el" my/config-dir))
-(load (expand-file-name "nano/nano-custom.el" my/config-dir))
+;;; Shell PATH -----------------------------------------------------------------
+;; Emacs started from i3/the daemon only gets the bare system PATH; import the
+;; login shell's before lsp.el/dotnet.el probe for servers with `executable-find'
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  ;; one shell spawn for everything (~1.5s each)
+  (dolist (var '("SSH_AGENT_PID" "SSH_AUTH_SOCK"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
+;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
+;; Startup
+(setq inhibit-startup-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t
+      initial-scratch-message nil
+      initial-buffer-choice nil
+      initial-major-mode 'text-mode)
+(setq-default major-mode 'text-mode)
+
+;; Frame / dialogs
+(setq frame-title-format nil
+      use-file-dialog nil
+      use-dialog-box nil)
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(tooltip-mode 0)
+
+;; Allow splitting the current frame for popup buffers (e.g. xref);
+;; with nil, Emacs falls back to creating a new frame instead
+(setq pop-up-windows t
+      pop-up-frames nil)
+
+(setq indicate-empty-lines nil
+      cursor-in-non-selected-windows nil
+      font-lock-maximum-decoration nil
+      font-lock-maximum-size nil
+      confirm-nonexistent-file-or-buffer nil
+      org-return-follows-link t)
+
+;; Mouse active in terminal
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1)
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
+;; y/n for answering yes/no questions
+(setq use-short-answers t)
+
+;; No tabs, tab.space equivalence
+(setq-default indent-tabs-mode nil
+              tab-width 8)
+
+;; Temporary buffers & windows
+(temp-buffer-resize-mode)
+(setq temp-buffer-max-height 20
+      window-min-height 1)
+
+;; Buffer encoding
+(prefer-coding-system       'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment   'utf-8)
+
+;; ;; Unique buffer names
+;; (require 'uniquify)
+;; (setq uniquify-buffer-name-style 'reverse
+;;       uniquify-separator " // "
+;;       uniquify-after-kill-buffer-p t
+;;       uniquify-ignore-buffers-re "^\\*")
+
+;; ;; Default shell in term
+;; (when (and (not (eq system-type 'windows-nt))
+;;            (file-exists-p "/bin/bash"))
+;;   (setq-default shell-file-name "/bin/bash")
+;;   (setq explicit-shell-file-name "/bin/bash"))
+
+;; ;; Kill term buffer when exiting
+;; (defun my/term-sentinel-kill-buffer (orig proc msg)
+;;   (if (memq (process-status proc) '(signal exit))
+;;       (let ((buffer (process-buffer proc)))
+;;         (funcall orig proc msg)
+;;         (kill-buffer buffer))
+;;     (funcall orig proc msg)))
+;; (advice-add 'term-sentinel :around #'my/term-sentinel-kill-buffer)
+
+;;; Nano — comment these two lines to get the regular UI ----------------------
+;; (load (expand-file-name "nano/nano.el" my/config-dir))
+;; (load (expand-file-name "nano/nano-custom.el" my/config-dir))
+
+;;; Regular UI (only when nano is not loaded) ---------------------------------
+(defvar my/theme-light 'the-moment)
+(defvar my/theme-dark 'gruber-darker)
+
+(defun my/toggle-theme ()
+  "Switch between `my/theme-dark' and `my/theme-light'."
+  (interactive)
+  (let ((next (if (custom-theme-enabled-p my/theme-dark)
+                  my/theme-light
+                my/theme-dark)))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme next t)))
+
+(unless (featurep 'nano)
+  (use-package gruber-darker-theme :ensure t :defer t)
+  (add-to-list 'custom-theme-load-path my/config-dir)
+  (set-face-attribute 'default nil :family "MononokiNerdFont Mono" :height 200)
+  (load-theme my/theme-light t)
+  (global-set-key (kbd "C-c t") #'my/toggle-theme))
 
 ;;; Session persistence
 ;; reopen a file at the last point you were 
@@ -64,7 +172,6 @@
 (setq-default scroll-preserve-screen-position t)
 (setq-default delete-selection-mode t)
 
-;; TODO: where that must go?
 (defun my/cp-file-path()
   (interactive)
   (kill-new (buffer-file-name)))
@@ -121,6 +228,8 @@
 
 
 (load (expand-file-name "lsp.el" my/config-dir))
+(load (expand-file-name "frontend.el" my/config-dir))
+(load (expand-file-name "dotnet.el" my/config-dir))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 ;; (ensure-package 'ansi-color :ensure)
@@ -134,12 +243,6 @@
 (with-eval-after-load 'compile
   (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
   (set-face-attribute 'compilation-info nil :inherit 'unspecified))
-
-(use-package exec-path-from-shell
-  :config '((exec-path-from-shell-initialize)
-            (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-            (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
-  :ensure t)
 
 
 (use-package fzf
@@ -199,7 +302,7 @@
   :ensure t)
 
 ;;; Org — TODO keywords & faces ------------------------------------------------
-(load (expand-file-name "latex.el" my/config-dir))
+;; (load (expand-file-name "latex.el" my/config-dir))
 
 (use-package tree-sitter :ensure t)
 ;; Would be code to use it in dotfiles, but I have windows :clown:

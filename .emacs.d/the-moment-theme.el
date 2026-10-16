@@ -9,7 +9,7 @@
    `(default ((t (:foreground ,base05 :background ,base00))))
    `(cursor ((t (:background ,base05))))
    `(fringe ((t (:background ,base01))))
-   `(region ((t (:background ,base02))))
+   `(region ((t (:background "#ECEFF1"))))   ; nano light: Blue Grey / L50
    `(mode-line ((t (:foreground ,base00 :background ,base04))))
    `(mode-line-inactive ((t (:foreground ,base04 :background ,base01))))
    `(font-lock-comment-face ((t (:foreground ,base03 :italic t))))

@@ -38,8 +38,8 @@
 ;; Theme
 (require 'nano-faces)
 (require 'nano-theme)
-(require 'nano-theme-light)
 (require 'nano-theme-dark)
+(require 'nano-theme-light)
 
 (cond
  ((member "-default" command-line-args) t)
@@ -48,8 +48,6 @@
 
 (call-interactively 'nano-refresh-theme)
 
-;; Nano default settings (optional)
-(require 'nano-defaults)
 
 ;; Nano session saving (optional)
 (require 'nano-session)

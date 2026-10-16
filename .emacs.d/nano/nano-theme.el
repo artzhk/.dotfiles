@@ -32,7 +32,7 @@
 
 (require 'nano-faces)
 
-(defcustom nano-theme-var "dark"
+(defcustom nano-theme-var "light"
   "Variable which sets the default startup theme as light or dark.
 Also allows for toggling of the themes. Is set to 'light' by
 'nano-theme-light' and 'dark' by 'nano-theme-dark'.

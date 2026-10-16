@@ -7,9 +7,7 @@
  '(custom-safe-themes
    '("d2bab0e613f8321b0b8bc06a5bcd8d98f6578590982371674d880079b72f1b47"
      "f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
- '(package-selected-packages
-   '(copilot dape eglot-inactive-regions evil exec-path-from-shell fzf go-mode
-             magit nano-theme orderless ox-mdx-deck pdf-tools tree-sitter))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((fzf-async :url "https://github.com/jojojames/fzf-async")
      (fzf-native :url "https://github.com/jojojames/fzf-native")))
