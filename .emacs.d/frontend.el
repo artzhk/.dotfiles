@@ -1,4 +1,4 @@
-;;; frontend.el --- TypeScript/JS: tree-sitter grammar + dual-LSP 
+;;; frontend.el --- TypeScript/JS: tree-sitter grammar + dual-LSP  -*- lexical-binding: t; -*- 
 
 ;; Remove if nothing breakes
 ;; (when (treesit-available-p)

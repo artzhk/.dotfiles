@@ -329,4 +329,6 @@
   :bind-keymap ("C-c c" . compilation-history-map)
   :config
   ;; Enable automatic tracking of all compilations
-  (compilation-history-mode 1))
+  (compilation-history-mode 1)
+  (iswitchb-mode 1)
+  (add-to-list 'iswitchb-buffer-ignore "*compilation-history"))
