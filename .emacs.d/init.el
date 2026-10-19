@@ -11,17 +11,6 @@
   (file-name-directory
    (file-truename (or load-file-name buffer-file-name))))
 
-;;; Shell PATH -----------------------------------------------------------------
-;; Emacs started from i3/the daemon only gets the bare system PATH; import the
-;; login shell's before lsp.el/dotnet.el probe for servers with `executable-find'
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  ;; one shell spawn for everything (~1.5s each)
-  (dolist (var '("SSH_AGENT_PID" "SSH_AUTH_SOCK"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))
-
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
 ;; Startup
 (setq inhibit-startup-screen t
@@ -172,6 +161,8 @@
 (setq-default scroll-preserve-screen-position t)
 (setq-default delete-selection-mode t)
 
+(setq-default compilation-scroll-output t)
+
 (defun my/cp-file-path()
   (interactive)
   (kill-new (buffer-file-name)))
@@ -207,7 +198,7 @@
 
 ;; Buffer
 (keymap-global-set "C-x C-b" #'ibuffer)
-(global-set-key (kbd "C-c c") #'compile)         
+(global-set-key (kbd "C-c o") #'compile)         
 (global-set-key (kbd "C-c p") #'project-compile)  
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
@@ -230,6 +221,7 @@
 (load (expand-file-name "lsp.el" my/config-dir))
 (load (expand-file-name "frontend.el" my/config-dir))
 (load (expand-file-name "dotnet.el" my/config-dir))
+(load (expand-file-name "pbd.el" my/config-dir))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 ;; (ensure-package 'ansi-color :ensure)
@@ -301,7 +293,8 @@
   :hook (org-babel-after-execute-hook . org-display-inline-images)
   :ensure t)
 
-;;; Org — TODO keywords & faces ------------------------------------------------
+
+;;; Org — TODO keywords & faces
 ;; (load (expand-file-name "latex.el" my/config-dir))
 
 (use-package tree-sitter :ensure t)
@@ -314,7 +307,7 @@
   :ensure t)
 
 
-;;; Magit ----------------------------------------------------------------------
+;;; Magit
 (use-package magit
   :ensure t)
 (use-package git-gutter
@@ -325,3 +318,15 @@
   :ensure t)
 (use-package git-gutter-fringe
   :ensure t)
+
+;; Elpaca (recommended)
+(use-package compilation-history
+  :ensure t
+  :vc (:url "https://github.com/djgoku/compilation-history" :rev :newest)
+  :after compile
+  ;; Bind C-c c as the prefix for compilation-history commands
+  ;; C-c c c → compile, C-c c v → view history
+  :bind-keymap ("C-c c" . compilation-history-map)
+  :config
+  ;; Enable automatic tracking of all compilations
+  (compilation-history-mode 1))
