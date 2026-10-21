@@ -20,8 +20,12 @@
   :preface
   (defun pbd-root ()
     "Repo root (per worktree), or nil outside the PBD repo."
-    (locate-dominating-file default-directory "PBD.Core.slnx"))
+    (locate-dominating-file default-directory "SLNX"))
 
+  (defun pbd--front-root()
+    (expand-file-name "EXAMPLE" (pbd-root)))
+
+  
   (defun pbd--pick (prompt glob)
     (completing-read prompt (file-expand-wildcards glob) nil t))
 
@@ -49,13 +53,16 @@
                  ("%pbd-flags" . pbd--run-flags)))
     (add-to-list 'multi-compile-template tpl))
 
-  (add-to-list 'multi-compile-alist
-               `((pbd-root)
+  (setq multi-compile-alist
+               `(((pbd-root)
                  . (,(pbd--cmd "test"           "dotnet test --project %pbd-test %pbd-filter")
                     ,(pbd--cmd "test solution"  "dotnet test")
                     ,(pbd--cmd "build"          "dotnet build %pbd-src")
                     ,(pbd--cmd "build solution" "dotnet build")
-                    ,(pbd--cmd "run"            "dotnet run --project %pbd-src")))))
+                    ,(pbd--cmd "run"            "dotnet run --project %pbd-src")))
+                ((pbd--front-root)
+                 . (,(list "front-build" "bun run build" '(pbd--front-root)))))))
+
 
 (global-set-key (kbd "C-c c m") #'multi-compile-run)
 

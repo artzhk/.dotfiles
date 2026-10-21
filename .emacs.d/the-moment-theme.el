@@ -1,25 +1,26 @@
 ;;; the-moment-theme.el --- light theme, storm-sky derived -*- lexical-binding: t; -*-
 (deftheme the-moment "The Moment")
-(let ((base00 "#FFFFFF") (base01 "#C9CFD3") (base02 "#8A96A0") (base03 "#868C82")
-      (base04 "#4A5560") (base05 "#2B3A2D") (base06 "#1B2A1C") (base07 "#141F16")
-      (base08 "#6B5644") (base09 "#8B7355") (base0A "#8F8568") (base0B "#5F7F3A")
-      (base0C "#5A8FA6") (base0D "#4A7FA6") (base0E "#4A6FA0") (base0F "#7A6552"))
+(unless (featurep 'palettes)
+  (load (expand-file-name "palettes.el"
+                          (file-name-directory (or load-file-name buffer-file-name)))
+        nil t))
+(let-alist my/palette-the-moment
   (custom-theme-set-faces
    'the-moment
-   `(default ((t (:foreground ,base05 :background ,base00))))
-   `(cursor ((t (:background ,base05))))
-   `(fringe ((t (:background ,base01))))
-   `(region ((t (:background "#ECEFF1"))))   ; nano light: Blue Grey / L50
-   `(mode-line ((t (:foreground ,base00 :background ,base04))))
-   `(mode-line-inactive ((t (:foreground ,base04 :background ,base01))))
-   `(font-lock-comment-face ((t (:foreground ,base03 :italic t))))
-   `(font-lock-string-face ((t (:foreground ,base0B))))
-   `(font-lock-function-name-face ((t (:foreground ,base0D))))
-   `(font-lock-keyword-face ((t (:foreground ,base0E))))
-   `(font-lock-constant-face ((t (:foreground ,base09))))
-   `(font-lock-type-face ((t (:foreground ,base0A))))
-   `(font-lock-variable-name-face ((t (:foreground ,base05))))
-   `(font-lock-builtin-face ((t (:foreground ,base0C))))
-   `(font-lock-warning-face ((t (:foreground ,base08 :bold t))))))
+   `(default ((t (:foreground ,.fg :background ,.bg))))
+   `(cursor ((t (:background ,.fg))))
+   `(fringe ((t (:background ,.bg+2))))
+   `(region ((t (:background ,.bg+1))))   ; nano light: Blue Grey / L50
+   `(mode-line ((t (:foreground ,.bg :background ,.bg+4))))
+   `(mode-line-inactive ((t (:foreground ,.bg+4 :background ,.bg+2))))
+   `(font-lock-comment-face ((t (:foreground ,.quartz :italic t))))
+   `(font-lock-string-face ((t (:foreground ,.green))))
+   `(font-lock-function-name-face ((t (:foreground ,.niagara))))
+   `(font-lock-keyword-face ((t (:foreground ,.wisteria))))
+   `(font-lock-constant-face ((t (:foreground ,.brown))))
+   `(font-lock-type-face ((t (:foreground ,.yellow))))
+   `(font-lock-variable-name-face ((t (:foreground ,.fg))))
+   `(font-lock-builtin-face ((t (:foreground ,.cyan))))
+   `(font-lock-warning-face ((t (:foreground ,.red-1 :bold t))))))
 (provide-theme 'the-moment)
 ;;; the-moment.el ends here

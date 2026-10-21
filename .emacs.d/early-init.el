@@ -10,9 +10,11 @@
 
 (require 'package)
 ;; Any add to list for package-archives (to add marmalade or melpa) goes here
-(add-to-list 'package-archives 
-    '("MELPA" .
-      "https://melpa.org/packages/"))
-(add-to-list 'package-archives 
-    '("STABLE-MELPA" .
-      "https://stable.melpa.org/packages/"))
+(setq package-archives 
+      '(("MELPA" .
+         "https://melpa.org/packages/")
+        ("STABLE-MELPA" .
+         "https://stable.melpa.org/packages/")
+        ("ELPA-GNU" .
+         "https://stable.melpa.org/packages/")))
+

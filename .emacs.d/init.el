@@ -93,6 +93,7 @@
 ;; (load (expand-file-name "nano/nano-custom.el" my/config-dir))
 
 ;;; Regular UI (only when nano is not loaded) ---------------------------------
+(load (expand-file-name "palettes.el" my/config-dir) nil t)
 (defvar my/theme-light 'the-moment)
 (defvar my/theme-dark 'gruber-darker)
 
@@ -198,7 +199,7 @@
 
 ;; Buffer
 (keymap-global-set "C-x C-b" #'ibuffer)
-(global-set-key (kbd "C-c o") #'compile)         
+(global-set-key (kbd "C-c y") #'compile)         
 (global-set-key (kbd "C-c p") #'project-compile)  
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
@@ -256,7 +257,7 @@
 ;;; Org — core settings --------------------------------------------------------
 
 (use-package org
-  :config '((global-set-key (kbd "C-c o l") #'org-store-link)
+  :config (global-set-key (kbd "C-c o l") #'org-store-link)
             (global-set-key (kbd "C-c o a") #'org-agenda)
             (global-set-key (kbd "C-c o c") #'org-capture)
             (setq org-startup-indented           t
@@ -288,8 +289,6 @@
                      ((org-agenda-prefix-format "  %-12:c ")))
                     ("i" "Ideas backlog" todo "IDEA"
                      ((org-agenda-prefix-format "  %-12:c")))))
-
-            )
   :hook (org-babel-after-execute-hook . org-display-inline-images)
   :ensure t)
 
@@ -310,12 +309,27 @@
 ;;; Magit
 (use-package magit
   :ensure t)
+
 (use-package git-gutter
-  :config '((global-git-gutter-mode t)
-            (global-set-key (kbd "C-c C-h h") #'git-gutter:popup-diff)
-            (global-set-key (kbd "C-c C-h n") #'git-gutter:next-hunk)
-            (global-set-key (kbd "C-c C-h p") #'git-gutter:previous-hunk))
+  :config
+  (global-git-gutter-mode t)
+  (global-set-key (kbd "C-c C-h h") #'git-gutter:popup-diff)
+  (global-set-key (kbd "C-c C-h n") #'git-gutter:next-hunk)
+  (global-set-key (kbd "C-c C-h p") #'git-gutter:previous-hunk)
+  (defun my/git-gutter-apply-colors (&rest _)
+    "Color git-gutter faces from the active theme's palette."
+    (pcase-dolist (`(,kind . ,color) '((modified . niagara)
+                                       (added    . green)
+                                       (deleted  . red)))
+      (when-let ((c (my/color color)))
+        (dolist (prefix '("git-gutter:" "git-gutter-fr:"))
+          (let ((face (intern (format "%s%s" prefix kind))))
+            (when (facep face)
+              (set-face-attribute face nil :foreground c :background c)))))))
+  (my/git-gutter-apply-colors)
+  (add-hook 'enable-theme-functions #'my/git-gutter-apply-colors)
   :ensure t)
+
 (use-package git-gutter-fringe
   :ensure t)
 
@@ -330,5 +344,14 @@
   :config
   ;; Enable automatic tracking of all compilations
   (compilation-history-mode 1)
+  ;; TODO: that stuff is deprecated(unless you dont update), but I need the way to filter my buffers
   (iswitchb-mode 1)
-  (add-to-list 'iswitchb-buffer-ignore "*compilation-history"))
+  (setq compilation-history-view-split-direction 'verical)
+  (setq iswitchb-buffer-ignore '("*")))
+
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (global-set-key (kbd "C->") #'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-?") #'mc/mark-all-like-this))
