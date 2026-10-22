@@ -129,9 +129,6 @@
 (display-battery-mode 1)
 (which-function-mode 1)
 
-;;; Editing
-(setq-default delete-selection-mode t)
-
 ;;; UI
 (blink-cursor-mode 0)
 (add-to-list 'default-frame-alist '(undecorated . nil))
@@ -141,8 +138,11 @@
 (setq-default fill-column 80)
 (setq-default display-line-numbers t)
 
+(ffap-bindings)
 (ido-mode 1)
 (fido-vertical-mode 1)
+(setq ido-use-filename-at-point 'guess   ; use ffap's guessing for the path at point
+      ido-use-url-at-point t)            ; also open URLs at point
 (setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
 (setq completion-styles '(basic substring))
 (setq completion-ignore-case t)
@@ -154,19 +154,24 @@
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
 
 (global-display-fill-column-indicator-mode 1)
-(ffap-bindings)
+
 (goto-address-mode 1)
 (global-subword-mode 1)
 
 (setq-default next-screen-context-lines 9)
 (setq-default scroll-preserve-screen-position t)
 (setq-default delete-selection-mode t)
+(setq delete-selection-mode t)
 
 (setq-default compilation-scroll-output t)
 
 (defun my/cp-file-path()
   (interactive)
   (kill-new (buffer-file-name)))
+
+(defun my/cp-file-path-loc()
+  (interactive)
+  (kill-new (format "%s:%d" buffer-file-name (line-number-at-pos nil t))))
 
 ;; Thanks rexim
 (defun rc/duplicate-line ()
@@ -185,6 +190,7 @@
 
 ;; kill-ring file you know...
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
+(global-set-key (kbd "C-c k l") 'my/cp-file-path-loc)
 (global-set-key (kbd "C-c e") 'revert-buffer)
 (global-set-key (kbd "C-,") 'rc/duplicate-line)
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
@@ -210,9 +216,11 @@
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
 (global-set-key (kbd "C-c d") #'eglot-find-typeDefinition)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
-(setq eglot-inlay-hints-mode 0)
 (global-set-key (kbd "C-c H") #'eglot-inlay-hints-mode)
 
+(add-hook 'eglot-managed-mode-hook
+          (lambda () (eglot-inlay-hints-mode -1)))
+       
 (require 'flymake)
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
@@ -306,8 +314,16 @@
   :ensure t)
 
 
+
 ;;; Magit
 (use-package magit
+  ;; TODO: figure out it one day
+  :bind (:map magit-file-section-map
+              ("C-<return>" . magit-diff-visit-prefer-index)
+              :map magit-hunk-section-map
+              ("C-<return>" . magit-diff-visit-prefer-index))
+  :config
+  (setq magit-diff-visit-prefer-worktree t)
   :ensure t)
 
 (use-package git-gutter
