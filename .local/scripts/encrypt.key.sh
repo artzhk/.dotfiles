@@ -13,31 +13,49 @@ function yes_or_no {
         esac
     done
 }
+# column -t -s $'\t' - format
+usage() {
+  cat <<EOF
+Usage: encrypt.key.sh [-h] [-v] CODE SECRET [OPTIONS]
+
+Positional:
+
+SOURCE        input path (required)
+DEST          output path (required)
+
+Options:
+-d DIRECTORY  dir to store auth keys, default is "$HOME/.2fa"
+-u ID         GnuPG user id        
+-k ID         GnuPG key id
+-h            show help
+-v            verbose
+
+EOF
+  exit 0;
+}
 
 # Path to gpg2 binary
 _gpg2="/usr/bin/gpg2"
 
-# TODO: keep going
-# Options first (POSIX getopts), stops at first non-option or "--"
-# while getopts ":hv" opt; do
-#     d)  ;;         # directory to store 
-#   case $opt in
-#     u) verbose=1 ;;             # uid - email
-#     k) verbose=1 ;;             # key id
-#     \?) die "invalid option: -$OPTARG" 64 ;;
-#   esac
-# done
-# shift $((OPTIND - 1))
- 
 ## run: gpg --list-secret-keys --keyid-format LONG to get uid and kid ##
 # GnuPG user id 
-uid="artemdev@worldofmail.com"
- 
+uid=""
 # GnuPG key id 
-kid="ACB1FDF94042FD7CA067F47D65AFFE457C7A662E"
- 
+kid=""
 # Directory that stores encrypted key for each service 
 dir="$HOME/.2fa"
+
+# Options first (POSIX getopts), stops at first non-option or "--"
+while getopts ":hv" opt; do
+    case $opt in
+        d) dir=$OPTARG ;;         # directory to store 
+        u) uid=$OPTARG ;;             # uid - email
+        k) kid=$OPTARG ;;             # key id
+        h) usage ;; 
+        \?) die "invalid option: -$OPTARG" 64 ;;
+    esac
+done
+shift $((OPTIND - 1))
 
 # Now build CLI args
 c="$1"
