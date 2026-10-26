@@ -5,8 +5,10 @@
 (setq auto-save-default nil)
 (save-place-mode 1)
 (savehist-mode 1)
-(load custom-file t)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file t)
+
+(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil t)
 
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
 (setq-default major-mode 'text-mode)
@@ -38,6 +40,7 @@
 (defconst my/config-dir
   (file-name-directory
    (file-truename (or load-file-name buffer-file-name))))
+
 ;;; Regular UI (only when nano is not loaded) ---------------------------------
 (load (expand-file-name "palettes.el" my/config-dir) nil t)
 (defvar my/theme-light 'the-moment)
@@ -52,13 +55,11 @@
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme next t)))
 
- 
 (use-package gruber-darker-theme :ensure t :defer t)
 (add-to-list 'custom-theme-load-path my/config-dir)
 (set-face-attribute 'default nil :family "IosevkaTerm Nerd Font Mono" :height 200)
 (load-theme my/theme-light t)
 (global-set-key (kbd "C-c t") #'my/toggle-theme)
-
 
 ;; ...and registers
 (add-to-list 'savehist-additional-variables 'register-alist)
@@ -119,8 +120,8 @@
 (defun rc/duplicate-line ()
   (interactive)
   (let ((column (- (point) (point-at-bol)))
-	    (line (let ((s (thing-at-point 'line t)))
-		        (if s (string-remove-suffix "\n" s) ""))))
+	(line (let ((s (thing-at-point 'line t)))
+		(if s (string-remove-suffix "\n" s) ""))))
     (move-end-of-line 1)
     (newline)
     (insert line)
@@ -161,16 +162,14 @@
 
 (add-hook 'eglot-managed-mode-hook
           (lambda () (eglot-inlay-hints-mode -1)))
-       
+
 (require 'flymake)
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
 (load (expand-file-name "lsp.el" my/config-dir))
-(load (expand-file-name "frontend.el" my/config-dir))
-(load (expand-file-name "dotnet.el" my/config-dir))
-(load (expand-file-name "pbd.el" my/config-dir))
+(load (expand-file-name "latex.el" my/config-dir))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 (package-initialize)
@@ -178,15 +177,10 @@
   :hook (compilation-filter . ansi-color-compilation-filter)
   :ensure t)
 
-;; nano maps `success' to salient (purple); give compilation Emacs' stock green
-(with-eval-after-load 'compile
-  (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
-  (set-face-attribute 'compilation-info nil :inherit 'unspecified))
-
 (use-package exec-path-from-shell
   :config (exec-path-from-shell-initialize)
-             (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-             (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+  (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
   :ensure t)
 
 (use-package fzf
@@ -209,37 +203,37 @@
 
 (use-package org
   :config (global-set-key (kbd "C-c o l") #'org-store-link)
-            (global-set-key (kbd "C-c o a") #'org-agenda)
-            (global-set-key (kbd "C-c o c") #'org-capture)
-            (setq org-startup-indented           t
-                  org-startup-with-inline-images t
-                  org-startup-with-latex-preview nil
-                  org-image-actual-width         '(800))
-            (setq org-todo-keywords
-                  '((sequence "TODO(t)" "NEXT(n)" "IN_PROGRESS(i!)" "|" "DONE(d!)")
-                    (sequence "IDEA(e)" "|" "DROPPED(x@)")))
+  (global-set-key (kbd "C-c o a") #'org-agenda)
+  (global-set-key (kbd "C-c o c") #'org-capture)
+  (setq org-startup-indented           t
+        org-startup-with-inline-images t
+        org-startup-with-latex-preview nil
+        org-image-actual-width         '(800))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "IN_PROGRESS(i!)" "|" "DONE(d!)")
+          (sequence "IDEA(e)" "|" "DROPPED(x@)")))
 
-            (setq org-todo-keyword-faces
-                  '(("TODO"        . org-warning)
-                    ("NEXT"        . (:foreground "cyan"   :weight bold))
-                    ("IN_PROGRESS" . (:foreground "orange" :weight bold))
-                    ("IDEA"        . (:foreground "grey"   :slant italic))
-                    ("DROPPED"     . (:foreground "grey"   :strike-through t))))
+  (setq org-todo-keyword-faces
+        '(("TODO"        . org-warning)
+          ("NEXT"        . (:foreground "cyan"   :weight bold))
+          ("IN_PROGRESS" . (:foreground "orange" :weight bold))
+          ("IDEA"        . (:foreground "grey"   :slant italic))
+          ("DROPPED"     . (:foreground "grey"   :strike-through t))))
 
-            ;; Agenda file list lives in agenda-files (one path or directory per line),
-            ;; like project.el's projects file. C-c [ / C-c ] add/remove the current file.
-            (setq org-agenda-files (expand-file-name "agenda-files" user-emacs-directory))
-            (setq org-agenda-custom-commands
-                  '(("n" "Next actions" todo "NEXT"
-                     ((org-agenda-prefix-format    "  %-12:c")
-                      (org-agenda-sorting-strategy '(priority-down category-up))))
-                    ("p" "All projects" tags-todo "+project-work"
-                     ((org-agenda-prefix-format    "  %-12:c ")
-                      (org-agenda-sorting-strategy '(category-up priority-down))))
-                    ("w" "Work" tags-todo "+work"
-                     ((org-agenda-prefix-format "  %-12:c ")))
-                    ("i" "Ideas backlog" todo "IDEA"
-                     ((org-agenda-prefix-format "  %-12:c")))))
+  ;; Agenda file list lives in agenda-files (one path or directory per line),
+  ;; like project.el's projects file. C-c [ / C-c ] add/remove the current file.
+  (setq org-agenda-files (expand-file-name "agenda-files" user-emacs-directory))
+  (setq org-agenda-custom-commands
+        '(("n" "Next actions" todo "NEXT"
+           ((org-agenda-prefix-format    "  %-12:c")
+            (org-agenda-sorting-strategy '(priority-down category-up))))
+          ("p" "All projects" tags-todo "+project-work"
+           ((org-agenda-prefix-format    "  %-12:c ")
+            (org-agenda-sorting-strategy '(category-up priority-down))))
+          ("w" "Work" tags-todo "+work"
+           ((org-agenda-prefix-format "  %-12:c ")))
+          ("i" "Ideas backlog" todo "IDEA"
+           ((org-agenda-prefix-format "  %-12:c")))))
   :hook (org-babel-after-execute-hook . org-display-inline-images)
   :ensure t)
 
@@ -255,8 +249,6 @@
                   (list (expand-file-name "bin" (file-name-directory (locate-library "tree-sitter-langs")))
                         (expand-file-name "tree-sitter" user-emacs-directory))))
   :ensure t)
-
-
 
 ;;; Magit
 (use-package magit
@@ -306,14 +298,36 @@
   (compilation-history-mode 1)
   ;; that stuff is deprecated(unless you dont update), but I need the way to filter my buffers...
   (iswitchb-mode 1)
+
   (setq compilation-history-view-split-direction 'verical
         iswitchb-buffer-ignore '("*"))
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
-  (global-set-key (kbd "C-c c o") #'(lambda () (setq truncate-lines t))))
+  (global-set-key (kbd "C-c c o") #'(lambda () (setq truncate-lines t)))
+  (setq compilation-history-save-line-threshold 100)
+  ;; Default: 'switch (select the window showing the new buffer)
+  ;; Options: 'switch, 'pop (respect display-buffer-alist), nil (disabled)
+  (setq compilation-history-recompile-switch-behavior 'nil)
+  ;; Default: 'horizontal (above/below)
+  ;; Options: 'horizontal, 'vertical (side-by-side)
+  (setq compilation-history-view-split-direction 'vertical))
 
 (use-package multiple-cursors
   :ensure t
   :config
   (global-set-key (kbd "C->") #'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-?") #'mc/mark-all-like-this))
+  (global-set-key (kbd "C-c C -?") #'mc/mark-all-like-this))
+
+;; ~/.emacs.d/init.el
+(setq gnus-select-method
+      '(nnimap "purelymail"
+               (nnimap-address "imap.purelymail.cpom")
+               (nnimap-server-port 993)
+               (nnimap-stream ssl)))
+
+(setq send-mail-function    'smtpmail-send-it
+      message-send-mail-function 'smtpmail-send-it
+      smtpmail-smtp-server  "smtp.purelymail.com"
+      smtpmail-smtp-service 465
+      smtpmail-stream-type  'ssl
+      user-mail-address     "artemdev@worldofmail.com")

@@ -22,8 +22,8 @@ Positional:
 
 SOURCE        input path (required)
 DEST          output path (required)
-
 Options:
+
 -d DIRECTORY  dir to store auth keys, default is "$HOME/.2fa"
 -u ID         GnuPG user id        
 -k ID         GnuPG key id
@@ -37,6 +37,7 @@ EOF
 # Path to gpg2 binary
 _gpg2="/usr/bin/gpg2"
 
+# TODO: store stuff in the ramfs
 ## run: gpg --list-secret-keys --keyid-format LONG to get uid and kid ##
 # GnuPG user id 
 uid=""
@@ -45,17 +46,40 @@ kid=""
 # Directory that stores encrypted key for each service 
 dir="$HOME/.2fa"
 
-# Options first (POSIX getopts), stops at first non-option or "--"
-while getopts ":hv" opt; do
-    case $opt in
-        d) dir=$OPTARG ;;         # directory to store 
-        u) uid=$OPTARG ;;             # uid - email
-        k) kid=$OPTARG ;;             # key id
-        h) usage ;; 
-        \?) die "invalid option: -$OPTARG" 64 ;;
-    esac
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--dir)
+      dir="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -u|--uid)
+      uid="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -k|--kid)
+      kid="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -h|--help)
+        usage
+      ;;
+    -*|--*)
+      usage
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
 done
-shift $((OPTIND - 1))
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
 # Now build CLI args
 c="$1"

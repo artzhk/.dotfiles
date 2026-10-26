@@ -18,6 +18,7 @@
 (use-package multi-compile
   :ensure t
   :preface
+  ;; dotnet template, would be nice if it would be in an external function
   (defun pbd-root ()
     "Repo root (per worktree), or nil outside the PBD repo."
     (locate-dominating-file default-directory "SLNX"))
@@ -25,7 +26,6 @@
   (defun pbd--front-root()
     (expand-file-name "EXAMPLE" (pbd-root)))
 
-  
   (defun pbd--pick (prompt glob)
     (completing-read prompt (file-expand-wildcards glob) nil t))
 

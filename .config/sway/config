@@ -1,6 +1,5 @@
 input "type:keyboard" {
 	xkb_layout "us,ua"
- 	xkb_variant "dvp,"
 	xkb_options "grp:alt_shift_toggle,caps:ctrl_modifier"
 }
 
@@ -114,14 +113,14 @@ exec_always swayidle -w \
 #
 # Switch to workspace
 	     bindsym $mod+t workspace number 1
-	     bindsym $mod+n workspace number 2
-	     bindsym $mod+g workspace number 3
+	     bindsym $mod+g workspace number 2
+	     bindsym $mod+n workspace number 3
 	     bindsym $mod+c workspace number 4
 	     bindsym $mod+m workspace number 5
 # Move focused container to workspace
 	     bindsym $mod+Shift+t move container to workspace number 1
-	     bindsym $mod+Shift+n move container to workspace number 2
-	     bindsym $mod+Shift+g move container to workspace number 3
+	     bindsym $mod+Shift+g move container to workspace number 2
+	     bindsym $mod+Shift+n move container to workspace number 3
 	     bindsym $mod+Shift+c move container to workspace number 4
 	     bindsym $mod+Shift+m move container to workspace number 5
 

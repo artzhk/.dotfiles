@@ -8,13 +8,46 @@ _oathtool="/usr/bin/oathtool"
  
 ## run: gpg --list-secret-keys --keyid-format LONG to get uid and kid ##
 # GnuPG user id 
-uid="mr.zhukovsky02@gmail.com"
- 
+uid=""
 # GnuPG key id 
-kid="ACB1FDF94042FD7CA067F47D65AFFE457C7A662E"
- 
-# Directory 
+kid=""
+# Directory that stores encrypted key for each service 
 dir="$HOME/.2fa"
+
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--dir)
+      dir="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -u|--uid)
+      uid="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -k|--kid)
+      kid="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -h|--help)
+        usage
+      ;;
+    -*|--*)
+      usage
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
  
 # Build CLI arg
 s="$1"
