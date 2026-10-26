@@ -3,28 +3,15 @@
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
 (setq auto-save-default nil)
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(save-place-mode 1)
+(savehist-mode 1)
 (load custom-file t)
-
-(defconst my/config-dir
-  (file-name-directory
-   (file-truename (or load-file-name buffer-file-name))))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
-;; Startup
-(setq inhibit-startup-screen t
-      inhibit-startup-message t
-      inhibit-startup-echo-area-message t
-      initial-scratch-message nil
-      initial-buffer-choice nil
-      initial-major-mode 'text-mode)
 (setq-default major-mode 'text-mode)
 
 ;; Frame / dialogs
-(setq frame-title-format nil
-      use-file-dialog nil
-      use-dialog-box nil)
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (tooltip-mode 0)
@@ -41,12 +28,6 @@
       confirm-nonexistent-file-or-buffer nil
       org-return-follows-link t)
 
-;; Mouse active in terminal
-(unless (display-graphic-p)
-  (xterm-mouse-mode 1)
-  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-
 ;; y/n for answering yes/no questions
 (setq use-short-answers t)
 
@@ -54,44 +35,9 @@
 (setq-default indent-tabs-mode nil
               tab-width 8)
 
-;; Temporary buffers & windows
-(temp-buffer-resize-mode)
-(setq temp-buffer-max-height 20
-      window-min-height 1)
-
-;; Buffer encoding
-(prefer-coding-system       'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-language-environment   'utf-8)
-
-;; ;; Unique buffer names
-;; (require 'uniquify)
-;; (setq uniquify-buffer-name-style 'reverse
-;;       uniquify-separator " // "
-;;       uniquify-after-kill-buffer-p t
-;;       uniquify-ignore-buffers-re "^\\*")
-
-;; ;; Default shell in term
-;; (when (and (not (eq system-type 'windows-nt))
-;;            (file-exists-p "/bin/bash"))
-;;   (setq-default shell-file-name "/bin/bash")
-;;   (setq explicit-shell-file-name "/bin/bash"))
-
-;; ;; Kill term buffer when exiting
-;; (defun my/term-sentinel-kill-buffer (orig proc msg)
-;;   (if (memq (process-status proc) '(signal exit))
-;;       (let ((buffer (process-buffer proc)))
-;;         (funcall orig proc msg)
-;;         (kill-buffer buffer))
-;;     (funcall orig proc msg)))
-;; (advice-add 'term-sentinel :around #'my/term-sentinel-kill-buffer)
-
-;;; Nano — comment these two lines to get the regular UI ----------------------
-;; (load (expand-file-name "nano/nano.el" my/config-dir))
-;; (load (expand-file-name "nano/nano-custom.el" my/config-dir))
-
+(defconst my/config-dir
+  (file-name-directory
+   (file-truename (or load-file-name buffer-file-name))))
 ;;; Regular UI (only when nano is not loaded) ---------------------------------
 (load (expand-file-name "palettes.el" my/config-dir) nil t)
 (defvar my/theme-light 'the-moment)
@@ -106,18 +52,14 @@
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme next t)))
 
-(unless (featurep 'nano)
-  (use-package gruber-darker-theme :ensure t :defer t)
-  (add-to-list 'custom-theme-load-path my/config-dir)
-  (set-face-attribute 'default nil :family "MononokiNerdFont Mono" :height 200)
-  (load-theme my/theme-light t)
-  (global-set-key (kbd "C-c t") #'my/toggle-theme))
+ 
+(use-package gruber-darker-theme :ensure t :defer t)
+(add-to-list 'custom-theme-load-path my/config-dir)
+(set-face-attribute 'default nil :family "IosevkaTerm Nerd Font Mono" :height 200)
+(load-theme my/theme-light t)
+(global-set-key (kbd "C-c t") #'my/toggle-theme)
 
-;;; Session persistence
-;; reopen a file at the last point you were 
-(save-place-mode 1)
-;; persist minibuffer history...
-(savehist-mode 1)
+
 ;; ...and registers
 (add-to-list 'savehist-additional-variables 'register-alist)
 
@@ -202,7 +144,6 @@
 (global-set-key (kbd "C-c w f") 'windmove-right)
 (global-set-key (kbd "C-c w b") 'windmove-left)
 
-
 ;; Buffer
 (keymap-global-set "C-x C-b" #'ibuffer)
 (global-set-key (kbd "C-c y") #'compile)         
@@ -226,25 +167,27 @@
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
-
 (load (expand-file-name "lsp.el" my/config-dir))
 (load (expand-file-name "frontend.el" my/config-dir))
 (load (expand-file-name "dotnet.el" my/config-dir))
 (load (expand-file-name "pbd.el" my/config-dir))
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
-;; (ensure-package 'ansi-color :ensure)
-;; (ensure-package 'ansi-color)
 (package-initialize)
 (use-package ansi-color
   :hook (compilation-filter . ansi-color-compilation-filter)
   :ensure t)
-;; (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+
 ;; nano maps `success' to salient (purple); give compilation Emacs' stock green
 (with-eval-after-load 'compile
   (face-spec-set 'compilation-info (get 'success 'face-defface-spec))
   (set-face-attribute 'compilation-info nil :inherit 'unspecified))
 
+(use-package exec-path-from-shell
+  :config (exec-path-from-shell-initialize)
+             (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+             (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+  :ensure t)
 
 (use-package fzf
   :config
@@ -356,14 +299,17 @@
   :after compile
   ;; Bind C-c c as the prefix for compilation-history commands
   ;; C-c c c → compile, C-c c v → view history
-  :bind-keymap ("C-c c" . compilation-history-map)
+  :bind-keymap
+  ("C-c c" . compilation-history-map)
+
   :config
-  ;; Enable automatic tracking of all compilations
   (compilation-history-mode 1)
-  ;; TODO: that stuff is deprecated(unless you dont update), but I need the way to filter my buffers
+  ;; that stuff is deprecated(unless you dont update), but I need the way to filter my buffers...
   (iswitchb-mode 1)
-  (setq compilation-history-view-split-direction 'verical)
-  (setq iswitchb-buffer-ignore '("*")))
+  (setq compilation-history-view-split-direction 'verical
+        iswitchb-buffer-ignore '("*"))
+  ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
+  (global-set-key (kbd "C-c c o") #'(lambda () (setq truncate-lines t))))
 
 (use-package multiple-cursors
   :ensure t

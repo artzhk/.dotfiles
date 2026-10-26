@@ -16,10 +16,22 @@ function yes_or_no {
 
 # Path to gpg2 binary
 _gpg2="/usr/bin/gpg2"
+
+# TODO: keep going
+# Options first (POSIX getopts), stops at first non-option or "--"
+# while getopts ":hv" opt; do
+#     d)  ;;         # directory to store 
+#   case $opt in
+#     u) verbose=1 ;;             # uid - email
+#     k) verbose=1 ;;             # key id
+#     \?) die "invalid option: -$OPTARG" 64 ;;
+#   esac
+# done
+# shift $((OPTIND - 1))
  
 ## run: gpg --list-secret-keys --keyid-format LONG to get uid and kid ##
 # GnuPG user id 
-uid="mr.zhukovsky02@gmail.com"
+uid="artemdev@worldofmail.com"
  
 # GnuPG key id 
 kid="ACB1FDF94042FD7CA067F47D65AFFE457C7A662E"
