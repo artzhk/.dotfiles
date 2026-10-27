@@ -74,3 +74,26 @@ gif() {
             "${3%.*}.gif"
     fi
 }
+secure-ramfs-on() {
+    local src=/mnt ram=/run/user/$UID/secure-ramfs link=$HOME/.2fa
+    [ -e "$link" ] && [ ! -L "$link" ] && { echo "$link exists and is not a symlink, aborting"; return 1; }
+    sudo mkdir -p "$ram"
+    sudo mount -t ramfs -o mode=0700 ramfs "$ram"
+    sudo cp -a "$src/.gnupg" "$ram/gnupg"
+    sudo cp -a "$src/.2fa" "$ram/2fa"
+    sudo rm -f "$ram"/gnupg/S.*                       # drop stale agent sockets
+    sudo chown -R "$(id -u):$(id -g)" "$ram"    # ownership changes only on the RAM copy
+    export GNUPGHOME="$ram/gnupg"
+    ln -sfn "$ram/2fa" "$link"
+    gpg --homedir $GNUPGHOME --list-keys >/dev/null && echo "GnuPG in RAM: $ram/gnupg\n"
+    ls "$ram/2fa" && echo "2FA ready."
+}
+
+secure-ramfs-off() {
+    local ram=/run/user/$UID/secure-ramfs
+    gpgconf --homedir "$ram/gnupg" --kill all         # stop the agent and clear its cache
+    [ -L "$HOME/.2fa" ] && rm "$HOME/.2fa"              # removes only the link, never a real directory   
+    sudo umount "$ram" && sudo rmdir "$ram"     # free the RAM pages
+    unset GNUPGHOME
+}
+

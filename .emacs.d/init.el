@@ -346,7 +346,7 @@
   (iswitchb-mode 1)
 
   (setq compilation-history-view-split-direction 'verical
-        iswitchb-buffer-ignore '("*"))
+        iswitchb-buffer-ignore '("*" "magit-" "~"))
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
   (global-set-key (kbd "C-c c o") #'(lambda () (setq truncate-lines t)))
   (setq compilation-history-save-line-threshold 100)
@@ -364,18 +364,4 @@
   (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C -?") #'mc/mark-all-like-this))
 
-;; ~/.emacs.d/init.el
-(setq gnus-select-method
-      '(nnimap "purelymail"
-               (nnimap-address "imap.purelymail.cpom")
-               (nnimap-server-port 993)
-               (nnimap-stream ssl)))
 
-(setq send-mail-function    'smtpmail-send-it
-      message-send-mail-function 'smtpmail-send-it
-      smtpmail-smtp-server  "smtp.purelymail.com"
-      smtpmail-smtp-service 465
-      smtpmail-stream-type  'ssl
-      user-mail-address     "artemdev@worldofmail.com")
-
-(setenv "GNUPGHOME" (format "/run/user/%d/gnupg-ram" (user-uid)))

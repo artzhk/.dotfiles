@@ -34,23 +34,6 @@ export HISTIGNORE="ls:pwd:exit:clear:history:mkdir"
 history -r ~/.bash_history
 shopt -s histappend
 
-gpg-ram-on() {
-  local src=/mnt/.gnupg ram=/run/user/$UID/gnupg-ram
-  sudo mkdir -p "$ram"
-  sudo mount -t ramfs -o mode=0700 ramfs "$ram"
-  sudo cp -a "$src/." "$ram/"
-  sudo rm -f "$ram"/S.*                       # drop stale agent sockets
-  sudo chown -R "$(id -u):$(id -g)" "$ram"    # ownership changes only on the RAM copy
-  export GNUPGHOME="$ram"
-  gpg --list-keys >/dev/null && echo "GnuPG in RAM: $ram"
-}
-
-gpg-ram-off() {
-  local ram=/run/user/$UID/gnupg-ram
-  gpgconf --homedir "$ram" --kill all         # stop the agent and clear its cache
-  sudo umount "$ram" && sudo rmdir "$ram"     # free the RAM pages
-  unset GNUPGHOME
-}
 
 # FZF 
 export FZF_DEFAULT_COMMAND='rg --smart-case --files --hidden --follow -g "!.{git,venv,env,cache}/*" -g "!.*{DS_Store,swp,pyc,db}"'

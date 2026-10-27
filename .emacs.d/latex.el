@@ -16,7 +16,7 @@
         (insert "\n\n")))
     (message "Merged %d files into %s" (length files) output)))
 
-(defun paste-screenshot ()
+(defun my/paste-screenshot ()
   "Capture a screenshot and insert an org link to it in the current buffer."
   (interactive)
   (if (eq system-type 'darwin)
