@@ -331,3 +331,5 @@
       smtpmail-smtp-service 465
       smtpmail-stream-type  'ssl
       user-mail-address     "artemdev@worldofmail.com")
+
+(setenv "GNUPGHOME" (format "/run/user/%d/gnupg-ram" (user-uid)))
