@@ -15,4 +15,3 @@
 (setq auth-source (format "/run/user/%d/secure-ramfs/gnupg/authinfo.gpg" (user-uid)))
 (setenv "GNUPGHOME" (format "/run/user/%d/secure-ramfs/gnupg" (user-uid)))
 
-(provide 'mail)

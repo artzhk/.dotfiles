@@ -213,7 +213,9 @@
         '((sequence "TODO(t)" "NEXT(n)" "IN_PROGRESS(i!)" "|" "DONE(d!)")
           (sequence "IDEA(e)" "|" "DROPPED(x@)")
           ;; Follow-ups from notes: things to learn, not things to do.
-          (sequence "EXPLORE(p)" "EXPLORING(o!)" "|" "EXPLORED(v!)" "PARKED(z@)")))
+          (sequence "EXPLORE(p)" "EXPLORING(o!)" "|" "EXPLORED(v!)" "PARKED(z@)")
+          (sequence "ISSUE(I)" "DIGGING(g!)" "FIXED(f!)"
+                    "|" "VERIFIED(V!)" "WORKAROUND(W@)" "WONTFIX(N@)")))
 
   (setq org-todo-keyword-faces
         '(("TODO"        . org-warning)
@@ -238,15 +240,43 @@
           (:startgrouptag) ("security") (:grouptags) ("crypto") (:endgrouptag)
           (:startgrouptag) ("ai")       (:grouptags) ("ml") ("nlp") (:endgrouptag)
           (:startgrouptag) ("kind")     (:grouptags) ("concept") ("definition") ("law") ("theorem")
-                                                     ("principle") ("algorithm") (:endgrouptag)
+          ("principle") ("algorithm") (:endgrouptag)
           (:startgrouptag) ("uni")      (:grouptags) ("gp") ("pwd") ("mlann") ("nlp") ("pcaiot")
-                                                     ("dadt") ("awd") ("3d") ("ads2") ("final") (:endgrouptag)))
+          ("dadt") ("awd") ("3d") ("ads2") ("final") (:endgrouptag)))
 
   ;; Capture an explore item from anywhere; ORIGIN links back to where it came from.
   (setq org-capture-templates
         '(("x" "Explore item" entry
-           (file+headline "~/org-space/Personal/explore.org" "Inbox")
-           "* EXPLORE %?\n:PROPERTIES:\n:ORIGIN:   %a\n:CREATED:  %U\n:END:\n")))
+           (file+headline "~/Programming/org-space/Personal/explore.org" "Inbox")
+           "* EXPLORE %?\n:PROPERTIES:\n:ORIGIN:   %a\n:CREATED:  %U\n:END:\n")
+          ("b" "Issue / bug" entry (file+headline "~/Programming/org-space/SWE/issues.org" "Open")
+           "* ISSUE %^{Title} %^g
+:PROPERTIES:
+:ID:       %(org-id-new)
+:CREATED:  %U
+:ORIGIN:   %a
+:SYSTEM:   %^{System/component}
+:VERSION:  %^{Version/commit}
+:SEVERITY: %^{Severity|Minor|Major|Critical|Blocking|Inconsequential}
+:END:
+** Failure (symptom, verbatim)
+#+begin_example
+%i
+#+end_example
+** Environment
+** Reproduction (minimal, deterministic)
+** Attempts
+** Fault (root cause)
+** Corrective action
+** Verification
+** Lessons -> card / EXPLORE
+" :clock-in t :clock-keep t :empty-lines 1)
+          ("a" "Attempt (on clocked issue)" entry (clock)
+           "*** %U %^{Hypothesis}
+- Action   :: %?
+- Expected ::
+- Observed ::
+- Verdict  :: %^{Verdict|refuted|confirmed|inconclusive}")))
 
   ;; Refile inbox items into a note's "Explore" heading: C-c C-w, then type "file/heading".
   (setq org-refile-targets                     '((org-agenda-files :maxlevel . 3))
@@ -256,7 +286,7 @@
 
   ;; Agenda file list lives in agenda-files (one path or directory per line),
   ;; like project.el's projects file. C-c [ / C-c ] add/remove the current file.
-  (setq org-agenda-files (expand-file-name "agenda-files" user-emacs-directory))
+  (setq org-agenda-files (expand-file-name "agenda-files" my/config-dir))
   (setq org-agenda-custom-commands
         '(("n" "Next actions" todo "NEXT"
            ((org-agenda-prefix-format    "  %-12:c")
@@ -279,13 +309,11 @@
           ("u" "Uni (virtual folder)" tags "+uni+LEVEL=1"
            ((org-agenda-prefix-format "  %-10:c ")))
           ("U" "Active coursework" tags-todo "+uni+active"
-           ((org-agenda-prefix-format "  %-10:c %b")))))
+           ((org-agenda-prefix-format "  %-10:c %b")))
+          ("b" "Open issues" todo "ISSUE|DIGGING|FIXED"
+           ((org-agenda-sorting-strategy '(priority-down category-up))))))
   :hook (org-babel-after-execute-hook . org-display-inline-images)
   :ensure t)
-
-
-;;; Org — TODO keywords & faces
-;; (load (expand-file-name "latex.el" my/config-dir))
 
 (use-package tree-sitter :ensure t)
 ;; Would be code to use it in dotfiles, but I have windows :clown:
@@ -348,7 +376,7 @@
   (setq compilation-history-view-split-direction 'verical
         iswitchb-buffer-ignore '("*" "magit-" "~"))
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
-  (global-set-key (kbd "C-c c o") #'(lambda () (setq truncate-lines t)))
+  (global-set-key (kbd "C-c c o") #'compilation-history-mode)
   (setq compilation-history-save-line-threshold 100)
   ;; Default: 'switch (select the window showing the new buffer)
   ;; Options: 'switch, 'pop (respect display-buffer-alist), nil (disabled)
