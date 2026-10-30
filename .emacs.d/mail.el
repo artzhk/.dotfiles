@@ -3,7 +3,8 @@
       '(nnimap "purelymail"
                (nnimap-address "imap.purelymail.com")
                (nnimap-server-port 993)
-               (nnimap-stream ssl)))
+               (nnimap-stream ssl))
+      gnus-permanently-visible-groups ".*")
 
 (setq send-mail-function    'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
