@@ -14,7 +14,7 @@ set $mod Mod4
 set $alt Mod1
 
 # font
-font pango:IosevkaTerm Nerd Font Mono 18
+font pango:IosevkaTerm Nerd Font Mono 12
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id picom -b
@@ -48,17 +48,19 @@ bindsym $mod+q kill
 bindsym $mod+Return exec alacritty
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+space exec --no-startup-id rofi -show window
+# cboomer
+bindsym $mod+z exec --no-startup-id cboomer
 
 # run networkmanager
 bindsym $mod+1 exec --no-startup-id networkmanager_dmenu
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui
-bindsym $mod+p move workspace to output up
+bindsym $mod+u move workspace to output right
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $mod+b focus left
+bindsym $mod+n focus down
+bindsym $mod+p focus up
+bindsym $mod+f focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -67,10 +69,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Shift+b move left
+bindsym $mod+Shift+n move down
+bindsym $mod+Shift+p move up
+bindsym $mod+Shift+f move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -85,18 +87,19 @@ bindsym $mod+semicolon split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+m fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
-# toggle tiling / floating
+#v toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+x sticky toggle
 # switch focus between tiling floating stuff
-bindsym $mod+a focus mode_toggle
-
+bindsym $mod+o focus mode_toggle
+bindsym $mod+i exec --no-startup-id--no-startup-id  diodon
 
 # Workspaces names
 set $ws1 "1"
@@ -104,62 +107,31 @@ set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+t workspace number $ws1
-bindsym $mod+n workspace number $ws2
-bindsym $mod+g workspace number $ws3
-bindsym $mod+c workspace number $ws4
-bindsym $mod+m workspace number $ws5
-bindsym $mod+x workspace number $ws6
-bindsym $mod+z workspace number $ws7
-bindsym $mod+o workspace number $ws8
-bindsym $mod+u workspace number $ws9
-bindsym $mod+i workspace number $ws10
+bindsym $mod+g workspace number $ws2
+bindsym $mod+h workspace number $ws3
+bindsym $mod+j workspace number $ws4
+bindsym $mod+k workspace number $ws5
 
 # move focused container to workspace
 bindsym $mod+Shift+t move container to workspace number $ws1
-bindsym $mod+Shift+n move container to workspace number $ws2
-bindsym $mod+Shift+g move container to workspace number $ws3
-bindsym $mod+Shift+c move container to workspace number $ws4
-bindsym $mod+Shift+m move container to workspace number $ws5
-bindsym $mod+Shift+x move container to workspace number $ws6
-bindsym $mod+Shift+z move container to workspace number $ws7
-bindsym $mod+Shift+o move container to workspace number $ws8
-bindsym $mod+Shift+u move container to workspace number $ws9
-bindsym $mod+Shift+i move container to workspace number $ws10
-
-workspace 1 output eDP-1-2
-workspace 2 output eDP-1-2
-workspace 3 output eDP-1-2
-workspace 4 output eDP-1-2
-workspace 5 output HDMI-0
-workspace 6 output HDMI-0
-workspace 7 output HDMI-0
-workspace 8 output HDMI-0
-workspace 9 output HDMI-0
-workspace 10 output HDMI-0
+bindsym $mod+Shift+g move container to workspace number $ws2
+bindsym $mod+Shift+h move container to workspace number $ws3
+bindsym $mod+Shift+j move container to workspace number $ws4
+bindsym $mod+Shift+k move container to workspace number $ws5
 
 bindsym $mod+Shift+r restart
+bindsym $mod+Shift+y exec "autorandr --cycle"
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 mode "resize" {
 # Pressing up will shrink the window’s height.
-	bindsym h resize shrink width 10 px or 10 ppt
-		bindsym k resize grow height 10 px or 10 ppt
-		bindsym j resize shrink height 10 px or 10 ppt
-		bindsym l resize grow width 10 px or 10 ppt
-
-# same bindings, but for the arrow keys
-		bindsym Left resize shrink width 10 px or 10 ppt
-		bindsym Up resize grow height 10 px or 10 ppt
-		bindsym Down resize shrink height 10 px or 10 ppt
-		bindsym Right resize grow width 10 px or 10 ppt
+	bindsym b resize shrink width 10 px or 10 ppt
+		bindsym p resize grow height 10 px or 10 ppt
+		bindsym n resize shrink height 10 px or 10 ppt
+		bindsym f resize grow width 10 px or 10 ppt
 
 # back to normal: Enter or Escape or $mod+r
 		bindsym Return mode "default"
@@ -168,7 +140,7 @@ mode "resize" {
 }
 
 bar {
-	status_command i3status 
+	status_command i3status
 }
 
 

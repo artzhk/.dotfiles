@@ -33,10 +33,10 @@ font pango:IosevkaTerm Nerd Font Mono 10
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
+set  $left   b
+set  $down   n
+set  $up     p
+set  $right  f
 # Your preferred terminal emulator
 set $term foot
 
@@ -114,15 +114,15 @@ exec_always swayidle -w \
 # Switch to workspace
 	     bindsym $mod+t workspace number 1
 	     bindsym $mod+g workspace number 2
-	     bindsym $mod+n workspace number 3
-	     bindsym $mod+c workspace number 4
-	     bindsym $mod+m workspace number 5
+	     bindsym $mod+h workspace number 3
+	     bindsym $mod+j workspace number 4
+	     bindsym $mod+k workspace number 5
 # Move focused container to workspace
 	     bindsym $mod+Shift+t move container to workspace number 1
 	     bindsym $mod+Shift+g move container to workspace number 2
-	     bindsym $mod+Shift+n move container to workspace number 3
-	     bindsym $mod+Shift+c move container to workspace number 4
-	     bindsym $mod+Shift+m move container to workspace number 5
+	     bindsym $mod+Shift+h move container to workspace number 3
+	     bindsym $mod+Shift+j move container to workspace number 4
+	     bindsym $mod+Shift+k move container to workspace number 5
 
 # Note: workspaces can have any name you want, not just numbers.
 # We just use 1-10 as the default.
