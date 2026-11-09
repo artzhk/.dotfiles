@@ -41,8 +41,15 @@
   (file-name-directory
    (file-truename (or load-file-name buffer-file-name))))
 
-;;; Regular UI (only when nano is not loaded) ---------------------------------
+;; file exports
 (load (expand-file-name "palettes.el" my/config-dir) nil t)
+(load (expand-file-name "lsp.el" my/config-dir) t t)
+(load (expand-file-name "dotnet.el" my/config-dir) t t) 
+(load (expand-file-name "frontend.el" my/config-dir) t t) 
+(load (expand-file-name "pbd.el" my/config-dir) t t)
+(load (expand-file-name "mail.el" my/config-dir) t t)
+(load (expand-file-name "org.el" my/config-dir) t t)
+
 (defvar my/theme-light 'the-moment)
 (defvar my/theme-dark 'gruber-darker)
 
@@ -93,8 +100,10 @@
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 
-(setq-default truncate-lines nil)   ; wrap everywhere by default
-(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  ; no wrap in code buffers
+; wrap everywhere by default
+(setq-default truncate-lines nil)   
+; no wrap in code buffers
+(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  
 
 (global-display-fill-column-indicator-mode 1)
 
@@ -104,9 +113,27 @@
 (setq-default next-screen-context-lines 9)
 (setq-default scroll-preserve-screen-position t)
 (setq-default delete-selection-mode t)
+(setq eldoc-mode -1)
 (setq delete-selection-mode t)
 
+
+;; compilation
+(setq compilation-skip-threshold 2)
 (setq-default compilation-scroll-output t)
+(setq display-buffer-alist
+      '(("\\*Help\\*" (display-buffer-at-bottom))
+        ("\\*Completions\\*" (display-buffer-at-bottom))
+        ("\\*eldoc.*\\*" (display-buffer-at-bottom))
+        ("COMMIT_EDITMSG" (display-buffer-at-bottom))
+        ("magit-diff:.*" (display-buffer-at-bottom))
+        (".*"
+         (display-buffer-reuse-window display-buffer-same-window))))
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window)
+        (reusable-frames . visible)))
+
+;; Emacs 27+: make switch-to-buffer follow the same rules
+(setq switch-to-buffer-obey-display-actions t)
 
 (defun my/cp-file-path()
   (interactive)
@@ -159,6 +186,7 @@
 (global-set-key (kbd "C-c d") #'eglot-find-typeDefinition)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
 (global-set-key (kbd "C-c H") #'eglot-inlay-hints-mode)
+(global-set-key (kbd "C-h .") #'eldoc)
 
 (add-hook 'eglot-managed-mode-hook
           (lambda () (eglot-inlay-hints-mode -1)))
