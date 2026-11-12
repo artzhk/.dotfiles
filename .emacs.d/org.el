@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package org
   :config (global-set-key (kbd "C-c o l") #'org-store-link)
   (global-set-key (kbd "C-c o a") #'org-agenda)

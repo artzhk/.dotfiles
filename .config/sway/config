@@ -63,10 +63,10 @@ exec_always swayidle -w \
 ### Key bindings
 # Basics:
 	     bindsym $mod+space exec --no-startup-id $opened
-	     bindsym $mod+Shift+b sticky toggle
+	     bindsym $mod+Shift+semicolon sticky toggle
 
 # Move panes between screens
-	     bindsym $mod+p move workspace to output right
+	     bindsym $mod+u move workspace to output right
 
 # Start a terminal
 	     bindsym $mod+Return exec $term
@@ -133,7 +133,7 @@ bindsym $mod+i exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 # You can "split" the current object of your focus with
 # $mod+b or $mod+v, for horizontal and vertical splits
 # respectively.
-	     bindsym $mod+b splith
+	     bindsym $mod+semicolon splith
 	     bindsym $mod+v splitv
 
 # Switch the current container between different layout styles
@@ -142,7 +142,7 @@ bindsym $mod+i exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 	     bindsym $mod+e layout toggle split
 
 # Make the current focus fullscreen
-	     bindsym $mod+f fullscreen
+	     bindsym $mod+m fullscreen
 
 # Toggle the current focus between tiling and floating mode
 	     bindsym $mod+Shift+space floating toggle
@@ -164,7 +164,7 @@ bindsym $mod+i exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 	     bindsym $mod+minus scratchpad show
-	     bindsym $mod+Shift+p exec ~/.config/sway/rotate-focused-output
+	     bindsym $mod+Shift+u exec ~/.config/sway/rotate-focused-output
 	     bindswitch --reload --locked lid:on exec ~/.config/sway/lid-close
 	     bindswitch --reload --locked lid:off exec swaymsg output eDP-1 enable
 

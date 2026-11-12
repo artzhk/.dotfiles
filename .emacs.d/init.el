@@ -43,6 +43,11 @@
 
 ;;; Regular UI (only when nano is not loaded) ---------------------------------
 (load (expand-file-name "palettes.el" my/config-dir) nil t)
+(load (expand-file-name "mail.el" my/config-dir) nil t)
+(load (expand-file-name "lsp.el" my/config-dir) nil t)
+(load (expand-file-name "org.el" my/config-dir) nil t)
+(load (expand-file-name "latex.el" my/config-dir) nil t)
+
 (defvar my/theme-light 'the-moment)
 (defvar my/theme-dark 'gruber-darker)
 
@@ -167,8 +172,6 @@
 (with-eval-after-load 'flymake
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
-
-
 
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 (package-initialize)
