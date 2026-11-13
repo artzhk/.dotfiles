@@ -21,6 +21,10 @@
    `(font-lock-type-face ((t (:foreground ,.yellow))))
    `(font-lock-variable-name-face ((t (:foreground ,.fg))))
    `(font-lock-builtin-face ((t (:foreground ,.cyan))))
-   `(font-lock-warning-face ((t (:foreground ,.red-1 :bold t))))))
+   `(font-lock-warning-face ((t (:foreground ,.red-1 :bold t)))))
+  ;; whitespace marks: no background, palette grey glyphs
+  (apply #'custom-theme-set-faces 'the-moment
+         (mapcar (lambda (f) `(,f ((t (:foreground ,.bg+3)))))
+                 '(whitespace-space whitespace-hspace whitespace-tab))))
 (provide-theme 'the-moment)
 ;;; the-moment.el ends here
