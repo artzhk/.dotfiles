@@ -1,3 +1,0 @@
-#!/bin/bash
-git pull
-git log --graph --color=always --full-history --all --pretty=format:"%C(auto)%h | %cn | %ah | %d%x20%s" 

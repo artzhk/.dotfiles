@@ -12,5 +12,6 @@ picom -b
 nm-applet &
 clipton watcher &
 tint2 -c "$HOME/.config/tint2/nord-${THEME}.tint2rc" &
-
+emacs --daemon &
+xsettingsd -c ~/.config/xsettingsd/xsettingsd.conf &
 

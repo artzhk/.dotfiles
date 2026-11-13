@@ -54,7 +54,9 @@
 (load (expand-file-name "latex.el" my/config-dir) nil t)
 (load (expand-file-name "mail.el" my/config-dir) t t)
 (load (expand-file-name "org.el" my/config-dir) t t)
-(add-to-list 'Info-directory-list (expand-file-name "info/emacs-lispref-31.1.50" my/config-dir))
+(load (expand-file-name "matrix.el" my/config-dir) t t)
+
+(add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir))
 
 (defvar my/theme-light 'the-moment)
 (defvar my/theme-dark 'gruber-darker)

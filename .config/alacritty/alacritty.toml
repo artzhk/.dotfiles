@@ -1,5 +1,5 @@
 general.import = [
-	"~/.dotfiles/.config/alacritty/colorscheme.toml",
+	"~/.dotfiles/.config/alacritty/colorscheme",
 ]
 
 [env]
@@ -13,9 +13,7 @@ italic = { family = "IosevkaTerm Nerd Font", style = "SemiBold" }
 size = 12
 
 [window]
-decorations = "None"
 # startup_mode = "SimpleFullscreen"
 
 [selection]
 save_to_clipboard = true
-

@@ -40,8 +40,8 @@ install-default:
 link:
 	@mkdir -p "$(DST)/.config" "$(DST)/.local" "$(DST)/.emacs.d"
 	$(STOW) -t "$(DST)"          -R home 
-	$(STOW) -t "$(DST)/.config"  -R .config --adopt
-	$(STOW) -t "$(DST)/.local"   -R .local
+	$(STOW) -t "$(DST)/.config"  -R .config --adopt --ignore=colorscheme\$
+	$(STOW) -t "$(DST)/.local"   -R .local --ignor=wlp\$
 	$(STOW) -t "$(DST)/.emacs.d" -R .emacs.d
 
 unlink:
