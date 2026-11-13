@@ -34,8 +34,14 @@
 (setq use-short-answers t)
 
 ;; No tabs, tab.space equivalence
-(setq-default indent-tabs-mode nil
-              tab-width 8)
+(setq-default indent-tabs-mode t
+	      tab-width 8)
+
+(global-set-key (kbd "C-c c SPC") #'global-whitespace-mode)
+(setq whitespace-display-mappings '((space-mark 32 [183] [46])
+				    (space-mark 160 [164] [95])
+				    (tab-mark 9 [187 9] [92 9])))
+(setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
 
 (defconst my/config-dir
   (file-name-directory
@@ -48,6 +54,7 @@
 (load (expand-file-name "latex.el" my/config-dir) nil t)
 (load (expand-file-name "mail.el" my/config-dir) t t)
 (load (expand-file-name "org.el" my/config-dir) t t)
+(add-to-list 'Info-directory-list (expand-file-name "info/emacs-lispref-31.1.50" my/config-dir))
 
 (defvar my/theme-light 'the-moment)
 (defvar my/theme-dark 'gruber-darker)
@@ -56,14 +63,15 @@
   "Switch between `my/theme-dark' and `my/theme-light'."
   (interactive)
   (let ((next (if (custom-theme-enabled-p my/theme-dark)
-                  my/theme-light
-                my/theme-dark)))
+		  my/theme-light
+		my/theme-dark)))
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme next t)))
 
 (use-package gruber-darker-theme :ensure t :defer t)
 (add-to-list 'custom-theme-load-path my/config-dir)
-(set-face-attribute 'default nil :family "IosevkaTerm Nerd Font Mono" :height 200)
+(set-face-attribute 'default nil :family "IosevkaTerm Nerd Font Mono"
+		    :height 200)
 (load-theme my/theme-light t)
 (global-set-key (kbd "C-c t") #'my/toggle-theme)
 
@@ -83,6 +91,9 @@
 (add-to-list 'default-frame-alist '(undecorated . nil))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
+(set-fringe-style '(4 . 0))
+(setq show-trailing-whitespace t)
+
 
 (setq-default fill-column 80)
 (setq-default display-line-numbers t)
@@ -90,7 +101,9 @@
 (ffap-bindings)
 (ido-mode 1)
 (fido-vertical-mode 1)
-(setq ido-use-filename-at-point 'guess   ; use ffap's guessing for the path at point
+(global-eldoc-mode 0)
+;; use ffap's guessing for the path at point
+(setq ido-use-filename-at-point 'guess
       ido-use-url-at-point t)            ; also open URLs at point
 (setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
 (setq completion-styles '(basic substring))
@@ -99,10 +112,10 @@
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 
-; wrap everywhere by default
-(setq-default truncate-lines nil)   
-; no wrap in code buffers
-(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))  
+;; wrap everywhere by default
+(setq-default truncate-lines nil)
+;; no wrap in code buffers
+(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
 
 (global-display-fill-column-indicator-mode 1)
 
@@ -120,11 +133,12 @@
 (setq compilation-skip-threshold 2)
 (setq-default compilation-scroll-output t)
 (setq display-buffer-alist
-      '(("\\*Help\\*" (display-buffer-at-bottom))
-        ("\\*Completions\\*" (display-buffer-at-bottom))
+      '(("\\*Completions\\*" (display-buffer-at-bottom))
         ("\\*eldoc.*\\*" (display-buffer-at-bottom))
         ("COMMIT_EDITMSG" (display-buffer-at-bottom))
         ("magit-diff:.*" (display-buffer-at-bottom))
+        ("\\*Help\\*" (display-buffer-pop-up-window))
+	("\\*Article INBOX\\*" (display-buffer-pop-up-window))
         (".*"
          (display-buffer-reuse-window display-buffer-same-window))))
 (setq display-buffer-base-action
@@ -146,8 +160,8 @@
 (defun rc/duplicate-line ()
   (interactive)
   (let ((column (- (point) (point-at-bol)))
-	(line (let ((s (thing-at-point 'line t)))
-		(if s (string-remove-suffix "\n" s) ""))))
+        (line (let ((s (thing-at-point 'line t)))
+                (if s (string-remove-suffix "\n" s) ""))))
     (move-end-of-line 1)
     (newline)
     (insert line)
@@ -173,8 +187,8 @@
 
 ;; Buffer
 (keymap-global-set "C-x C-b" #'ibuffer)
-(global-set-key (kbd "C-c y") #'compile)         
-(global-set-key (kbd "C-c p") #'project-compile)  
+(global-set-key (kbd "C-c y") #'compile)
+(global-set-key (kbd "C-c p") #'project-compile)
 (global-set-key (kbd "C-c b") 'previous-buffer)
 (global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
@@ -195,13 +209,12 @@
   (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
   (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
-<<<<<<< HEAD
-=======
 (require 'term)
 (with-eval-after-load 'term
   (define-key term-raw-map (kbd "C-y") 'term-paste))
 
->>>>>>> 29619f21de626db849ce1f2276f87b9275c6c99d
+
+
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 (package-initialize)
 (use-package ansi-color
@@ -217,14 +230,14 @@
 (use-package fzf
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
-        fzf/executable "fzf"
-        fzf/git-grep-args "-i --line-number %s"
-        ;; command used for `fzf-grep-*` functions
-        ;; example usage for ripgrep:
-        fzf/grep-command "rg --no-heading -nH"
-        ;; If nil, the fzf buffer will appear at the top of the window
-        fzf/position-bottom t
-        fzf/window-height 15)
+	fzf/executable "fzf"
+	fzf/git-grep-args "-i --line-number %s"
+	;; command used for `fzf-grep-*` functions
+	;; example usage for ripgrep:
+	fzf/grep-command "rg --no-heading -nH"
+	;; If nil, the fzf buffer will appear at the top of the window
+	fzf/position-bottom t
+	fzf/window-height 15)
   :ensure t)
 
 (keymap-global-set "C-c C-f" #'fzf-git)   ; or fzf-async-
@@ -235,17 +248,20 @@
 (use-package tree-sitter-langs
   :config '((interactive)
             (setq tree-sitter-load-path
-                  (list (expand-file-name "bin" (file-name-directory (locate-library "tree-sitter-langs")))
-                        (expand-file-name "tree-sitter" user-emacs-directory))))
+                  (list
+		   (expand-file-name
+		    "bin"
+		    (file-name-directory (locate-library "tree-sitter-langs")))
+		   (expand-file-name "tree-sitter" user-emacs-directory))))
   :ensure t)
 
 ;;; Magit
 (use-package magit
   ;; TODO: figure out it one day
   :bind (:map magit-file-section-map
-              ("C-<return>" . magit-diff-visit-prefer-index)
-              :map magit-hunk-section-map
-              ("C-<return>" . magit-diff-visit-prefer-index))
+	      ("C-<return>" . magit-diff-visit-prefer-index)
+	      :map magit-hunk-section-map
+	      ("C-<return>" . magit-diff-visit-prefer-index))
   :config
   (setq magit-diff-visit-prefer-worktree t)
   :ensure t)
@@ -259,8 +275,8 @@
   (defun my/git-gutter-apply-colors (&rest _)
     "Color git-gutter faces from the active theme's palette."
     (pcase-dolist (`(,kind . ,color) '((modified . niagara)
-                                       (added    . green)
-                                       (deleted  . red)))
+				       (added    . green)
+				       (deleted  . red)))
       (when-let ((c (my/color color)))
         (dolist (prefix '("git-gutter:" "git-gutter-fr:"))
           (let ((face (intern (format "%s%s" prefix kind))))
@@ -285,7 +301,8 @@
 
   :config
   (compilation-history-mode 1)
-  ;; that stuff is deprecated(unless you dont update), but I need the way to filter my buffers...
+  ;; that stuff is deprecated(unless you dont update), but I need the way to
+  ;; filter my buffers...
   (iswitchb-mode 1)
 
   (setq compilation-history-view-split-direction 'verical
