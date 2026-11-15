@@ -41,8 +41,9 @@ link:
 	@mkdir -p "$(DST)/.config" "$(DST)/.local" "$(DST)/.emacs.d"
 	$(STOW) -t "$(DST)"          -R home 
 	$(STOW) -t "$(DST)/.config"  -R .config --adopt --ignore=colorscheme\$
-	$(STOW) -t "$(DST)/.local"   -R .local --ignor=wlp\$
-	$(STOW) -t "$(DST)/.emacs.d" -R .emacs.d
+	$(STOW) -t "$(DST)/.local"   -R .local --ignore=wlp\$ --adopt
+	$(STOW) -t "$(DST)/.emacs.d" -R .emacs.d --adopt
+
 
 unlink:
 	$(STOW) -t "$(DST)"          -D home $(X11_PKGS)

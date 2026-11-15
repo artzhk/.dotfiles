@@ -8,7 +8,7 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t)
 
-(set-frame-font "IosevkaTerm Nerd Font Mono 20" nil t)
+(set-frame-font "IosevkaTerm Nerd Font Mono 16" nil t)
 
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
 (setq-default major-mode 'text-mode)
@@ -17,11 +17,6 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (tooltip-mode 0)
-
-;; Allow splitting the current frame for popup buffers (e.g. xref);
-;; with nil, Emacs falls back to creating a new frame instead
-(setq pop-up-windows t
-      pop-up-frames nil)
 
 (setq indicate-empty-lines nil
       cursor-in-non-selected-windows nil
@@ -32,16 +27,18 @@
 
 ;; y/n for answering yes/no questions
 (setq use-short-answers t)
-
-;; No tabs, tab.space equivalence
+;; Tabs where not specified
 (setq-default indent-tabs-mode t
 	      tab-width 8)
 
-(global-set-key (kbd "C-c c SPC") #'global-whitespace-mode)
-(setq whitespace-display-mappings '((space-mark 32 [183] [46])
-				    (space-mark 160 [164] [95])
-				    (tab-mark 9 [187 9] [92 9])))
-(setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
+(use-package ivory-themes
+  :vc (:url "https://github.com/khzaw/ivory-themes.git"
+       :rev :newest)
+  :custom
+  (ivory-themes-bold-constructs t)
+  (ivory-themes-italic-constructs nil)
+  :config
+  (load-theme 'ivory-light t))
 
 (defconst my/config-dir
   (file-name-directory
@@ -56,9 +53,10 @@
 (load (expand-file-name "org.el" my/config-dir) t t)
 (load (expand-file-name "matrix.el" my/config-dir) t t)
 
-(add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir))
+(with-eval-after-load 'info
+  (add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir)))
 
-(defvar my/theme-light 'the-moment)
+(defvar my/theme-light 'ivory-light)
 (defvar my/theme-dark 'gruber-darker)
 
 (defun my/toggle-theme ()
@@ -118,19 +116,12 @@
 (setq-default truncate-lines nil)
 ;; no wrap in code buffers
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
-
 (global-display-fill-column-indicator-mode 1)
-
 (goto-address-mode 1)
 (global-subword-mode 1)
-
 (setq-default next-screen-context-lines 9)
 (setq-default scroll-preserve-screen-position t)
-(setq-default delete-selection-mode t)
-(setq eldoc-mode -1)
-(setq delete-selection-mode t)
-
-
+(setq delete-selection-mode 1)
 ;; compilation
 (setq compilation-skip-threshold 2)
 (setq-default compilation-scroll-output t)
@@ -141,10 +132,19 @@
         ("magit-diff:.*" (display-buffer-at-bottom))
         ("\\*Help\\*" (display-buffer-pop-up-window))
 	("\\*Article INBOX\\*" (display-buffer-pop-up-window))
+	("\\*git-gutter:.*\\*" (display-buffer-pop-up-window))
         (".*"
          (display-buffer-reuse-window display-buffer-same-window))))
+(setq pop-up-windows t
+      pop-up-frames nil)
+;; this seemcs to be default
+(setq xref-show-definitions-function #'xref-show-definitions-buffer
+      xref-show-xreffunction       #'xref--show-xref-buffer)
+;; previews reuse one window, split at most once, never stack
 (setq display-buffer-base-action
-      '((display-buffer-reuse-window)
+      '((display-buffer-reuse-window      ; target buffer already visible
+         display-buffer-use-some-window   ; reuse the existing preview window
+         display-buffer-pop-up-window)    ; split only if there is just one window
         (reusable-frames . visible)))
 
 ;; Emacs 27+: make switch-to-buffer follow the same rules
@@ -215,8 +215,6 @@
 (with-eval-after-load 'term
   (define-key term-raw-map (kbd "C-y") 'term-paste))
 
-
-
 ;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
 (package-initialize)
 (use-package ansi-color
@@ -242,7 +240,7 @@
 	fzf/window-height 15)
   :ensure t)
 
-(keymap-global-set "C-c C-f" #'fzf-git)   ; or fzf-async-
+(keymap-global-set "C-c C-v" #'fzf-git)   ; or fzf-async-
 (keymap-global-set "C-c u" #'fzf)
 
 (use-package tree-sitter :ensure t)
@@ -300,15 +298,17 @@
   ;; C-c c c → compile, C-c c v → view history
   :bind-keymap
   ("C-c c" . compilation-history-map)
+  (global-set-key (kbd "C-c c SPC") #'global-whitespace-mode)
+  (setq whitespace-display-mappings '((space-mark 32 [183] [46])
+				      (space-mark 160 [164] [95])
+				      (tab-mark 9 [187 9] [92 9])))
+  (setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
 
   :config
   (compilation-history-mode 1)
   ;; that stuff is deprecated(unless you dont update), but I need the way to
   ;; filter my buffers...
   (iswitchb-mode 1)
-
-  (setq compilation-history-view-split-direction 'verical
-        iswitchb-buffer-ignore '("*" "magit-" "~"))
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
   (global-set-key (kbd "C-c c o") #'compilation-history-mode)
   (setq compilation-history-save-line-threshold 100)
@@ -317,11 +317,11 @@
   (setq compilation-history-recompile-switch-behavior 'nil)
   ;; Default: 'horizontal (above/below)
   ;; Options: 'horizontal, 'vertical (side-by-side)
-  (setq compilation-history-view-split-direction 'vertical))
+  (setq compilation-history-view-split-direction 'vertical iswitchb-buffer-ignore '("*" "magit-" "~")))
 
 (use-package multiple-cursors
   :ensure t
   :config
   (global-set-key (kbd "C->") #'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C -?") #'mc/mark-all-like-this))
+  (global-set-key (kbd "C-c C-?") #'mc/mark-all-like-this))
