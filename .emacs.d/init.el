@@ -8,7 +8,7 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t)
 
-(set-frame-font "IosevkaTerm Nerd Font Mono 16" nil t)
+(add-to-list 'default-frame-alist `(font . "IosevkaTerm Nerd Font Mono 16"))
 
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
 (setq-default major-mode 'text-mode)
@@ -31,26 +31,16 @@
 (setq-default indent-tabs-mode t
 	      tab-width 8)
 
-(use-package ivory-themes
-  :vc (:url "https://github.com/khzaw/ivory-themes.git"
-       :rev :newest)
-  :custom
-  (ivory-themes-bold-constructs t)
-  (ivory-themes-italic-constructs nil)
-  :config
-  (load-theme 'ivory-light t))
-
 (defconst my/config-dir
   (file-name-directory
    (file-truename (or load-file-name buffer-file-name))))
 
 ;; file exports
-(load (expand-file-name "palettes.el" my/config-dir) nil t)
 (load (expand-file-name "mail.el" my/config-dir) nil t)
 (load (expand-file-name "lsp.el" my/config-dir) nil t)
-(load (expand-file-name "latex.el" my/config-dir) nil t)
-(load (expand-file-name "mail.el" my/config-dir) t t)
-(load (expand-file-name "org.el" my/config-dir) t t)
+(load (expand-file-name "dotnet.el" my/config-dir) t t)
+(load (expand-file-name "frontend.el" my/config-dir) t t)
+(load (expand-file-name "pbd.el" my/config-dir) t t)
 (load (expand-file-name "matrix.el" my/config-dir) t t)
 
 (with-eval-after-load 'info
@@ -68,10 +58,17 @@
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme next t)))
 
+;; colorschemes
 (use-package gruber-darker-theme :ensure t :defer t)
-(add-to-list 'custom-theme-load-path my/config-dir)
-(set-face-attribute 'default nil :family "IosevkaTerm Nerd Font Mono"
-		    :height 200)
+(use-package ivory-themes
+  :vc (:url "https://github.com/khzaw/ivory-themes.git"
+       :rev :newest)
+  :custom
+  (ivory-themes-bold-constructs t)
+  (ivory-themes-italic-constructs t)
+  :config
+  (load-theme 'ivory-light t))
+
 (load-theme my/theme-light t)
 (global-set-key (kbd "C-c t") #'my/toggle-theme)
 
@@ -91,9 +88,8 @@
 (add-to-list 'default-frame-alist '(undecorated . nil))
 (setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
-(set-fringe-style '(4 . 0))
+(set-fringe-style '(10 . 0))
 (setq show-trailing-whitespace t)
-
 
 (setq-default fill-column 80)
 (setq-default display-line-numbers t)
@@ -119,33 +115,46 @@
 (global-display-fill-column-indicator-mode 1)
 (goto-address-mode 1)
 (global-subword-mode 1)
+(delete-selection-mode 1)
 (setq-default next-screen-context-lines 9)
 (setq-default scroll-preserve-screen-position t)
-(setq delete-selection-mode 1)
 ;; compilation
 (setq compilation-skip-threshold 2)
 (setq-default compilation-scroll-output t)
+
+;; previews reuse one window, split at most once, never stack
+(defun my/jump-from-list-p (_buffer-name _action)
+  "Non-nil when `display-buffer' is called from a results list."
+  (derived-mode-p 'compilation-mode        ; also grep-mode
+                  'xref--xref-buffer-mode))
+
 (setq display-buffer-alist
-      '(("\\*Completions\\*" (display-buffer-at-bottom))
-        ("\\*eldoc.*\\*" (display-buffer-at-bottom))
-        ("COMMIT_EDITMSG" (display-buffer-at-bottom))
-        ("magit-diff:.*" (display-buffer-at-bottom))
-        ("\\*Help\\*" (display-buffer-pop-up-window))
-	("\\*Article INBOX\\*" (display-buffer-pop-up-window))
-	("\\*git-gutter:.*\\*" (display-buffer-pop-up-window))
+      '(("\\*Completions\\*"     (display-buffer-at-bottom))
+        ("\\*eldoc.*\\*"         (display-buffer-at-bottom))
+        ("COMMIT_EDITMSG"        (display-buffer-at-bottom))
+        ("magit-diff:.*"         (display-buffer-at-bottom))
+        ("\\*Help\\*"            (display-buffer-pop-up-window))
+        ("\\*Article INBOX\\*"   (display-buffer-pop-up-window))
+        ("\\*git-gutter:.*\\*"   (display-buffer-pop-up-window))
+        ;; RET in compile/grep/xref: open target in the list's window
+        (my/jump-from-list-p
+         (display-buffer-same-window)
+         (inhibit-same-window . nil))
         (".*"
          (display-buffer-reuse-window display-buffer-same-window))))
+
+(global-set-key (kbd "C-c m SPC") #'global-whitespace-mode)
+(setq whitespace-display-mappings '((space-mark 32 [183] [46])
+				    (space-mark 160 [164] [95])
+				    (tab-mark 9 [187 9] [92 9])))
+(setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
+
 (setq pop-up-windows t
       pop-up-frames nil)
+
 ;; this seemcs to be default
 (setq xref-show-definitions-function #'xref-show-definitions-buffer
       xref-show-xreffunction       #'xref--show-xref-buffer)
-;; previews reuse one window, split at most once, never stack
-(setq display-buffer-base-action
-      '((display-buffer-reuse-window      ; target buffer already visible
-         display-buffer-use-some-window   ; reuse the existing preview window
-         display-buffer-pop-up-window)    ; split only if there is just one window
-        (reusable-frames . visible)))
 
 ;; Emacs 27+: make switch-to-buffer follow the same rules
 (setq switch-to-buffer-obey-display-actions t)
@@ -267,27 +276,16 @@
   :ensure t)
 
 (use-package git-gutter
-  :config
-  (global-git-gutter-mode t)
-  (global-set-key (kbd "C-c C-h h") #'git-gutter:popup-diff)
-  (global-set-key (kbd "C-c C-h n") #'git-gutter:next-hunk)
-  (global-set-key (kbd "C-c C-h p") #'git-gutter:previous-hunk)
-  (defun my/git-gutter-apply-colors (&rest _)
-    "Color git-gutter faces from the active theme's palette."
-    (pcase-dolist (`(,kind . ,color) '((modified . niagara)
-				       (added    . green)
-				       (deleted  . red)))
-      (when-let ((c (my/color color)))
-        (dolist (prefix '("git-gutter:" "git-gutter-fr:"))
-          (let ((face (intern (format "%s%s" prefix kind))))
-            (when (facep face)
-              (set-face-attribute face nil :foreground c :background c)))))))
-  (my/git-gutter-apply-colors)
-  (add-hook 'enable-theme-functions #'my/git-gutter-apply-colors)
-  :ensure t)
-
-(use-package git-gutter-fringe
-  :ensure t)
+  :ensure t
+  :custom
+  (git-gutter:window-width 1)
+  (git-gutter:modified-sign "=")
+  (git-gutter:added-sign "+")
+  (git-gutter:deleted-sign "-")
+  :bind (("C-c C-h h" . git-gutter:popup-diff)
+         ("C-c C-h n" . git-gutter:next-hunk)
+         ("C-c C-h p" . git-gutter:previous-hunk)))
+(global-git-gutter-mode t)
 
 ;; Elpaca (recommended)
 (use-package compilation-history
@@ -298,11 +296,6 @@
   ;; C-c c c → compile, C-c c v → view history
   :bind-keymap
   ("C-c c" . compilation-history-map)
-  (global-set-key (kbd "C-c c SPC") #'global-whitespace-mode)
-  (setq whitespace-display-mappings '((space-mark 32 [183] [46])
-				      (space-mark 160 [164] [95])
-				      (tab-mark 9 [187 9] [92 9])))
-  (setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
 
   :config
   (compilation-history-mode 1)
@@ -319,9 +312,11 @@
   ;; Options: 'horizontal, 'vertical (side-by-side)
   (setq compilation-history-view-split-direction 'vertical iswitchb-buffer-ignore '("*" "magit-" "~")))
 
+
 (use-package multiple-cursors
   :ensure t
   :config
   (global-set-key (kbd "C->") #'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-?") #'mc/mark-all-like-this))
+
