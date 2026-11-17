@@ -19,4 +19,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(git-gutter:added ((t (:foreground "#000000" :background "nil"))))
+ '(git-gutter:modified ((t (:foreground "#000000" :background "nil"))))
+ '(git-gutter:deleted ((t (:foreground "#000000" :background "nil"))))
+
  )
