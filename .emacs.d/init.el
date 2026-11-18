@@ -295,15 +295,15 @@
   ;; Bind C-c c as the prefix for compilation-history commands
   ;; C-c c c → compile, C-c c v → view history
   :bind-keymap
+  ("C-c c o" . compilation-history-mode)
   ("C-c c" . compilation-history-map)
-
   :config
   (compilation-history-mode 1)
   ;; that stuff is deprecated(unless you dont update), but I need the way to
   ;; filter my buffers...
   (iswitchb-mode 1)
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
-  (global-set-key (kbd "C-c c o") #'compilation-history-mode)
+  ;; (global-set-key (kbd "C-c c o") #'compilation-history-mode)
   (setq compilation-history-save-line-threshold 100)
   ;; Default: 'switch (select the window showing the new buffer)
   ;; Options: 'switch, 'pop (respect display-buffer-alist), nil (disabled)
@@ -312,6 +312,19 @@
   ;; Options: 'horizontal, 'vertical (side-by-side)
   (setq compilation-history-view-split-direction 'vertical iswitchb-buffer-ignore '("*" "magit-" "~")))
 
+(defun my/compilation-history-prune (days)
+    "Delete everything after n days"
+    ;; check number of arguments
+    (interactive (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg) 1)))
+    (let ((db (sqlite-open compilation-history-db-file)))
+      (unwind-protect
+	  (progn
+	    (sqlite-execute db
+	     "DELETE FROM compilations WHERE start_time < datetime('now', ?)"
+	     (list (format "-%d days" days)))
+	    (sqlite-execute db "VACUUM"))
+	(sqlite-close db)))
+      (message "compilation-history: pruned entries older than %d day(s)" days))
 
 (use-package multiple-cursors
   :ensure t
