@@ -7,8 +7,10 @@
 (savehist-mode 1)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t)
+;; bell is really killing me.... beep.. beep...
+(setq visible-bell t)
 
-(add-to-list 'default-frame-alist `(font . "IosevkaTerm Nerd Font Mono 16"))
+(set-face-attribute 'default nil :font "IosevkaTerm Nerd Font Mono 16")
 
 ;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
 (setq-default major-mode 'text-mode)
@@ -38,9 +40,7 @@
 ;; file exports
 (load (expand-file-name "mail.el" my/config-dir) nil t)
 (load (expand-file-name "lsp.el" my/config-dir) nil t)
-(load (expand-file-name "dotnet.el" my/config-dir) t t)
-(load (expand-file-name "frontend.el" my/config-dir) t t)
-(load (expand-file-name "pbd.el" my/config-dir) t t)
+(load (expand-file-name "org.el" my/config-dir) nil t)
 (load (expand-file-name "matrix.el" my/config-dir) t t)
 
 (with-eval-after-load 'info
@@ -62,7 +62,7 @@
 (use-package gruber-darker-theme :ensure t :defer t)
 (use-package ivory-themes
   :vc (:url "https://github.com/khzaw/ivory-themes.git"
-       :rev :newest)
+	    :rev :newest)
   :custom
   (ivory-themes-bold-constructs t)
   (ivory-themes-italic-constructs t)
@@ -94,13 +94,15 @@
 (setq-default fill-column 80)
 (setq-default display-line-numbers t)
 
-(ffap-bindings)
 (ido-mode 1)
-(fido-vertical-mode 1)
-(global-eldoc-mode 0)
-;; use ffap's guessing for the path at point
+(ido-everywhere 1)
+(ido-ubiquitous-mode 1)
 (setq ido-use-filename-at-point 'guess
       ido-use-url-at-point t)            ; also open URLs at point
+(setq ido-ignore-buffers '("\\*.*"))
+
+(global-eldoc-mode 0)
+;; use ffap's guessing for the path at point
 (setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
 (setq completion-styles '(basic substring))
 (setq completion-ignore-case t)
@@ -134,7 +136,6 @@
         ("COMMIT_EDITMSG"        (display-buffer-at-bottom))
         ("magit-diff:.*"         (display-buffer-at-bottom))
         ("\\*Help\\*"            (display-buffer-pop-up-window))
-        ("\\*Article INBOX\\*"   (display-buffer-pop-up-window))
         ("\\*git-gutter:.*\\*"   (display-buffer-pop-up-window))
         ;; RET in compile/grep/xref: open target in the list's window
         (my/jump-from-list-p
@@ -199,9 +200,7 @@
 ;; Buffer
 (keymap-global-set "C-x C-b" #'ibuffer)
 (global-set-key (kbd "C-c y") #'compile)
-(global-set-key (kbd "C-c p") #'project-compile)
 (global-set-key (kbd "C-c b") 'previous-buffer)
-(global-set-key (kbd "C-c n") 'next-buffer)
 (global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
 (global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
@@ -249,8 +248,8 @@
 	fzf/window-height 15)
   :ensure t)
 
-(keymap-global-set "C-c C-v" #'fzf-git)   ; or fzf-async-
-(keymap-global-set "C-c u" #'fzf)
+(global-set-key (kbd "C-c C-u") #'fzf-git)
+(global-set-key (kbd "C-c u") #'fzf-git)
 
 (use-package tree-sitter :ensure t)
 ;; Would be code to use it in dotfiles, but I have windows :clown:
@@ -298,10 +297,7 @@
   ("C-c c o" . compilation-history-mode)
   ("C-c c" . compilation-history-map)
   :config
-  (compilation-history-mode 1)
-  ;; that stuff is deprecated(unless you dont update), but I need the way to
-  ;; filter my buffers...
-  (iswitchb-mode 1)
+  (compilation-history-mode 0)
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
   ;; (global-set-key (kbd "C-c c o") #'compilation-history-mode)
   (setq compilation-history-save-line-threshold 100)
@@ -310,21 +306,21 @@
   (setq compilation-history-recompile-switch-behavior 'nil)
   ;; Default: 'horizontal (above/below)
   ;; Options: 'horizontal, 'vertical (side-by-side)
-  (setq compilation-history-view-split-direction 'vertical iswitchb-buffer-ignore '("*" "magit-" "~")))
+  (setq compilation-history-view-split-direction 'vertical ido-buffer-ignore '("*" "magit-" "~")))
 
 (defun my/compilation-history-prune (days)
-    "Delete everything after n days"
-    ;; check number of arguments
-    (interactive (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg) 1)))
-    (let ((db (sqlite-open compilation-history-db-file)))
-      (unwind-protect
-	  (progn
-	    (sqlite-execute db
-	     "DELETE FROM compilations WHERE start_time < datetime('now', ?)"
-	     (list (format "-%d days" days)))
-	    (sqlite-execute db "VACUUM"))
-	(sqlite-close db)))
-      (message "compilation-history: pruned entries older than %d day(s)" days))
+  "Delete everything after n days"
+  ;; check number of arguments
+  (interactive (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg) 1)))
+  (let ((db (sqlite-open compilation-history-db-file)))
+    (unwind-protect
+	(progn
+	  (sqlite-execute db
+			  "DELETE FROM compilations WHERE start_time < datetime('now', ?)"
+			  (list (format "-%d days" days)))
+	  (sqlite-execute db "VACUUM"))
+      (sqlite-close db)))
+  (message "compilation-history: pruned entries older than %d day(s)" days))
 
 (use-package multiple-cursors
   :ensure t

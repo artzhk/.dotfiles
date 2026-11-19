@@ -7,9 +7,14 @@
  '(custom-safe-themes
    '("d2bab0e613f8321b0b8bc06a5bcd8d98f6578590982371674d880079b72f1b47"
      "f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(compilation-history copilot eglot ement evil exec-path-from-shell fzf
+			 glsl-mode go go-mode gruber-darker-theme
+			 ido-completing-read+ ivory-themes magit multi-compile
+			 multiple-cursors tree-sitter-langs undo-tree))
  '(package-vc-selected-packages
-   '((fzf-async :url "https://github.com/jojojames/fzf-async")
+   '((ivory-themes :url "https://github.com/khzaw/ivory-themes.git")
+     (fzf-async :url "https://github.com/jojojames/fzf-async")
      (fzf-native :url "https://github.com/jojojames/fzf-native")))
  '(send-mail-function 'mailclient-send-it)
  '(warning-suppress-log-types '((use-package))))
@@ -19,8 +24,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(git-gutter:added ((t (:foreground "#000000" :background "nil"))))
- '(git-gutter:modified ((t (:foreground "#000000" :background "nil"))))
- '(git-gutter:deleted ((t (:foreground "#000000" :background "nil"))))
-
- )
+ '(git-gutter:added ((t (:foreground "default" :background "nil"))))
+ '(git-gutter:deleted ((t (:foreground "default" :background "nil"))))
+ '(git-gutter:modified ((t (:foreground "default" :background "nil")))))
