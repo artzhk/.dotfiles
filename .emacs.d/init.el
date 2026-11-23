@@ -40,7 +40,8 @@
 ;; file exports
 (load (expand-file-name "mail.el" my/config-dir) nil t)
 (load (expand-file-name "lsp.el" my/config-dir) nil t)
-(load (expand-file-name "org.el" my/config-dir) nil t)
+(load (expand-file-name "latex.el" my/config-dir) nil t)
+(load (expand-file-name "org.el" my/config-dir) t t)
 (load (expand-file-name "matrix.el" my/config-dir) t t)
 
 (with-eval-after-load 'info
@@ -248,8 +249,8 @@
 	fzf/window-height 15)
   :ensure t)
 
-(global-set-key (kbd "C-c C-u") #'fzf-git)
-(global-set-key (kbd "C-c u") #'fzf-git)
+(global-set-key (kbd "C-c C-.") #'fzf-git)
+(global-set-key (kbd "C-c u") #'fzf)
 
 (use-package tree-sitter :ensure t)
 ;; Would be code to use it in dotfiles, but I have windows :clown:

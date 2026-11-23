@@ -8,10 +8,12 @@
    '("d2bab0e613f8321b0b8bc06a5bcd8d98f6578590982371674d880079b72f1b47"
      "f7bda565084cc99184e37470c52c5856e832c6d2c340b3f93e48827c13596954" default))
  '(package-selected-packages
-   '(compilation-history copilot eglot ement evil exec-path-from-shell fzf
-			 glsl-mode go go-mode gruber-darker-theme
-			 ido-completing-read+ ivory-themes magit multi-compile
-			 multiple-cursors tree-sitter-langs undo-tree))
+   '(compilation-history copilot dart-mode dotnet ement evil exec-path-from-shell
+			 fzf git-gutter-fringe glsl-mode go-mode undo-tree
+			 gruber-darker-theme ivory-themes lsp-mode magit
+			 mermaid-mode multi-compile multiple-cursors orderless
+			 pdf-tools qml-mode rust-mode tree-sitter-langs eglot
+			 ido-completing-read+ xterm-color))
  '(package-vc-selected-packages
    '((ivory-themes :url "https://github.com/khzaw/ivory-themes.git")
      (fzf-async :url "https://github.com/jojojames/fzf-async")
