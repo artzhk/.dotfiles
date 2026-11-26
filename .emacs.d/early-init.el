@@ -16,5 +16,6 @@
         ("STABLE-MELPA" .
          "https://stable.melpa.org/packages/")
         ("ELPA-GNU" .
-         "https://elpa.gnu.org/packages/")))
-
+         "https://elpa.gnu.org/packages/")
+	("ELPA-NONGNU" .
+         "https://elpa.nongnu.org/nongnu/")))

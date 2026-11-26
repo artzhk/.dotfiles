@@ -7,8 +7,6 @@
 (savehist-mode 1)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t)
-;; bell is really killing me.... beep.. beep...
-(setq visible-bell t)
 
 (set-face-attribute 'default nil :font "IosevkaTerm Nerd Font Mono 16")
 
@@ -46,31 +44,32 @@
 
 (with-eval-after-load 'info
   (add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir)))
-
-(defvar my/theme-light 'ivory-light)
-(defvar my/theme-dark 'gruber-darker)
-
+(defun my/get-random-theme (THEME)
+  (let*
+      ((themes (au-themes-get-themes THEME))
+       (len (length themes))
+       (i (% (abs(random)) len)))
+    (nth i themes)))
 (defun my/toggle-theme ()
   "Switch between `my/theme-dark' and `my/theme-light'."
   (interactive)
-  (let ((next (if (custom-theme-enabled-p my/theme-dark)
-		  my/theme-light
-		my/theme-dark)))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme next t)))
+  (let
+      ((polarity (au-themes--theme-polarity (nth 0 custom-enabled-themes))))
+    (load-theme
+     (my/get-random-theme (if (eq polarity 'dark) 'light 'dark)))))
+(defun my/shuffle-theme ()
+  "Shuffle current theme polarity, once you get tired from the current shade."
+  (interactive)
+  (let
+      ((polarity (au-themes--theme-polarity (nth 0 custom-enabled-themes))))
+    (load-theme
+     (my/get-random-theme polarity))))
+
 
 ;; colorschemes
 (use-package gruber-darker-theme :ensure t :defer t)
-(use-package ivory-themes
-  :vc (:url "https://github.com/khzaw/ivory-themes.git"
-	    :rev :newest)
-  :custom
-  (ivory-themes-bold-constructs t)
-  (ivory-themes-italic-constructs t)
-  :config
-  (load-theme 'ivory-light t))
+(use-package au-themes :ensure t)
 
-(load-theme my/theme-light t)
 (global-set-key (kbd "C-c t") #'my/toggle-theme)
 
 ;; ...and registers
@@ -94,13 +93,6 @@
 
 (setq-default fill-column 80)
 (setq-default display-line-numbers t)
-
-(ido-mode 1)
-(ido-everywhere 1)
-(ido-ubiquitous-mode 1)
-(setq ido-use-filename-at-point 'guess
-      ido-use-url-at-point t)            ; also open URLs at point
-(setq ido-ignore-buffers '("\\*.*"))
 
 (global-eldoc-mode 0)
 ;; use ffap's guessing for the path at point
@@ -202,8 +194,6 @@
 (keymap-global-set "C-x C-b" #'ibuffer)
 (global-set-key (kbd "C-c y") #'compile)
 (global-set-key (kbd "C-c b") 'previous-buffer)
-(global-set-key (kbd "C-c ! l") #'flymake-show-buffer-diagnostics)
-(global-set-key (kbd "C-c ! L") #'flymake-show-project-diagnostics)
 (global-set-key (kbd "C-c f") #'eglot-format-buffer)
 (global-set-key (kbd "C-c a") #'eglot-code-actions)
 (global-set-key (kbd "C-c i") #'eglot-find-implementation)
@@ -330,3 +320,40 @@
   (global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-?") #'mc/mark-all-like-this))
 
+;; Example configuration for Consult
+(use-package consult
+  :bind (("C-x M-:" . consult-complex-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
+         ("M-y" . consult-yank-pop)
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g r" . consult-grep-match)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g i" . consult-imenu)
+         ;; M-s bindings in `search-map'
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history))
+  :config
+  (setq consult-buffer-filter
+	'("\\*.*" "\\` "))
+  (setq consult-preview-key "C-o")
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep
+   consult-recent-file consult-xref
+   consult-source-recent-file consult-source-project-recent-file)
+  (setq consult-narrow-key "<"))
+
+(use-package marginalia :ensure t :config
+  (marginalia-mode))
+(use-package vertico :ensure t :config
+  (vertico-mode))
+
+(setq completion-styles '(substring basic))
