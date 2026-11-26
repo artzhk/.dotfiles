@@ -14,5 +14,5 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
 sed -i 's/^initial-color-theme=.*/initial-color-theme=dark/' ~/.dotfiles/.config/foot/foot.ini 
 pkill -u "$USER" -USR1 '^foot(client)?$'
 
-emacsclient --eval "(disable-theme 'the-moment)" "(load-theme 'gruber-darker t)" 2>/dev/null || true
+emacsclient --eval "(disable-theme (nth 0 custom-enabled-themes))" "(load-theme (my/get-random-theme 'dark))" 2>/dev/null || true
 
