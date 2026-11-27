@@ -1,129 +1,70 @@
 ;; -*- lexical-binding: t; -*-
-;;; Tmp / backup files
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
-(setq auto-save-default nil)
+;; ;;; Tmp / backup files
 (save-place-mode 1)
 (savehist-mode 1)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file t)
-
-(set-face-attribute 'default nil :font "IosevkaTerm Nerd Font Mono 16")
-
-;;; Defaults (ported from nano/nano-defaults.el) ------------------------------
-(setq-default major-mode 'text-mode)
-
-;; Frame / dialogs
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (tooltip-mode 0)
-
-(setq indicate-empty-lines nil
-      cursor-in-non-selected-windows nil
-      font-lock-maximum-decoration nil
-      font-lock-maximum-size nil
-      confirm-nonexistent-file-or-buffer nil
-      org-return-follows-link t)
-
-;; y/n for answering yes/no questions
-(setq use-short-answers t)
-;; Tabs where not specified
-(setq-default indent-tabs-mode t
-	      tab-width 8)
-
-(defconst my/config-dir
-  (file-name-directory
-   (file-truename (or load-file-name buffer-file-name))))
-
-;; file exports
-(load (expand-file-name "mail.el" my/config-dir) nil t)
-(load (expand-file-name "lsp.el" my/config-dir) nil t)
-(load (expand-file-name "latex.el" my/config-dir) nil t)
-(load (expand-file-name "org.el" my/config-dir) t t)
-(load (expand-file-name "matrix.el" my/config-dir) t t)
-
-(with-eval-after-load 'info
-  (add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir)))
-(defun my/get-random-theme (THEME)
-  (let*
-      ((themes (au-themes-get-themes THEME))
-       (len (length themes))
-       (i (% (abs(random)) len)))
-    (nth i themes)))
-(defun my/toggle-theme ()
-  "Switch between `my/theme-dark' and `my/theme-light'."
-  (interactive)
-  (let
-      ((polarity (au-themes--theme-polarity (nth 0 custom-enabled-themes))))
-    (load-theme
-     (my/get-random-theme (if (eq polarity 'dark) 'light 'dark)))))
-(defun my/shuffle-theme ()
-  "Shuffle current theme polarity, once you get tired from the current shade."
-  (interactive)
-  (let
-      ((polarity (au-themes--theme-polarity (nth 0 custom-enabled-themes))))
-    (load-theme
-     (my/get-random-theme polarity))))
-
-
-;; colorschemes
-(use-package gruber-darker-theme :ensure t :defer t)
-(use-package au-themes :ensure t)
-
-(global-set-key (kbd "C-c t") #'my/toggle-theme)
-
-;; ...and registers
-(add-to-list 'savehist-additional-variables 'register-alist)
-
-;; User status line items (ported from ~/.dotfiles/.emacs.d/init.el)
-(require 'project)
 
 ;; Modes
 (display-time-mode 1)
 (display-battery-mode 1)
 (which-function-mode 1)
-
-;;; UI
-(blink-cursor-mode 0)
-(add-to-list 'default-frame-alist '(undecorated . nil))
-(setq-default frame-resize-pixelwise t)
 (menu-bar-mode -1)
-(set-fringe-style '(10 . 0))
-(setq show-trailing-whitespace t)
-
-(setq-default fill-column 80)
-(setq-default display-line-numbers t)
-
 (global-eldoc-mode 0)
-;; use ffap's guessing for the path at point
-(setq xref-search-program 'ripgrep)   ; Emacs ≥ 27, needs `rg` in PATH
-(setq completion-styles '(basic substring))
-(setq completion-ignore-case t)
-(setq icomplete-in-buffer t)
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-
-;; wrap everywhere by default
-(setq-default truncate-lines nil)
-;; no wrap in code buffers
-(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
+(blink-cursor-mode 0)
 (global-display-fill-column-indicator-mode 1)
 (goto-address-mode 1)
 (global-subword-mode 1)
 (delete-selection-mode 1)
-(setq-default next-screen-context-lines 9)
-(setq-default scroll-preserve-screen-position t)
-;; compilation
-(setq compilation-skip-threshold 2)
-(setq-default compilation-scroll-output t)
 
-;; previews reuse one window, split at most once, never stack
-(defun my/jump-from-list-p (_buffer-name _action)
-  "Non-nil when `display-buffer' is called from a results list."
-  (derived-mode-p 'compilation-mode        ; also grep-mode
-                  'xref--xref-buffer-mode))
+;; Must be prebuilt
+(require 'project)
+(require 'term)
+(require 'flymake)
+(require 'eglot)
+(require 'info)
 
-(setq display-buffer-alist
+(add-to-list 'default-frame-alist
+             '(font . "IosevkaTerm Nerd Font Mono 16"))
+;; defaults if not defined
+(setq-default major-mode 'text-mode
+	      indent-tabs-mode t
+	      tab-width 8
+	      frame-resize-pixelwise t
+	      fill-column 72
+	      display-line-numbers t
+	      compilation-scroll-output t
+	      truncate-lines nil
+	      next-screen-context-lines 9
+	      scroll-preserve-screen-position t)
+
+;; defaults override
+(setq indicate-empty-lines nil
+      show-trailing-whitespace t
+      whitespace-display-mappings '((space-mark 32 [183] [46])
+				    (space-mark 160 [164] [95])
+				    (tab-mark 9 [187 9] [92 9]))
+      whitespace-style
+      '(face tabs spaces space-mark tab-mark missing-newline-at-eof)
+
+      pop-up-windows t
+      pop-up-frames nil
+
+      project-vc-extra-root-markers '(".project")
+
+      ;; this seemcs to be default
+      xref-show-definitions-function #'xref-show-definitions-buffer
+      xref-show-xreffunction       #'xref--show-xref-buffer
+
+      ;; Emacs 27+: make switch-to-buffer follow the same rules
+      switch-to-buffer-obey-display-actions t
+
+      ;; Emacs ≥ 27, needs `rg` in PAT
+      xref-search-program 'ripgrep
+      compilation-skip-threshold 2
+
+      display-buffer-alist
       '(("\\*Completions\\*"     (display-buffer-at-bottom))
         ("\\*eldoc.*\\*"         (display-buffer-at-bottom))
         ("COMMIT_EDITMSG"        (display-buffer-at-bottom))
@@ -135,23 +76,57 @@
          (display-buffer-same-window)
          (inhibit-same-window . nil))
         (".*"
-         (display-buffer-reuse-window display-buffer-same-window))))
+         (display-buffer-reuse-window display-buffer-same-window)))
+      completion-styles '(basic substring)
+      completion-ignore-case t
+      icomplete-in-buffer t
+      read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
 
-(global-set-key (kbd "C-c m SPC") #'global-whitespace-mode)
-(setq whitespace-display-mappings '((space-mark 32 [183] [46])
-				    (space-mark 160 [164] [95])
-				    (tab-mark 9 [187 9] [92 9])))
-(setq whitespace-style '(face tabs spaces space-mark tab-mark missing-newline-at-eof))
+      ;; style miscs...
+      cursor-in-non-selected-windows nil
+      font-lock-maximum-decoration nil
+      font-lock-maximum-size nil
+      confirm-nonexistent-file-or-buffer nil
+      org-return-follows-link t
 
-(setq pop-up-windows t
-      pop-up-frames nil)
+      ;; spawning weird files..
+      make-backup-files nil
+      create-lockfiles nil
+      auto-save-default nil
+      custom-file (expand-file-name "custom.el" user-emacs-directory)
+      ;; y/n for answering yes/no questions
+      use-short-answers t)
 
-;; this seemcs to be default
-(setq xref-show-definitions-function #'xref-show-definitions-buffer
-      xref-show-xreffunction       #'xref--show-xref-buffer)
+(load custom-file t)
 
-;; Emacs 27+: make switch-to-buffer follow the same rules
-(setq switch-to-buffer-obey-display-actions t)
+(defconst my/config-dir
+  (file-name-directory
+   (file-truename (or load-file-name buffer-file-name))))
+
+;; file exports
+(load (expand-file-name "mail.el" my/config-dir) nil t)
+(load (expand-file-name "lsp.el" my/config-dir) nil t)
+(load (expand-file-name "pbd.el" my/config-dir) nil t)
+(load (expand-file-name "dotnet.el" my/config-dir) nil t)
+(load (expand-file-name "frontend.el" my/config-dir) nil t)
+(load (expand-file-name "org.el" my/config-dir) t t)
+(load (expand-file-name "matrix.el" my/config-dir) t t)
+
+;; Info manufals
+(with-eval-after-load 'info
+  (add-to-list 'Info-directory-list (expand-file-name "info/" my/config-dir)))
+
+;;; UI
+(add-to-list 'default-frame-alist '(undecorated . nil))
+(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
+(add-to-list 'savehist-additional-variables 'register-alist)
+
+;; previews reuse one window, split at most once, never stack
+(defun my/jump-from-list-p (_buffer-name _action)
+  "Non-nil when `display-buffer' is called from a results list."
+    (with-current-buffer (window-buffer (selected-window))
+    (derived-mode-p 'compilation-mode 'xref--xref-buffer-mode)))
 
 (defun my/cp-file-path()
   (interactive)
@@ -159,7 +134,8 @@
 
 (defun my/cp-file-path-loc()
   (interactive)
-  (kill-new (format "%s:%d" buffer-file-name (line-number-at-pos nil t))))
+  (kill-new
+   (format "%s:%d" buffer-file-name (line-number-at-pos nil t))))
 
 ;; Thanks rexim
 (defun rc/duplicate-line ()
@@ -173,10 +149,7 @@
     (move-beginning-of-line 1)
     (forward-char column)))
 
-;; to setup the project root where I need it...
-(setq project-vc-extra-root-markers '(".project"))
-
-;; kill-ring file you know...
+;; kill-ring filepath you know...
 (global-set-key (kbd "C-c k f") 'my/cp-file-path)
 (global-set-key (kbd "C-c k l") 'my/cp-file-path-loc)
 (global-set-key (kbd "C-c e") 'revert-buffer)
@@ -203,19 +176,61 @@
 (global-set-key (kbd "C-h .") #'eldoc)
 
 (add-hook 'eglot-managed-mode-hook
-          (lambda () (eglot-inlay-hints-mode -1)))
+          (lambda ()
+	    (eglot-inlay-hints-mode -1)
+	    (eldoc-mode -1)))
 
-(require 'flymake)
-(with-eval-after-load 'flymake
-  (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
-  (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error))
 
-(require 'term)
-(with-eval-after-load 'term
-  (define-key term-raw-map (kbd "C-y") 'term-paste))
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
+(define-key term-raw-map (kbd "C-y") 'term-paste)
 
-;;; Shell PATH (needed for Magit, compile, and external tools) ----------------
+;; External
 (package-initialize)
+;; (defvar dark-themes '())
+;; (defvar light-themes '())
+(use-package gruber-darker-theme :ensure t
+  :custom
+  :defer t)
+(use-package au-themes :ensure t
+  :init
+    ;; random theme
+  (defun my/get-random-theme (POLARITY)
+    (interactive)
+    (let*
+	((themes (au-themes-get-themes POLARITY))
+	 (len (length themes))
+	 (i (% (abs(random)) len)))
+      (nth i themes)))
+  
+  (defun my/toggle-theme ()
+    "Switch between `my/theme-dark' and `my/theme-light'."
+    (interactive)
+    (let
+	((theme (nth 0 custom-enabled-themes))
+	 (polarity (au-themes--theme-polarity
+		    (nth 0 custom-enabled-themes))))
+      (load-theme (my/get-random-theme
+		   (if (eq polarity 'dark) 'light 'dark)))
+      (disable-theme theme)))
+
+  (defun my/shuffle-theme ()
+    "Shuffle current theme polarity, once you get tired from the current shade."
+    (interactive)
+    (let
+	((theme (nth 0 custom-enabled-themes))
+	 (polarity (au-themes--theme-polarity
+		    (nth 0 custom-enabled-themes))))
+      (load-theme (my/get-random-theme polarity))
+      (disable-theme theme)))
+  :config
+  (if (eq 0 (length custom-enabled-themes))
+      (load-theme (my/get-random-theme 'light)))
+  
+  (global-set-key (kbd "C-c T") #'my/toggle-theme)
+  (global-set-key (kbd "C-c t") #'my/shuffle-theme)
+  (global-set-key (kbd "C-c m SPC") #'global-whitespace-mode))
+
 (use-package ansi-color
   :hook (compilation-filter . ansi-color-compilation-filter)
   :ensure t)
@@ -243,27 +258,29 @@
 (global-set-key (kbd "C-c u") #'fzf)
 
 (use-package tree-sitter :ensure t)
-;; Would be code to use it in dotfiles, but I have windows :clown:
 (use-package tree-sitter-langs
+  :ensure t
   :config '((interactive)
             (setq tree-sitter-load-path
                   (list
 		   (expand-file-name
 		    "bin"
 		    (file-name-directory (locate-library "tree-sitter-langs")))
-		   (expand-file-name "tree-sitter" user-emacs-directory))))
-  :ensure t)
+		   (expand-file-name "tree-sitter" user-emacs-directory)))))
 
 ;;; Magit
 (use-package magit
-  ;; TODO: figure out it one day
+  :ensure t
   :bind (:map magit-file-section-map
 	      ("C-<return>" . magit-diff-visit-prefer-index)
 	      :map magit-hunk-section-map
 	      ("C-<return>" . magit-diff-visit-prefer-index))
   :config
-  (setq magit-diff-visit-prefer-worktree t)
-  :ensure t)
+  (setq magit-diff-highlight-indentation nil
+	magit-diff-visit-prefer-worktree t
+	magit-diff-paint-whitespace nil
+	magit-revision-insert-related-refs nil
+	flymake-no-changes-timeout 0.6))
 
 (use-package git-gutter
   :ensure t
@@ -285,9 +302,26 @@
   ;; Bind C-c c as the prefix for compilation-history commands
   ;; C-c c c → compile, C-c c v → view history
   :bind-keymap
-  ("C-c c o" . compilation-history-mode)
-  ("C-c c" . compilation-history-map)
+  ("C-c v" . compilation-history-map)
   :config
+  (defun my/compilation-history-prune (days)
+    "Delete everything after n days"
+    ;; check number of arguments
+    (interactive (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg) 1)))
+    (let ((db (sqlite-open compilation-history-db-file)))
+      (unwind-protect
+	  (progn
+	    (sqlite-execute db
+			    "DELETE FROM compilations WHERE start_time < datetime('now', ?)"
+			    (list (format "-%d days" days)))
+	    (sqlite-execute db "VACUUM"))
+	(sqlite-close db)))
+    (message "compilation-history: pruned entries older than %d day(s)" days))
+  ;; if provided in bind-keymap returns:
+  ;; use-package-autoload-keymap: use-package: package.el
+  ;; compilation-history failed to define keymap
+  ;; compilation-history-mode
+  (global-set-key (kbd "C-c c o") #'compilation-history-mode)
   (compilation-history-mode 0)
   ;; May be should be at bind-keymap, but I didn't get the lisp syntax there...
   ;; (global-set-key (kbd "C-c c o") #'compilation-history-mode)
@@ -298,20 +332,6 @@
   ;; Default: 'horizontal (above/below)
   ;; Options: 'horizontal, 'vertical (side-by-side)
   (setq compilation-history-view-split-direction 'vertical ido-buffer-ignore '("*" "magit-" "~")))
-
-(defun my/compilation-history-prune (days)
-  "Delete everything after n days"
-  ;; check number of arguments
-  (interactive (list (if current-prefix-arg (prefix-numeric-value current-prefix-arg) 1)))
-  (let ((db (sqlite-open compilation-history-db-file)))
-    (unwind-protect
-	(progn
-	  (sqlite-execute db
-			  "DELETE FROM compilations WHERE start_time < datetime('now', ?)"
-			  (list (format "-%d days" days)))
-	  (sqlite-execute db "VACUUM"))
-      (sqlite-close db)))
-  (message "compilation-history: pruned entries older than %d day(s)" days))
 
 (use-package multiple-cursors
   :ensure t
@@ -329,16 +349,6 @@
          ("C-x r b" . consult-bookmark)
          ("C-x p b" . consult-project-buffer)
          ("M-y" . consult-yank-pop)
-         ;; M-g bindings in `goto-map'
-         ("M-g e" . consult-compile-error)
-         ("M-g r" . consult-grep-match)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g i" . consult-imenu)
-         ;; M-s bindings in `search-map'
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ;; Isearch integration
          ("M-s e" . consult-isearch-history))
   :config
   (setq consult-buffer-filter
@@ -355,5 +365,3 @@
   (marginalia-mode))
 (use-package vertico :ensure t :config
   (vertico-mode))
-
-(setq completion-styles '(substring basic))
